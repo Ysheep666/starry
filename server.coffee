@@ -1,5 +1,5 @@
 app = require './app'
-port = process.env.APP_PORT || 5000
+port = process.env.APP_PORT || 3000
 
 app.listen port, ->
   console.log "qiukela application listening on port #{port}"
