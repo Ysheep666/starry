@@ -1,0 +1,4 @@
+# 数据库配置
+db:
+  mongodb:
+    url: 'mongodb://127.0.0.1/starry-test'

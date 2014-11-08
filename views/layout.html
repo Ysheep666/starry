@@ -20,8 +20,9 @@
   {% block scripts %}
     <!-- build:js(public) /scripts/vendor.js -->
     <script src="/components/jquery/dist/jquery.js"></script>
+    <script src="/components/angular/angular.js"></script>
     <!-- endbuild -->
-    {{configScript|safe}}
+    {{baseConfigHtml|safe}}
     {% block sub_scripts %}{% endblock %}
   {% endblock %}
 </body>

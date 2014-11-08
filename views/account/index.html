@@ -1,0 +1,24 @@
+{% extends '../layout.html' %}
+
+{# 标题 #}
+{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+
+{# 样式 #}
+{% block sub_styles %}
+<!-- build:css(.tmp/public) /styles/welcome.css -->
+<!-- endbuild -->
+{% endblock %}
+
+{# 脚本 #}
+{% block sub_scripts %}
+<!-- build:js(.tmp/public) /scripts/welcome.js -->
+<script src="/scripts/welcome.js"></script>
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+<div class="background"></div>
+<div class="screen">
+</div>
+{% endblock %}

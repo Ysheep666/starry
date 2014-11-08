@@ -38,9 +38,6 @@ coverage.html
 .tmp
 dist
 
-# Scss
-.sass-cache
-
 # Base
 coverage
-config/config.coffee
+config/development.yaml

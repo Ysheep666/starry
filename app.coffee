@@ -1,15 +1,22 @@
 # Web 应用
+path = require 'path'
+config = require 'config'
 express = require 'express'
 passport = require 'passport'
-config = require './config/config'
+
+{setting, db, mailer} = config
+setting.root = path.normalize __dirname
+
+global.adou = {}
+adou.setting = setting
 
 app = express()
 
-require('./config/mongodb') config
-require('./config/passport') config, passport
-require('./config/express') app, config, passport
-require('./config/mailer') config
-require('./config/events') config
-require('./config/routes') app, config
+require('./libs/mongodb') db
+require('./libs/passport') passport
+require('./libs/express') app, passport, setting, db
+require('./libs/mailer') setting, db
+require('./libs/events') setting
+require('./starry/routes') app, setting
 
 module.exports = app
