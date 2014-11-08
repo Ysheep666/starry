@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{# 标题 #}
+{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+
+{# 样式 #}
+{% block sub_styles %}
+<!-- build:css(.tmp/public) /styles/default.css -->
+<link rel="stylesheet" href="/styles/default.css">
+<!-- endbuild -->
+{% endblock %}
+
+{# 脚本 #}
+{% block sub_scripts %}
+<!-- build:js(.tmp/public) /scripts/default.js -->
+<script src="/scripts/default/templates.js"></script>
+<script src="/scripts/default.js"></script>
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+<div class="row">
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+# node.js / npm
+lib-cov
+*.seed
+*.log
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+node_modules
+
+.tags
+npm-debug.log
+
+
+# misc / editors
+*~
+*#
+.DS_STORE
+.netbeans
+nbproject
+.idea
+.nide
+
+# bower components
+public/components
+public/test/components
+
+
+# Test
+coverage.html
+
+# Grunt
+.tmp
+dist
+
+# Scss
+.sass-cache
+
+# Base
+coverage
+config/config.coffee

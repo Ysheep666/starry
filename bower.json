@@ -1,0 +1,8 @@
+{
+  "name": "Starry",
+  "version": "0.0.1",
+  "dependencies": {
+    "modernizr": "2.8.3",
+    "jquery": "2.1.1"
+  }
+}

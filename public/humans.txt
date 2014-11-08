@@ -1,0 +1,12 @@
+/* TEAM */
+  Name: @不会飞的羊
+  From: Beijing,China
+
+/* SITE */
+  Last update:2014/09/27
+  Language: Chinese
+  Standards: HTML5, CSS3, JavaScript
+  Components: jQuery, Express, Socket.io
+  Doctype: HTML5
+  IDE: Sublime Text, Sketch
+  Software: etc.
