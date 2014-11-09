@@ -23,12 +23,13 @@ module.exports =
 
   # 创建用户
   # user
-  #   name 名称
+  #   login 账号
+  #   name 姓名
   #   email 邮箱地址
   #   password 密码
   # callback 回调函数
   create: (user, callback) ->
-    {name, email, password} = user
+    {login, name, email, password} = user
 
     salt = @makeSalt()
     hashed_password = @encryptPassword password, salt
@@ -37,33 +38,42 @@ module.exports =
     verify_code = uniqid + '.' + crypto.createHash('md5').update(email).digest 'hex'
 
     adou.getDatabase().create @collectionName,
-      name: name # 名称
+      login: login # 账号
+      name: name # 姓名
       email: email # 邮件地址
       salt: salt # 盐
       hashed_password: hashed_password # 哈希密码
       active: false # 是否激活
       verify_code: verify_code # 验证 code
       details: {} # 详情
-      projects: [] # 项目
-    , (err, user) ->
-      callback err, user
+      sections: [] # 章节
+    , callback
 
   # 更新用户
   # query 条件
   # doc 更新文档
   # callback 回调函数
   update: (query, doc, callback) ->
-    adou.getDatabase().update @collectionName, query, doc, (err, result) ->
-      callback err, result
+    adou.getDatabase().update @collectionName, query, doc, callback
 
-  # 邮箱地址唯一性
-  # email 邮箱地址
+  # 统计
+  # query 条件
   # callback 回调函数
-  uniqueEmail: (email, callback) ->
-    adou.getDatabase().count @collectionName,
-      email: email
-    , (err, count) ->
-      callback err, not count > 0
+  count: (query, callback) ->
+    adou.getDatabase().count @collectionName, query, callback
+
+  # 查找用户
+  # query 条件
+  # options 选项
+  # callback 回调函数
+  find: (query, options, callback) ->
+    if typeof options is 'function'
+      callback = options
+      options =
+        fields:
+          fields: { login: 1, name: 1, email: 1 }
+
+    adou.getDatabase().find @collectionName, query, options, callback
 
   # 查找用户
   # query 条件
@@ -73,9 +83,6 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields:
-          name: 1
-          email: 1
-          projects: 1
+        fields: { login: 1, name: 1, email: 1, sections: 1 }
 
     adou.getDatabase().findOne @collectionName, query, options, callback

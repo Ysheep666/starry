@@ -1,1 +1,1 @@
-{ "_id" : { "$oid" : "54515aaead927077a9bb5626" }, "name" : "test", "details": {}}
+{ "_id" : { "$oid" : "54515aaead927077a9bb5626" }, "name" : "test", "details" : {} }

@@ -3,20 +3,16 @@
 {# 标题 #}
 {% block title %}{{app.title}} - {{app.description}}{% endblock %}
 
-{# 样式 #}
-{% block sub_styles %}
-<!-- build:css(.tmp/public) /styles/default.css -->
-<!-- endbuild -->
-{% endblock %}
-
 {# 脚本 #}
 {% block sub_scripts %}
-<!-- build:js(.tmp/public) /scripts/default.js -->
+<!-- build:js /scripts/default/index.js -->
+<script src="/scripts/default/index.js"></script>
 <!-- endbuild -->
 {% endblock %}
 
 {# 内容 #}
 {% block content %}
 <div class="row">
+  xxxx
 </div>
 {% endblock %}

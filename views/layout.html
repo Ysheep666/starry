@@ -6,21 +6,21 @@
   <title>{% block title %}{% block sub_title %}{% endblock %} - {{app.title}}{% endblock %}</title>
   {% block head %}{% endblock %}
   {% block styles %}
-    <!-- build:css(.tmp/public) /styles/base.css -->
+    <!-- build:css /styles/base.css -->
     <link rel="stylesheet" href="/styles/base.css">
     <!-- endbuild -->
     {% block sub_styles %}{% endblock %}
   {% endblock %}
-  <!-- build:js(public) /scripts/modernizr.js -->
+  <!-- build:js /scripts/modernizr.js -->
   <script src="/components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
 </head>
 <body>
   {% block content %}{% endblock %}
   {% block scripts %}
-    <!-- build:js(public) /scripts/vendor.js -->
+    <!-- build:js /scripts/vendor.js -->
     <script src="/components/jquery/dist/jquery.js"></script>
-    <script src="/components/angular/angular.js"></script>
+    <script src="/components/handlebars/handlebars.runtime.js"></script>
     <!-- endbuild -->
     {{baseConfigHtml|safe}}
     {% block sub_scripts %}{% endblock %}

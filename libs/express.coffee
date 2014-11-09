@@ -46,7 +46,7 @@ module.exports = (app, passport, setting, db) ->
   # cookie 和 session
   app.use require('cookie-parser')(setting.secret)
   session = require 'express-session'
-  app.use session(
+  app.use session
     name: 'session.id'
     secret: setting.secret
     cookie:
@@ -58,7 +58,6 @@ module.exports = (app, passport, setting, db) ->
       prefix: 'session:'
     resave: true
     saveUninitialized: true
-  )
 
   # 防 csrf 攻击
   app.use require('csurf')() if 'test' isnt app.get('env')

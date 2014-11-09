@@ -1,1 +1,1 @@
-{ "_id" : { "$oid" : "54509f2b9afc5a3b946a50cb" }, "name" : "test", "members": [ { "user_id": { "$oid" : "54509f4396fe3748940c586a" }, "is_creator": true } ], "details": {}}
+{ "_id" : { "$oid" : "54509f2b9afc5a3b946a50cb" }, "name" : "test", "members" : [ { "user_id" : { "$oid" : "54509f4396fe3748940c586a" }, "is_creator" : true } ], "details" : {} }

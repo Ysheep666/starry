@@ -1,33 +1,27 @@
-# 项目 Models
+# 章节 Models
 module.exports =
-  collectionName: 'projects'
+  collectionName: 'sections'
 
-  # 创建项目
+  # 创建章节
   # project
   #   name 名称
-  #   members 成员
-  #     user_id 用户 ID
-  #     is_creator 是否是创建者
   # callback 回调函数
-  create: (project, callback) ->
-    {name, members} = project
+  create: (section, callback) ->
+    {name} = section
 
     adou.getDatabase().create @collectionName,
       name: name # 名称
-      members: members # 成员
-      details: {} # 详情
-    , (err, user) ->
-      callback err, user
+      points: [] # 内容点
+    , callback
 
-  # 更新项目
+  # 更新章节
   # query 条件
   # doc 更新文档
   # callback 回调函数
   update: (query, doc, callback) ->
-    adou.getDatabase().update @collectionName, query, doc, (err, result) ->
-      callback err, result
+    adou.getDatabase().update @collectionName, query, doc, callback
 
-  # 查找项目
+  # 查找章节
   # query 条件
   # options 选项
   # callback 回调函数
@@ -35,12 +29,11 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields:
-          name: 1
+        fields: { name: 1, points: 1 }
 
     adou.getDatabase().find @collectionName, query, options, callback
 
-  # 查找单个项目
+  # 查找单个章节
   # query 条件
   # options 选项
   # callback 回调函数
@@ -48,7 +41,6 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields:
-          name: 1
+        fields: { name: 1, points: 1 }
 
     adou.getDatabase().findOne @collectionName, query, options, callback

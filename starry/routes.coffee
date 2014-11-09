@@ -12,7 +12,6 @@ module.exports = (app, setting) ->
 
   # 接口
   app.use '/api/', require('./apis/default')
-  app.use '/api/projects', require('./apis/project')
 
   # 错误处理
   app.use (err, req, res, done) ->

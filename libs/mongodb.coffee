@@ -18,8 +18,7 @@ module.exports = (db) ->
       create: (collectionName, doc, options, callback) ->
         if typeof options is 'function'
           callback = options
-          options =
-            w: 1
+          options = { w: 1 }
 
         @connect (err, db) ->
           if err
@@ -35,8 +34,7 @@ module.exports = (db) ->
       remove: (collectionName, query, options, callback) ->
         if typeof options is 'function'
           callback = options
-          options =
-            w: 1
+          options = { w: 1 }
 
         @connect (err, db) ->
           if err
@@ -52,8 +50,7 @@ module.exports = (db) ->
       update: (collectionName, query, doc, options, callback) ->
         if typeof options is 'function'
           callback = options
-          options =
-            w: 1
+          options = { w: 1 }
 
         @connect (err, db) ->
           if err
