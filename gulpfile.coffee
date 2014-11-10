@@ -2,7 +2,22 @@ gulp = require 'gulp'
 
 # 加载插件
 plugins = require('gulp-load-plugins')()
-process.env.ENV = 'development' if not process.env.ENV
+process.env.NODE_ENV = 'development' if not process.env.NODE_ENV
+
+# Env development
+gulp.task 'development-env', (callback) ->
+  process.env.NODE_ENV = 'development'
+  callback()
+
+# Env test
+gulp.task 'test-env', (callback) ->
+  process.env.NODE_ENV = 'test'
+  callback()
+
+# Env production
+gulp.task 'production-env', (callback) ->
+  process.env.NODE_ENV = 'production'
+  callback()
 
 # Clean
 gulp.task 'clean', (callback) ->
@@ -28,7 +43,7 @@ gulp.task 'lint', ->
 gulp.task 'scripts', ->
   return gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
     .pipe plugins.browserify
-      debug: 'production' isnt process.env.ENV
+      debug: 'production' isnt process.env.NODE_ENV
       extensions: ['.hbs', '.coffee']
     .pipe plugins.rename
       extname: '.js'
@@ -68,20 +83,6 @@ gulp.task 'watch', ->
   gulp.watch 'public/styles/**/*.less', ['styles']
   gulp.watch 'public/scripts/**/*.{hbs,coffee}', ['lint', 'scripts']
 
-# Fixture
-gulp.task 'fixture', (callback) ->
-  fixture = require 'easy-fixture'
-  MongoFixture = require 'easy-mongo-fixture'
-
-  mongoFixture = new MongoFixture
-    database: 'starry-test'
-    collections: ['users', 'folders', 'projects']
-    dir: 'test/fixtures'
-    override: true
-
-  fixture.use mongoFixture
-  fixture.save().done -> callback()
-
 # Serve
 gulp.task 'serve', ->
   return plugins.nodemon
@@ -101,13 +102,38 @@ gulp.task 'serve', ->
   .on 'change', ['coffeeLint']
   .on 'restart', -> console.log 'restarted!'
 
+# Fixture
+gulp.task 'fixture', (callback) ->
+  fixture = require 'easy-fixture'
+  MongoFixture = require 'easy-mongo-fixture'
+
+  mongoFixture = new MongoFixture
+    database: 'starry-test'
+    collections: ['users', 'sections']
+    dir: 'test/fixtures'
+    override: true
+
+  fixture.use mongoFixture
+  fixture.load().done -> callback()
+
+# Test
+gulp.task 'test', ['test-env', 'fixture'], ->
+  return gulp.src 'test/**/*.coffee'
+    .pipe plugins.mocha
+      reporter: 'spec'
+      timeout: 3000
+      globals:
+        should: require 'should'
+    .once 'end', ->
+      process.exit()
+
 # Develop
-gulp.task 'develop', ['clean'], ->
+gulp.task 'develop', ['development-env', 'clean'], ->
   gulp.start 'styles', 'lint', 'scripts', 'watch', 'serve'
 
 # Build
-gulp.task 'build', ['clean'], ->
+gulp.task 'build', ['production-env', 'clean'], ->
   gulp.start 'images', 'html'
 
-
+# Default
 gulp.task 'default', ['develop']

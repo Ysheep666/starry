@@ -23,7 +23,8 @@ describe 'Api --> default controller', ->
 
   it 'Post:/api/signup -- 注册', (done) ->
     agent.post('/api/signup').send
-      name: 'test2'
+      login: 'test2'
+      name: '测试2'
       email: 'test2@test.com'
       password: 'test'
     .expect(201).end (err, res) ->
