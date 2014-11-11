@@ -1,0 +1,24 @@
+{% extends '../layout.html' %}
+
+{# 标题 #}
+{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+
+{# 样式 #}
+{% block sub_styles %}
+<!-- build:css /styles/account.css -->
+<link rel="stylesheet" href="/styles/account/index.css">
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+<div class="container">
+  <form class="form-account" id="form-forgot" role="form">
+    <h2 class="form-account-heading">找回密码</h2>
+    <div class="inputs">
+      <input type="email" class="form-control" name="email" placeholder="电子邮件地址" required autofocus>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" data-loading-text="数据提交中...">找回密码</button>
+  </form>
+</div>
+{% endblock %}

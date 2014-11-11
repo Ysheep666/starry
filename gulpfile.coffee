@@ -4,6 +4,11 @@ gulp = require 'gulp'
 plugins = require('gulp-load-plugins')()
 process.env.NODE_ENV = 'development' if not process.env.NODE_ENV
 
+# error hander
+handler = (err) ->
+  plugins.util.beep()
+  plugins.util.log plugins.util.colors.red(err.name), err.message
+
 # Env development
 gulp.task 'development-env', (callback) ->
   process.env.NODE_ENV = 'development'
@@ -24,64 +29,45 @@ gulp.task 'clean', (callback) ->
   del = require 'del'
   del ['.tmp', 'dist'], callback
 
-# Style
-gulp.task 'styles', ->
-  return gulp.src 'public/styles/pages/**/*.less'
-    .pipe plugins.less
-      dumpLineNumbers: 'comments'
-    .pipe plugins.autoprefixer 'last 2 version', 'safari 5', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
-    .pipe gulp.dest '.tmp/public/styles'
-    .pipe plugins.size()
-
 # Lint
 gulp.task 'lint', ->
   return gulp.src ['libs/**/*.coffee', 'starry/**/*.coffee', 'public/scripts/**/*.coffee']
     .pipe plugins.coffeelint()
     .pipe plugins.coffeelint.reporter()
 
+# Style
+gulp.task 'styles', ->
+  gulp.src 'public/styles/pages/**/*.less'
+    .pipe plugins.plumber errorHandler: handler
+    .pipe plugins.less
+      dumpLineNumbers: 'comments'
+    .pipe plugins.autoprefixer 'last 2 version', 'safari 5', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
+    .pipe plugins.plumber.stop()
+    .pipe gulp.dest '.tmp/public/styles'
+    .pipe plugins.size()
+  return
+
 # Script
 gulp.task 'scripts', ->
-  return gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
+  gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
+    .pipe plugins.plumber errorHandler: handler
     .pipe plugins.browserify
-      debug: 'production' isnt process.env.NODE_ENV
+      debug: true
       extensions: ['.hbs', '.coffee']
     .pipe plugins.rename
       extname: '.js'
+    .pipe plugins.plumber.stop()
     .pipe gulp.dest '.tmp/public/scripts'
     .pipe plugins.size()
-
-# Image
-gulp.task 'images', ->
-  return gulp.src('public/images/**/*')
-    .pipe plugins.imagemin
-      optimizationLevel: 3
-      progressive: true
-      interlaced: true
-    .pipe gulp.dest 'dist/public/images'
-    .pipe plugins.size()
-
-# Html
-gulp.task 'html', ['styles', 'lint', 'scripts'], ->
-  assets = plugins.useref.assets searchPath: '{.tmp/public,public}'
-
-  return gulp.src 'views/**/*.html'
-    .pipe assets
-    .pipe plugins.if '*.css', plugins.csso()
-    .pipe plugins.if '*.js', plugins.uglify()
-    .pipe plugins.rev()
-    .pipe assets.restore()
-    .pipe plugins.useref()
-    .pipe plugins.revReplace()
-    .pipe plugins.if '*.html', plugins.minifyHtml()
-    .pipe plugins.if '*.css', gulp.dest 'dist/public'
-    .pipe plugins.if '*.js', gulp.dest 'dist/public'
-    .pipe plugins.if '*.html', gulp.dest 'dist/views'
-    .pipe plugins.size()
+  return
 
 # Watch
 gulp.task 'watch', ->
-  gulp.watch 'public/styles/**/*.less', ['styles']
-  gulp.watch 'public/scripts/**/*.{hbs,coffee}', ['lint', 'scripts']
+  plugins.watch 'public/styles/**/*.less', (files, ccallback) ->
+    gulp.start 'styles', ccallback
+  plugins.watch 'public/scripts/**/*.{hbs,coffee}', (files, ccallback) ->
+    gulp.start 'scripts', ccallback
+  return
 
 # Serve
 gulp.task 'serve', ->
@@ -99,8 +85,12 @@ gulp.task 'serve', ->
       'test/**'
       'commands/**'
     ]
-  .on 'change', ['coffeeLint']
+  .on 'change', ['lint']
   .on 'restart', -> console.log 'restarted!'
+
+# Develop
+gulp.task 'develop', ['development-env', 'clean', 'lint'], ->
+  gulp.start 'styles', 'scripts', 'watch', 'serve'
 
 # Fixture
 gulp.task 'fixture', (callback) ->
@@ -127,13 +117,55 @@ gulp.task 'test', ['test-env', 'fixture'], ->
     .once 'end', ->
       process.exit()
 
-# Develop
-gulp.task 'develop', ['development-env', 'clean'], ->
-  gulp.start 'styles', 'lint', 'scripts', 'watch', 'serve'
+# Build style
+gulp.task 'build-styles', ->
+  return gulp.src 'public/styles/pages/**/*.less'
+    .pipe plugins.less()
+    .pipe plugins.autoprefixer 'last 2 version', 'safari 5', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'
+    .pipe gulp.dest '.tmp/public/styles'
+    .pipe plugins.size()
+
+# Build script
+gulp.task 'build-scripts', ->
+  return gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
+    .pipe plugins.browserify
+      extensions: ['.hbs', '.coffee']
+    .pipe plugins.rename
+      extname: '.js'
+    .pipe gulp.dest '.tmp/public/scripts'
+    .pipe plugins.size()
+
+# Build image
+gulp.task 'build-images', ->
+  return gulp.src('public/images/**/*')
+    .pipe plugins.imagemin
+      optimizationLevel: 3
+      progressive: true
+      interlaced: true
+    .pipe gulp.dest 'dist/public/images'
+    .pipe plugins.size()
+
+# Html
+gulp.task 'html', ['build-styles', 'build-scripts', 'build-images'], ->
+  assets = plugins.useref.assets searchPath: '{.tmp/public,public}'
+
+  return gulp.src 'views/**/*.html'
+    .pipe assets
+    .pipe plugins.if '*.css', plugins.csso()
+    .pipe plugins.if '*.js', plugins.uglify()
+    .pipe plugins.rev()
+    .pipe assets.restore()
+    .pipe plugins.useref()
+    .pipe plugins.revReplace()
+    .pipe plugins.if '*.html', plugins.minifyHtml()
+    .pipe plugins.if '*.css', gulp.dest 'dist/public'
+    .pipe plugins.if '*.js', gulp.dest 'dist/public'
+    .pipe plugins.if '*.html', gulp.dest 'dist/views'
+    .pipe plugins.size()
 
 # Build
-gulp.task 'build', ['production-env', 'clean'], ->
-  gulp.start 'images', 'html'
+gulp.task 'build', ['production-env', 'clean', 'lint'], ->
+  gulp.start 'html'
 
 # Default
 gulp.task 'default', ['develop']

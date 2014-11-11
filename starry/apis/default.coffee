@@ -28,7 +28,6 @@ router.route('/signin').post (req, res, done) ->
     req.logIn user, (err) ->
       return done err if err
       return res.status(201).json success: '登录成功'
-
   passport.authenticate('local', _logIn) req, res, done
 .delete (req, res) ->
   req.logout()
@@ -45,6 +44,19 @@ router.route('/signup').post (req, res, done) ->
   errs = req.validationErrors()
   return done isValidation: true, errors: errs if errs
 
+  done()
+.post (req, res, done) ->
+  login = req.body.login.trim()
+
+  User.count login: login , (err, counnt) ->
+    if 0 < counnt
+      return done isValidation: true, errors: [
+        param: 'login'
+        msg: '该账号已经被使用'
+        value: login
+      ]
+    done()
+.post (req, res, done) ->
   email = req.body.email.trim()
 
   User.count

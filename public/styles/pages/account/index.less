@@ -1,0 +1,54 @@
+// Variables
+@import '../../bootstrap/customized-variables.less';
+
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.form-account {
+  max-width: 320px;
+  padding: 15px;
+  margin: 0 auto;
+
+  .form-account-heading {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form-account-footing {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .form-control {
+    position: relative;
+    height: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .form-control:focus {
+    z-index: 2;
+  }
+
+  .inputs input {
+    margin-bottom: -1px;
+    border-radius: 0;
+  }
+
+  .inputs input:first-child {
+    margin-bottom: -1px;
+    border-top-right-radius: @input-border-radius;
+    border-top-left-radius: @input-border-radius;
+  }
+
+  .inputs input:last-child {
+    margin-bottom: 10px;
+    border-bottom-left-radius: @input-border-radius;
+    border-bottom-right-radius: @input-border-radius;
+  }
+}

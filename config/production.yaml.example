@@ -1,0 +1,10 @@
+# 邮件配置
+mailer:
+  smtp:
+    host: 'smtp.exmail.qq.com'
+    secure: true
+    port: 465
+    auth:
+      user: 'xxxxx@xxx.com'
+      pass: 'xxxxxx'
+  from: 'Xxxxx <xxx@xxxxx.com>'

@@ -1,0 +1,35 @@
+{% extends '../layout.html' %}
+
+{# 标题 #}
+{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+
+{# 样式 #}
+{% block sub_styles %}
+<!-- build:css /styles/account.css -->
+<link rel="stylesheet" href="/styles/account/index.css">
+<!-- endbuild -->
+{% endblock %}
+
+{# 脚本 #}
+{% block sub_scripts %}
+<!-- build:js /scripts/account/signin.js -->
+<script src="/scripts/account/signin.js"></script>
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+<div class="container">
+  <form class="form-account" id="form-signin" role="form">
+    <h2 class="form-account-heading">登录</h2>
+    <div class="inputs">
+      <input type="email" class="form-control" name="email" placeholder="电子邮件地址" required autofocus>
+      <input type="password" class="form-control" name="password" placeholder="密码" required>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" data-loading-text="数据提交中...">提交登录</button>
+    <p class="form-account-footing">
+      没有账号？<a href="/signup">创建一个账号</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

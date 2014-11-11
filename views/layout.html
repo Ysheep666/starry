@@ -19,8 +19,12 @@
   {% block content %}{% endblock %}
   {% block scripts %}
     <!-- build:js /scripts/vendor.js -->
-    <script src="/components/jquery/dist/jquery.js"></script>
     <script src="/components/handlebars/handlebars.runtime.js"></script>
+    <script src="/components/jquery/dist/jquery.js"></script>
+    <script src="/components/jquery.cookie/jquery.cookie.js"></script>
+    <script src="/components/bootstrap/js/transition.js"></script>
+    <script src="/components/bootstrap/js/alert.js"></script>
+    <script src="/components/bootstrap/js/button.js"></script>
     <!-- endbuild -->
     {{baseConfigHtml|safe}}
     {% block sub_scripts %}{% endblock %}
