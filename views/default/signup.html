@@ -1,26 +1,26 @@
 {% extends '../layout.html' %}
 
 {# 标题 #}
-{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+{% block title %}注册 - {{app.title}}{% endblock %}
 
 {# 样式 #}
 {% block sub_styles %}
-<!-- build:css /styles/account.css -->
-<link rel="stylesheet" href="/styles/account/index.css">
+<!-- build:css /styles/default/account.css -->
+<link rel="stylesheet" href="/styles/default/account.css">
 <!-- endbuild -->
 {% endblock %}
 
 {# 脚本 #}
 {% block sub_scripts %}
-<!-- build:js /scripts/account/signup.js -->
-<script src="/scripts/account/signup.js"></script>
+<!-- build:js /scripts/default/signup.js -->
+<script src="/scripts/default/signup.js"></script>
 <!-- endbuild -->
 {% endblock %}
 
 {# 内容 #}
 {% block content %}
 <div class="container">
-  <form class="form-account" id="form-signup" role="form">
+  <form class="form-account" id="formSignup" role="form">
     <h2 class="form-account-heading">注册</h2>
     <div class="inputs">
       <input type="text" class="form-control" name="login" placeholder="账号" required autofocus>

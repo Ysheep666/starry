@@ -1,0 +1,30 @@
+// Variables
+@import '../../components/customized-variables.less';
+@import '../../../components/bootstrap/less/mixins.less';
+
+.section-background {
+  .navbar-brand {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 36px;
+    line-height: 36px;
+    .opacity(0.3);
+
+    &:hover {
+      .opacity(1);
+    }
+  }
+
+  .replace-image {
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    font-size: 24px;
+    .opacity(0.5);
+
+    &:hover {
+      .opacity(1);
+    }
+  }
+}

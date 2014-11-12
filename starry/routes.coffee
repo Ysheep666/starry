@@ -4,7 +4,6 @@ express = require 'express'
 module.exports = (app, setting) ->
   # 页面
   app.use require('./pages/default')
-  app.use require('./pages/account')
 
   app.use '/api/*', (req, res, done) ->
     res.contentType "application/vnd.#{setting.api_vnd}+json"

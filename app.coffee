@@ -8,7 +8,7 @@ passport = require 'passport'
 setting.root = path.normalize __dirname
 
 global.adou = {}
-adou.setting = setting
+adou.config = config
 
 app = express()
 

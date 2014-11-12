@@ -7,4 +7,4 @@ mailer:
     auth:
       user: 'xxxxx@xxx.com'
       pass: 'xxxxxx'
-  from: 'Xxxxx <xxx@xxxxx.com>'
+  from: 'xxxx <xxx@xxxxx.com>'

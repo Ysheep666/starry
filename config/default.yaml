@@ -22,4 +22,12 @@ mailer:
     auth:
       user: 'xxxxx@xxx.com'
       pass: 'xxxxxx'
-  from: 'Xxxxx <xxx@xxxxx.com>'
+  from: 'xxxx <xxx@xxxxx.com>'
+
+# 又拍云
+upyun:
+  api: 'http://v0.api.upyun.com'
+  buckets:
+    - name: 'starry-images'
+      secret: 'n4gepzICjkRNEHrEGWfkbBds4vY='
+      url: 'http://starry-images.b0.upaiyun.com'

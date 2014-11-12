@@ -1,0 +1,36 @@
+// Mixins
+.section-base(@color) {
+  a {
+    color: @color;
+  }
+
+  .section-black {
+    background-color: @color;
+
+    a {
+      color: lighten(@color, 80%);
+
+      &:hover {
+        color: lighten(@color, 60%);
+      }
+    }
+  }
+}
+
+.section {
+  position: relative;
+  margin-top: 0px;
+  padding: 40px 0px;
+  width: 100%;
+
+  .top-actions {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+}
+
+
+html, html.black {
+  .section-base(#484848);
+}

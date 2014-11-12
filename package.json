@@ -16,8 +16,9 @@
   "browser": {},
   "browserify-shim": {
     "adou": "global:adou",
-    "jquery": "global:$",
-    "hbsfy/runtime": "global:Handlebars"
+    "hbsfy/runtime": "global:Handlebars",
+    "flow": "global:Flow",
+    "jquery": "global:$"
   },
   "dependencies": {
     "async": "0.9.0",

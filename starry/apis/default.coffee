@@ -17,8 +17,9 @@ router.route('/me').get (req, res, done) ->
   Section.find
     _id: $in: user.sections
   , (err, sections) ->
+    return done err if err
     user.sections = sections
-    return res.json user
+    res.json user
 
 # 登录和退出账号
 router.route('/signin').post (req, res, done) ->
@@ -27,15 +28,16 @@ router.route('/signin').post (req, res, done) ->
     return res.status(422).json error: '电子邮件地址或密码错误' if not user
     req.logIn user, (err) ->
       return done err if err
-      return res.status(201).json success: '登录成功'
+      res.status(201).json success: '登录成功'
   passport.authenticate('local', _logIn) req, res, done
 .delete (req, res) ->
   req.logout()
-  return res.status(202).json success: '退出账号成功'
+  res.status(202).json success: '退出账号成功'
 
 # 注册
 router.route('/signup').post (req, res, done) ->
   req.assert('login', '账号不能为空').notEmpty()
+  req.assert('login', '账号格式错误').matches(/^[0-9a-zA-z]+$/)
   req.assert('name', '姓名不能为空').notEmpty()
   req.assert('email', '邮箱地址不能为空').notEmpty()
   req.assert('email', '邮箱地址格式不正确').isEmail()
@@ -127,5 +129,12 @@ router.route('/forgot').post (req, res, done) ->
   ], (err) ->
     return done err if err
     res.status(201).json success: '找回密码成功'
+
+# 又拍云生成 Signature 和 Policy
+router.route('/upyun_token').post (req, res, done) ->
+  bucket = (b for b in adou.config.upyun.buckets when b.name is req.body.bucket.trim())[0]
+  policy = new Buffer(JSON.stringify(req.body)).toString 'base64'
+  signature = crypto.createHash('md5').update(policy + '&' + bucket.secret).digest 'hex'
+  res.status(200).json policy: policy, signature: signature
 
 module.exports = router

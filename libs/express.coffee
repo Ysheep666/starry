@@ -67,13 +67,6 @@ module.exports = (app, passport, setting, db) ->
 
   app.use (req, res, done) ->
     res.cookie '_csrf', req.csrfToken() if 'test' isnt app.get('env')
-
-    baseConfig = JSON.stringify
-      setting:
-        title: setting.title
-        description: setting.description
-
     res.locals.app = setting
     res.locals.user = req.user
-    res.locals.baseConfigHtml = "<script>var adou = #{baseConfig};</script>"
     done()

@@ -1,4 +1,7 @@
 gulp = require 'gulp'
+config = require 'config'
+
+{setting, upyun} = config
 
 # 加载插件
 plugins = require('gulp-load-plugins')()
@@ -29,11 +32,37 @@ gulp.task 'clean', (callback) ->
   del = require 'del'
   del ['.tmp', 'dist'], callback
 
+# Create Setting
+gulp.task 'create-setting', (callback) ->
+  buckets = {}
+  for bucket in upyun.buckets
+    buckets[bucket.name] = bucket.url
+
+  adou = JSON.stringify
+    title: setting.title
+    description: setting.description
+    upyun:
+      api: upyun.api
+      buckets: buckets
+
+  src = require('stream').Readable objectMode: true
+  src._read = ->
+    @push new plugins.util.File cwd: '', base: '', path: 'setting.js', contents: new Buffer "var adou = #{adou};"
+    @push null
+  return src.pipe gulp.dest '.tmp/public/scripts'
+
 # Lint
 gulp.task 'lint', ->
   return gulp.src ['libs/**/*.coffee', 'starry/**/*.coffee', 'public/scripts/**/*.coffee']
     .pipe plugins.coffeelint()
     .pipe plugins.coffeelint.reporter()
+
+# Font
+gulp.task 'fonts', ->
+  gulp.src 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}'
+    .pipe gulp.dest '.tmp/public'
+    .pipe plugins.size()
+  return
 
 # Style
 gulp.task 'styles', ->
@@ -48,7 +77,7 @@ gulp.task 'styles', ->
   return
 
 # Script
-gulp.task 'scripts', ->
+gulp.task 'scripts', ['create-setting'], ->
   gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
     .pipe plugins.plumber errorHandler: handler
     .pipe plugins.browserify
@@ -90,7 +119,7 @@ gulp.task 'serve', ->
 
 # Develop
 gulp.task 'develop', ['development-env', 'clean', 'lint'], ->
-  gulp.start 'styles', 'scripts', 'watch', 'serve'
+  gulp.start 'fonts', 'styles', 'scripts', 'watch', 'serve'
 
 # Fixture
 gulp.task 'fixture', (callback) ->
@@ -117,6 +146,12 @@ gulp.task 'test', ['test-env', 'fixture'], ->
     .once 'end', ->
       process.exit()
 
+# Build assets
+gulp.task 'build-assets', ->
+  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}']
+    .pipe gulp.dest 'dist/public'
+    .pipe plugins.size()
+
 # Build style
 gulp.task 'build-styles', ->
   return gulp.src 'public/styles/pages/**/*.less'
@@ -126,7 +161,7 @@ gulp.task 'build-styles', ->
     .pipe plugins.size()
 
 # Build script
-gulp.task 'build-scripts', ->
+gulp.task 'build-scripts', ['create-setting'], ->
   return gulp.src 'public/scripts/pages/**/*.coffee', { read: false }
     .pipe plugins.browserify
       extensions: ['.hbs', '.coffee']
@@ -146,7 +181,7 @@ gulp.task 'build-images', ->
     .pipe plugins.size()
 
 # Html
-gulp.task 'html', ['build-styles', 'build-scripts', 'build-images'], ->
+gulp.task 'html', ['build-assets', 'build-styles', 'build-scripts', 'build-images'], ->
   assets = plugins.useref.assets searchPath: '{.tmp/public,public}'
 
   return gulp.src 'views/**/*.html'

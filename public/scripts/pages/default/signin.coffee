@@ -3,7 +3,7 @@ template = require '../../templates/alert.hbs'
 require '../../components/csrf'
 
 $ ->
-  $form = $ '#form-signup'
+  $form = $ '#formSignin'
   $inputs = $form.find '.inputs'
   $submit = $form.find 'button[type="submit"]'
 
@@ -11,7 +11,7 @@ $ ->
     event.preventDefault()
     $submit.button 'loading'
     $.ajax
-      url: '/api/signup'
+      url: '/api/signin'
       type: 'POST'
       data: $form.serialize()
       dataType: 'json'
