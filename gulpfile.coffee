@@ -1,7 +1,4 @@
 gulp = require 'gulp'
-config = require 'config'
-
-{setting, upyun} = config
 
 # 加载插件
 plugins = require('gulp-load-plugins')()
@@ -35,6 +32,10 @@ gulp.task 'clean', (callback) ->
 # Create Setting
 gulp.task 'create-setting', (callback) ->
   buckets = {}
+  config = require './libs/config'
+
+  {setting, upyun} = config
+
   for bucket in upyun.buckets
     buckets[bucket.name] = bucket.url
 
@@ -128,7 +129,7 @@ gulp.task 'fixture', (callback) ->
 
   mongoFixture = new MongoFixture
     database: 'starry-test'
-    collections: ['users', 'sections']
+    collections: ['users']
     dir: 'test/fixtures'
     override: true
 
@@ -148,7 +149,7 @@ gulp.task 'test', ['test-env', 'fixture'], ->
 
 # Build assets
 gulp.task 'build-assets', ->
-  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}']
+  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/**/*.{eot,svg,ttf,woff}']
     .pipe gulp.dest 'dist/public'
     .pipe plugins.size()
 

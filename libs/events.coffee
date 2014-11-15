@@ -10,7 +10,7 @@ module.exports = (setting) ->
   for file in eventFiles
     if file.slice(-7) is '.coffee'
       key = file.substr 0, file.length - 7
-      object[key] = require path.join(eventPath, file)
+      object[key] = require path.join eventPath, file
 
   adou.getEmitter = (key) ->
     return object[key]

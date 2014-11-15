@@ -1,14 +1,11 @@
 # Web 应用
 path = require 'path'
-config = require 'config'
 express = require 'express'
 passport = require 'passport'
 
-{setting, db, mailer} = config
-setting.root = path.normalize __dirname
+config = require './libs/config'
 
-global.adou = {}
-adou.config = config
+{setting, db, mailer} = config
 
 app = express()
 

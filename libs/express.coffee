@@ -12,39 +12,39 @@ module.exports = (app, passport, setting, db) ->
   app.set 'view engine', 'html'
 
   # icon
-  app.use require('serve-favicon')(path.join(setting.root, 'public', 'favicon.ico'))
+  app.use require('serve-favicon') path.join setting.root, 'public', 'favicon.ico'
 
   # 开发环境
-  if 'development' is app.get('env')
-    app.use express.static(path.join(setting.root, '.tmp', 'public'))
-    app.use express.static(path.join(setting.root, 'public'))
+  if 'development' is app.get 'env'
+    app.use express.static path.join setting.root, '.tmp', 'public'
+    app.use express.static path.join setting.root, 'public'
 
-    app.use require('morgan')('short')
+    app.use require('morgan') 'short'
 
-    app.set 'views', path.join(setting.root, 'views')
+    app.set 'views', path.join setting.root, 'views'
     app.set 'view cache', false
     swig.setDefaults cache: false
 
   # 测试环境
-  if 'test' is app.get('env')
-    app.set 'views', path.join(setting.root, 'views')
+  if 'test' is app.get 'env'
+    app.set 'views', path.join setting.root, 'views'
 
   # 生产环境
-  if 'production' is app.get('env')
-    app.use express.static(path.join(setting.root, 'dist', 'public'),  maxAge: 365 * 24 * 3600)
+  if 'production' is app.get 'env'
+    app.use express.static path.join(setting.root, 'dist', 'public'),  maxAge: 365 * 24 * 3600
 
     app.enable 'view cache'
-    app.set 'views', path.join(setting.root, 'dist', 'views')
+    app.set 'views', path.join setting.root, 'dist', 'views'
 
   bodyParser = require 'body-parser'
-  app.use bodyParser.urlencoded(extended: true)
-  app.use bodyParser.json(type: 'json')
+  app.use bodyParser.urlencoded extended: true
+  app.use bodyParser.json type: 'json'
 
   app.use require('method-override')()
   app.use require('express-validator')()
 
   # cookie 和 session
-  app.use require('cookie-parser')(setting.secret)
+  app.use require('cookie-parser') setting.secret
   session = require 'express-session'
   app.use session
     name: 'session.id'

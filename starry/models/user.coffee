@@ -23,13 +23,12 @@ module.exports =
 
   # 创建用户
   # user
-  #   login 账号
   #   name 姓名
   #   email 邮箱地址
   #   password 密码
   # callback 回调函数
   create: (user, callback) ->
-    {login, name, email, password} = user
+    {name, email, password} = user
 
     salt = @makeSalt()
     hashed_password = @encryptPassword password, salt
@@ -38,7 +37,6 @@ module.exports =
     verify_code = uniqid + '.' + crypto.createHash('md5').update(email).digest 'hex'
 
     adou.getDatabase().create @collectionName,
-      login: login # 账号
       name: name # 姓名
       email: email # 邮件地址
       salt: salt # 盐
@@ -46,7 +44,6 @@ module.exports =
       active: false # 是否激活
       verify_code: verify_code # 验证 code
       details: {} # 详情
-      sections: [] # 章节
     , callback
 
   # 更新用户
@@ -71,7 +68,7 @@ module.exports =
       callback = options
       options =
         fields:
-          fields: { login: 1, name: 1, email: 1 }
+          fields: { name: 1, email: 1 }
 
     adou.getDatabase().find @collectionName, query, options, callback
 
@@ -83,6 +80,6 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields: { login: 1, name: 1, email: 1, sections: 1 }
+        fields: { name: 1, email: 1, details: 1 }
 
     adou.getDatabase().findOne @collectionName, query, options, callback

@@ -4,7 +4,7 @@ nodemailer = require 'nodemailer'
 smtpTransport = require 'nodemailer-smtp-transport'
 
 module.exports = (setting, mailer) ->
-  transporter = nodemailer.createTransport smtpTransport(mailer.smtp)
+  transporter = nodemailer.createTransport smtpTransport mailer.smtp
 
   # 邮件管理
   class Mail

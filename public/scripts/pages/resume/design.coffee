@@ -29,5 +29,4 @@ $ ->
 
   flow.on 'fileSuccess', (file, message) ->
     message = JSON.parse message
-    console.log message
     $('body').append "<img src='#{upyun.buckets['starry-images']}#{message.url}'>"

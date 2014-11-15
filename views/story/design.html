@@ -1,19 +1,19 @@
 {% extends '../layout.html' %}
 
 {# 标题 #}
-{% block title %}{{user.name}} － {{app.title}}{% endblock %}
+{% block title %}故事 － {{app.title}}{% endblock %}
 
 {# 样式 #}
 {% block sub_styles %}
-<!-- build:css /styles/default/aquarius.css -->
-<link rel="stylesheet" href="/styles/default/aquarius.css">
+<!-- build:css /styles/resume/design.css -->
+<link rel="stylesheet" href="/styles/resume/design.css">
 <!-- endbuild -->
 {% endblock %}
 
 {# 脚本 #}
 {% block sub_scripts %}
-<!-- build:js /scripts/default/aquarius.js -->
-<script src="/scripts/default/aquarius.js"></script>
+<!-- build:js /scripts/resume/design.js -->
+<script src="/scripts/resume/design.js"></script>
 <!-- endbuild -->
 {% endblock %}
 
@@ -22,8 +22,8 @@
 <section class="section section-black section-background" style="height:200px">
   <a class="navbar-brand" href="/">Starry</a>
   <div class="top-actions">
-    <a href="#">退出登录</a>
+    <a>退出登录</a>
   </div>
-  <a class="replace-image" id="replaceImage" href="#"><i class="fa fa-picture-o"></i></a>
+  <a class="replace-image" id="replaceImage"><i class="ti-image"></i></a>
 </section>
 {% endblock %}
