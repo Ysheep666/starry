@@ -1,7 +1,7 @@
 {% extends '../layout.html' %}
 
 {# 标题 #}
-{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+{% block title %}故事 － {{app.title}}{% endblock %}
 
 {# 样式 #}
 {% block sub_styles %}
@@ -19,5 +19,11 @@
 
 {# 内容 #}
 {% block content %}
-
+<section class="section section-black section-background" style="height:200px">
+  <a class="navbar-brand" href="/">Starry</a>
+  <div class="top-actions">
+    <a>退出登录</a>
+  </div>
+  <a class="replace-image" id="replaceImage"><i class="ti-image"></i></a>
+</section>
 {% endblock %}

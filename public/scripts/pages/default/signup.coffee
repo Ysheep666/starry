@@ -1,5 +1,5 @@
 $ = require 'jquery'
-template = require '../../templates/alert.hbs'
+template = require '../../templates/components/alert.hbs'
 require '../../components/csrf'
 
 $ ->

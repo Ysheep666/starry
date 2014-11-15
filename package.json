@@ -13,7 +13,9 @@
       "browserify-shim"
     ]
   },
-  "browser": {},
+  "browser": {
+    "router": "./public/components/director/lib/director/router.js"
+  },
   "browserify-shim": {
     "adou": "global:adou",
     "hbsfy/runtime": "global:Handlebars",
