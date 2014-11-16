@@ -13,12 +13,11 @@
       "browserify-shim"
     ]
   },
-  "browser": {
-    "router": "./public/components/director/lib/director/router.js"
-  },
+  "browser": {},
   "browserify-shim": {
     "adou": "global:adou",
     "hbsfy/runtime": "global:Handlebars",
+    "router": "global:Router",
     "flow": "global:Flow",
     "jquery": "global:$"
   },

@@ -3,6 +3,7 @@ async = require 'async'
 router = require('express').Router()
 
 User = require '../models/user'
+Story = require '../models/story'
 
 # 权限过滤
 router.route('/*').get (req, res, done) ->
@@ -10,8 +11,12 @@ router.route('/*').get (req, res, done) ->
   done()
 
 # 列表
-router.route('/').get (req, res) ->
-  res.render 'story/design'
+router.route('/').get (req, res, done) ->
+  preloaded = {}
+  Story.find { user_id: req.user._id }, (err, stories) ->
+    return done err if err
+    preloaded.stories = stories
+    res.render 'story/default', preloaded: JSON.stringify preloaded
 
 # 设计
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->

@@ -1,13 +1,28 @@
 $ = require 'jquery'
-Flow = require 'flow'
 Router = require 'router'
+Flow = require 'flow'
 require '../../components/csrf'
 
 {upyun} = adou
 
-console.log Router
+$ ->
+  router = new Router()
 
-# $ ->
+  # List
+  router.on '/stories', ->
+    console.log 'list'
+
+  # Detail
+  router.on '/stories/:id', ->
+    console.log 'detail'
+
+  router.configure html5history: true
+  router.init()
+
+  $('body').on 'click', 'a:not(.page)', (event) ->
+    event.preventDefault()
+    router.setRoute $(event.currentTarget).attr 'href'
+
 #   flow = new Flow
 #     target: upyun.api + '/starry-images'
 #     singleFile: true
