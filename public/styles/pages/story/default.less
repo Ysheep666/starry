@@ -2,25 +2,116 @@
 @import '../../components/customized-variables.less';
 @import '../../../components/bootstrap/less/mixins.less';
 
-.list {
-
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
-.section-background {
+// 列表
+.list {
+  position: fixed;
+  left: 0;
+  bottom: 100%;
+  z-index: @bige-index;
+  width: 100%;
+  height: 100%;
+  background: @starry-color-default;
+  transition: transform 0.5s cubic-bezier(.6,0,.4,1);
+  transform: translate3d(0,100%,0);
+
+  .container {
+    @media (min-width: @screen-sm-min) {
+      width: @container-sm;
+    }
+  }
+
+  .header {
+    margin-top: 30px;
+    .clearfix();
+
+    a {
+      color: darken(@starry-color-white, 10%);
+
+      &:hover {
+        color: @starry-color-white;
+      }
+    }
+  }
+
+  .logo, .header-actions {
+    display: block;
+  }
+
+  .logo svg path {
+    stroke-width: 1;
+    stroke: darken(@starry-color-white, 10%);
+    fill: darken(@starry-color-white, 10%);
+  }
+
+  .item {
+    position: relative;
+    display: block;
+    margin: 8px auto;
+    padding: 18px 20px;
+    width: 100%;
+    font-size: 24px;
+    background: @starry-color-white;
+    color: lighten(@starry-color-black, 10%);
+    border-radius: 4px;
+
+    &:hover {
+      background: darken(@starry-color-white, 4%);
+    }
+
+    img {
+      margin-right: 16px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .remove {
+      position: absolute;
+      display: block;
+      right: 30px;
+      top: 25px;
+      color: darken(@starry-color-white, 20%);
+
+      &:hover {
+        color: darken(@starry-color-white, 50%);
+      }
+    }
+  }
+}
+
+// 详情
+.detail {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: darken(@starry-color-white, 1%);
+
   .navbar-brand {
     position: absolute;
     top: 20px;
     left: 30px;
-    font-size: 36px;
+    font-size: 16px;
     line-height: 36px;
     .opacity(0.3);
+
+    i {
+      font-size: 24px;
+    }
 
     &:hover {
       .opacity(1);
     }
   }
 
-  .replace-image {
+  .replace-background {
     position: absolute;
     right: 30px;
     bottom: 20px;
@@ -31,4 +122,8 @@
       .opacity(1);
     }
   }
+}
+
+.bige .list {
+  transform: translate3d(0,0,0);
 }

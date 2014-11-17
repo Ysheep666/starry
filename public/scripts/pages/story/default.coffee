@@ -3,23 +3,41 @@ Router = require 'router'
 Flow = require 'flow'
 require '../../components/csrf'
 
-{upyun} = adou
+_logo = require '../../templates/components/logo.hbs'
+
+templates =
+  list: require '../../templates/pages/story/list.hbs'
+  detail: require '../../templates/pages/story/detail.hbs'
+
+{upyun, preloaded} = adou
 
 $ ->
+  $wrap = $ '#wrap'
+  $list = $ '#list'
+  $detail = $ '#detail'
+
   router = new Router()
 
-  # List
+  # 列表
   router.on '/stories', ->
-    console.log 'list'
+    if preloaded.stories
+      $list.html templates.list { logo: _logo(), stories: preloaded.stories }
 
-  # Detail
+      $wrap.removeClass 'bige'
+      return preloaded.stories = null
+
+    alert 'x'
+
+
+  # 详情
   router.on '/stories/:id', ->
-    console.log 'detail'
+    $detail.html templates.detail()
+    $wrap.addClass 'bige'
 
   router.configure html5history: true
   router.init()
 
-  $('body').on 'click', 'a:not(.page)', (event) ->
+  $('body').on 'click', 'a.go', (event) ->
     event.preventDefault()
     router.setRoute $(event.currentTarget).attr 'href'
 

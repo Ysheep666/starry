@@ -12,6 +12,7 @@ module.exports = (app, setting) ->
 
   # 接口
   app.use '/api/', require('./apis/default')
+  app.use '/api/stories', require('./apis/story')
 
   # 错误处理
   app.use (err, req, res, done) ->

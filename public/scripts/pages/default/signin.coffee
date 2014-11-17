@@ -1,6 +1,7 @@
 $ = require 'jquery'
-template = require '../../templates/components/alert.hbs'
 require '../../components/csrf'
+
+_alert = require '../../templates/components/alert.hbs'
 
 $ ->
   $form = $ '#formSignin'
@@ -22,6 +23,6 @@ $ ->
       $submit.button 'reset'
       error = res.responseJSON.error
       if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
-      $alert = $(template errors: errors).addClass 'alert-danger'
+      $alert = $(_alert errors: errors).addClass 'alert-danger'
       $_alert = $inputs.prev '.alert'
       if $_alert.size() then $_alert.replaceWith $alert else $inputs.before $alert

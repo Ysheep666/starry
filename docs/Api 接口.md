@@ -7,3 +7,7 @@
 - Post:/api/signin -- 登录
 - Delete:/api/signin -- 退出
 - Get:/api/me -- 获取个人信息
+
+
+### 故事
+- Get:/api/stories -- 获取故事列表

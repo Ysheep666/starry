@@ -20,5 +20,8 @@
 
 {# 内容 #}
 {% block content %}
-
+<div id="wrap"{% if bige %} class="bige"{% endif %}>
+  <div class="list" id="list"></div>
+  <div class="detail" id="detail"></div>
+</div>
 {% endblock %}
