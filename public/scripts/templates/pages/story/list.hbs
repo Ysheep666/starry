@@ -2,15 +2,15 @@
   <div class="header">
     <a class="logo pull-left" href="/">{{{logo}}}</a>
     <div class="header-actions pull-right">
-      <a>退出登录</a>
+      <a class="signout">退出</a>
     </div>
   </div>
   <div class="items">
     {{#each stories}}
       <a class="item go" href="/stories/{{_id}}">
         <img src="http://placehold.it/60x60">
-        放假去三亚
-        <div class="remove"><i class="ti-trash"></i></div>
+        我们去三亚吧
+        <div class="remove"><i class="fa fa-trash"></i></div>
       </a>
     {{/each}}
   </div>

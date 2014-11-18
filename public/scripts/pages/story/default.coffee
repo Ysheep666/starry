@@ -1,7 +1,8 @@
 $ = require 'jquery'
 Router = require 'router'
-Flow = require 'flow'
 require '../../components/csrf'
+
+Upload = require '../../components/upload-image'
 
 _logo = require '../../templates/components/logo.hbs'
 
@@ -16,30 +17,86 @@ $ ->
   $list = $ '#list'
   $detail = $ '#detail'
 
+  _list = (data) ->
+    $list.html templates.list data
+    $wrap.removeClass 'bige'
+
+  _detail = (data) ->
+    $detail.html templates.detail data
+
+    # 替换背景图
+    $replaceBackground = $('#replaceBackground')
+    replaceBackgroundUpload = new Upload()
+    replaceBackgroundUpload.assignBrowse $replaceBackground[0]
+    replaceBackgroundUpload.on 'filesAdded', ->
+      $replaceBackground.addClass 'loading'
+    replaceBackgroundUpload.on 'filesSubmitted', (err) ->
+      return window.alert err if err
+      replaceBackgroundUpload.upload()
+    replaceBackgroundUpload.on 'fileSuccess', (file, message) ->
+      message = JSON.parse message
+      setTimeout ->
+        $replaceBackground.removeClass 'loading'
+        $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{upyun.buckets['starry-images']}#{message.url})"
+      , 1000
+
+    # 上传头像
+    $profileImage = $('#profileImage')
+    profileImageUpload = new Upload()
+    profileImageUpload.assignBrowse $profileImage[0]
+    profileImageUpload.on 'filesAdded', ->
+      $profileImage.closest('.profile-image').addClass 'loading'
+    profileImageUpload.on 'filesSubmitted', (err) ->
+      return window.alert err if err
+      profileImageUpload.upload()
+    profileImageUpload.on 'fileSuccess', (file, message) ->
+      message = JSON.parse message
+      setTimeout ->
+        $profileImage.removeClass('loading').addClass 'done'
+        $profileImage.css 'backgroundImage', "url(#{upyun.buckets['starry-images']}#{message.url}!avatar)"
+      , 1000
+
+    $wrap.addClass 'bige'
+
   router = new Router()
 
   # 列表
   router.on '/stories', ->
     if preloaded.stories
-      $list.html templates.list { logo: _logo(), stories: preloaded.stories }
-
-      $wrap.removeClass 'bige'
+      _list { logo: _logo(), stories: preloaded.stories }
       return preloaded.stories = null
 
-    alert 'x'
-
+    $.ajax
+      url: '/api/stories'
+      type: 'GET'
+      dataType: 'json'
+    .done (res) ->
+      _list { logo: _logo(), stories: res }
+    .fail (res) ->
+      error = res.responseJSON.error
+      window.alert error
 
   # 详情
   router.on '/stories/:id', ->
-    $detail.html templates.detail()
-    $wrap.addClass 'bige'
+    _detail {}
 
   router.configure html5history: true
   router.init()
 
+  # 跳转
   $('body').on 'click', 'a.go', (event) ->
     event.preventDefault()
     router.setRoute $(event.currentTarget).attr 'href'
+
+  # 退出登录
+  $('body').on 'click', 'a.signout', (event) ->
+    event.preventDefault()
+    $.ajax
+      url: '/api/signin'
+      type: 'DELETE'
+      dataType: 'json'
+    .always ->
+      window.location.href = '/'
 
 #   flow = new Flow
 #     target: upyun.api + '/starry-images'

@@ -17,6 +17,8 @@
   z-index: @bige-index;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
   background: @starry-color-default;
   transition: transform 0.5s cubic-bezier(.6,0,.4,1);
   transform: translate3d(0,100%,0);
@@ -50,11 +52,16 @@
     fill: darken(@starry-color-white, 10%);
   }
 
+  .items {
+    margin-bottom: 60px;
+  }
+
   .item {
     position: relative;
     display: block;
     margin: 8px auto;
     padding: 18px 20px;
+    height: 76px;
     width: 100%;
     font-size: 24px;
     background: @starry-color-white;
@@ -75,7 +82,9 @@
       position: absolute;
       display: block;
       right: 30px;
-      top: 25px;
+      top: 18px;
+      height: 40px;
+      line-height: 40px;
       color: darken(@starry-color-white, 20%);
 
       &:hover {
@@ -92,7 +101,8 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background: darken(@starry-color-white, 1%);
+  overflow: hidden;
+  overflow-y: auto;
 
   .navbar-brand {
     position: absolute;
@@ -111,15 +121,134 @@
     }
   }
 
-  .replace-background {
+  .replace-background-button {
     position: absolute;
     right: 30px;
     bottom: 20px;
+    width: 36px;
+    line-height: 36px;
+    text-align: center;
     font-size: 24px;
     .opacity(0.5);
 
     &:hover {
       .opacity(1);
+    }
+
+    .loading {
+      font-size: 16px;
+      display: none;
+      transform-origin: 50% 50%;
+      animation: loading 1s infinite linear;
+    }
+
+    .instructions {
+      display: block;
+    }
+
+    &.loading {
+      .loading {
+        display: block;
+      }
+
+      .instructions {
+        display: none;
+      }
+    }
+  }
+
+  .profile-image {
+    i {
+      display: block;
+      text-align: center;
+      line-height: 200px;
+      font-size: 28px;
+      color: darken(@starry-color-white, 1%);
+    }
+
+    .loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      font-size: 18px;
+      display: none;
+      transform-origin: 50% 50%;
+      animation: loading 1s infinite linear;
+    }
+
+    .instructions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: none;
+      overflow: hidden;
+      background: transparent;
+      backface-visibility: hidden;
+      background-color: lighten(@starry-color-black, 25%);
+      border-radius: 50%;
+    }
+
+    &.loading {
+      .loading {
+        display: block;
+      }
+
+      .instructions {
+        display: none;
+      }
+    }
+
+    &.done {
+      .instructions {
+        display: none;
+      }
+
+      &:not(.loading):hover .instructions {
+        display: block;
+        background-color: rgba(0,0,0,.5);
+      }
+    }
+  }
+
+  .theme-actions {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+
+    a {
+      display: inline-block;
+      margin-right: 5px;
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+
+      &.black {
+        background: @starry-color-black;
+      }
+
+      &.gray {
+        background: @starry-color-gray;
+      }
+
+      &.green {
+        background: @starry-color-green;
+      }
+
+      &.blue {
+        background: @starry-color-blue;
+      }
+
+      &.pink {
+        background: @starry-color-pink;
+      }
+
+      &.red {
+        background: @starry-color-red;
+      }
     }
   }
 }

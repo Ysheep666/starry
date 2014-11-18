@@ -18,8 +18,10 @@ router.route('/').get (req, res, done) ->
 
 # 设计
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
-  console.log req.params[0]
   preloaded = {}
-  res.render 'story/default', { bige: true, preloaded: JSON.stringify preloaded }
+  Story.findOne { _id: new require('mongodb').ObjectID req.params[0] }, (err, story) ->
+    return done err if err
+    preloaded.story = story
+    res.render 'story/default', { bige: true, preloaded: JSON.stringify preloaded }
 
 module.exports = router

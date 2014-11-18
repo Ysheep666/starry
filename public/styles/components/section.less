@@ -1,21 +1,75 @@
 // Mixins
 .section-base(@dark-color, @light-color) {
+  background: @light-color;
+
   a {
     color: @dark-color;
     cursor: pointer;
+  }
+
+  .line {
+    background: @dark-color;
   }
 
   .section-black {
     background-color: @dark-color;
 
     a {
-      color: darken(@starry-color-white, 10%);
+      color: darken(@light-color, 10%);
 
       &:hover {
-        color: @starry-color-white;
+        color: @light-color;
       }
     }
+
+    .line {
+      background: @light-color;
+    }
   }
+
+  .profile-image .loading i {
+    color: @dark-color;
+  }
+
+  .profile-image.done .loading i {
+    color: @light-color;
+  }
+
+  .section-header .details {
+    background: @light-color;
+  }
+
+  .section:last-of-type .line:before {
+    color: @light-color;
+    background: @dark-color;
+  }
+
+  .section.section-black:last-of-type .line:before {
+    color: @dark-color;
+    background: @light-color;
+  }
+
+  .section:before {
+    background: @dark-color;
+  }
+
+  .section.section-black:before {
+    background: @light-color;
+  }
+
+  .section:last-of-type:before {
+    display: none;
+  }
+}
+
+@keyframes loading {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .section {
@@ -24,14 +78,112 @@
   padding: 40px 0px;
   width: 100%;
 
+  .line {
+    position: absolute;
+    top: -20px;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+  }
+
+  &:last-of-type {
+    padding-bottom: 200px;
+
+    .line {
+      bottom: 100px;
+      margin-bottom: -50px;
+
+      &:before {
+        display: block;
+        font: normal normal normal 24px/1 FontAwesome;
+        content: @fa-var-flag;
+        position: absolute;
+        bottom: 0px;
+        margin-left: -30px;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    margin: -15px;
+    width: 31px;
+    height: 31px;
+    transform: rotate(315deg);
+  }
+
   .top-actions {
     position: absolute;
     top: 30px;
     right: 30px;
+
+    a {
+      margin-left: 8px;
+    }
+  }
+
+  .profile-image {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    z-index: @profile-index;
+    margin-left: -100px;
+    width: 200px;
+    height: 200px;
+    border: 2px solid darken(@starry-color-white, 1%);
+    background-color: darken(@starry-color-white, 1%);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 50%;
   }
 }
 
+.section-background {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
-html, html.black {
+.section-header {
+  padding-top: 100px;
+  padding-bottom: 30px;
+  backface-visibility: hidden;
+
+  .details {
+    position: relative;
+    z-index: 20;
+    margin: 30px auto;
+    margin-top: 40px;
+    padding-bottom: 20px;
+    max-width: 600px;
+    text-align: center;
+
+    h1 {
+      font-size: 32px;
+      padding-top: 20px;
+      padding-bottom: 0px;
+    }
+
+    .link {
+      font-size: 15px;
+      font-family: inherit;
+      margin-top: 0px;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+body, body.black {
   .section-base(@starry-color-black, @starry-color-white);
 }

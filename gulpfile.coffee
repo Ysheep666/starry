@@ -149,7 +149,7 @@ gulp.task 'test', ['test-env', 'fixture'], ->
 
 # Build assets
 gulp.task 'build-assets', ->
-  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/**/*.{eot,svg,ttf,woff}']
+  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}']
     .pipe gulp.dest 'dist/public'
     .pipe plugins.size()
 
