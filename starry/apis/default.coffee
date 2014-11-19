@@ -78,7 +78,7 @@ router.route('/forgot').post (req, res, done) ->
 
       user.password = crypto.randomBytes(Math.ceil(6)).toString('hex').slice 0, 12
 
-      User.update { _id: user._id}, $set: { hashed_password: User.encryptPassword user.password, user.salt } , (err) ->
+      User.update { _id: user._id}, $set: { hashed_password: User.encryptPassword user.password, user.salt }, (err) ->
         return fn err if err
 
         # 发送找回密码邮件

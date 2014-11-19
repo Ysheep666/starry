@@ -24,6 +24,8 @@ $ ->
   _detail = (data) ->
     $detail.html templates.detail data
 
+    {story} = data
+
     # 替换背景图
     $replaceBackground = $('#replaceBackground')
     replaceBackgroundUpload = new Upload()
@@ -35,10 +37,20 @@ $ ->
       replaceBackgroundUpload.upload()
     replaceBackgroundUpload.on 'fileSuccess', (file, message) ->
       message = JSON.parse message
-      setTimeout ->
-        $replaceBackground.removeClass 'loading'
-        $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{upyun.buckets['starry-images']}#{message.url})"
-      , 1000
+      image = upyun.buckets['starry-images'] + message.url
+      $.ajax
+        url: "/api/stories/#{story._id}"
+        type: 'POST'
+        data: background: image
+        dataType: 'json'
+      .done (res) ->
+        window.setTimeout ->
+          $replaceBackground.removeClass 'loading'
+          $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image})"
+        , 800
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
 
     # 上传头像
     $profileImage = $('#profileImage')
@@ -51,10 +63,20 @@ $ ->
       profileImageUpload.upload()
     profileImageUpload.on 'fileSuccess', (file, message) ->
       message = JSON.parse message
-      setTimeout ->
-        $profileImage.removeClass('loading').addClass 'done'
-        $profileImage.css 'backgroundImage', "url(#{upyun.buckets['starry-images']}#{message.url}!avatar)"
-      , 1000
+      image = upyun.buckets['starry-images'] + message.url
+      $.ajax
+        url: "/api/stories/#{story._id}"
+        type: 'POST'
+        data: cover: image
+        dataType: 'json'
+      .done (res) ->
+        window.setTimeout ->
+          $profileImage.removeClass('loading').addClass 'done'
+          $profileImage.css 'backgroundImage', "url(#{image}!avatar)"
+        , 800
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
 
     $wrap.addClass 'bige'
 
@@ -62,9 +84,9 @@ $ ->
 
   # 列表
   router.on '/stories', ->
-    if preloaded.stories
+    if preloaded
       _list { logo: _logo(), stories: preloaded.stories }
-      return preloaded.stories = null
+      return preloaded = null
 
     $.ajax
       url: '/api/stories'
@@ -77,8 +99,20 @@ $ ->
       window.alert error
 
   # 详情
-  router.on '/stories/:id', ->
-    _detail {}
+  router.on '/stories/:id', (id) ->
+    if preloaded
+      _detail { story: preloaded.story }
+      return preloaded = null
+
+    $.ajax
+      url: "/api/stories/#{id}"
+      type: 'GET'
+      dataType: 'json'
+    .done (res) ->
+      _detail { story: res }
+    .fail (res) ->
+      error = res.responseJSON.error
+      window.alert error
 
   router.configure html5history: true
   router.init()
@@ -97,29 +131,3 @@ $ ->
       dataType: 'json'
     .always ->
       window.location.href = '/'
-
-#   flow = new Flow
-#     target: upyun.api + '/starry-images'
-#     singleFile: true
-#     testChunks: false
-#
-#   flow.assignBrowse $('#replaceImage')[0]
-#   flow.on 'filesSubmitted', ->
-#     $.ajax
-#       url: '/api/upyun_token'
-#       type: 'POST'
-#       data:
-#         bucket: 'starry-images'
-#         expiration: parseInt (new Date().getTime() + 600000)/1000, 10
-#         'save-key': '/{year}{mon}/{day}/{filemd5}-{random}{.suffix}'
-#       dataType: 'json'
-#     .done (res) ->
-#       flow.opts.query = res
-#       flow.upload()
-#     .fail (res) ->
-#       error = res.responseJSON.error
-#       window.alert error
-#
-#   flow.on 'fileSuccess', (file, message) ->
-#     message = JSON.parse message
-#     $('body').append "<img src='#{upyun.buckets['starry-images']}#{message.url}'>"

@@ -11,3 +11,5 @@
 
 ### 故事
 - Get:/api/stories -- 获取故事列表
+- Get:/api/stories/:id -- 获取故事详情
+- Post:/api/stories/:id -- 更新故事详情

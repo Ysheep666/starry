@@ -1,4 +1,5 @@
 # 故事 Api
+validator = require 'validator'
 router = require('express').Router()
 
 Story = require '../models/story'
@@ -15,5 +16,27 @@ router.route('/').get (req, res) ->
   Story.find { user_id: req.user._id }, (err, stories) ->
     return done err if err
     res.status(200).json stories
+
+# 详情
+router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
+  Story.findOne { _id: new require('mongodb').ObjectID req.params[0] }, (err, story) ->
+    return done err if err
+    res.status(200).json story
+
+# 更改部分信息
+router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
+  {title, mark, description, background, cover, theme} = req.body
+
+  details = {}
+  details.background = background if background and validator.isURL background
+  details.cover = cover if cover and validator.isURL cover
+
+  if '{}' is JSON.stringify details
+    return done()
+
+  Story.update { _id: new require('mongodb').ObjectID req.params[0] }, $set: details, (err) ->
+    return done err if err
+    res.status(200).json ok: true
+
 
 module.exports = router

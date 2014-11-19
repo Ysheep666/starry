@@ -15,8 +15,10 @@ module.exports =
       user_id: user_id
       title: '' # 标题
       mark: '' # 标识
-      theme: '' # 主题 | 'black', 'gray', 'green', 'blue', 'pink', 'red'
-      details: {} # 详情
+      description: '' #描述
+      background: '' # 背景
+      cover: '' # 封面
+      theme: '' # 主题 ^_^: 'black', 'gray', 'green', 'blue', 'pink', 'red'
       sections: [] # 片段
     , callback
 
@@ -41,7 +43,7 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields: { title: 1, mark: 1, theme: 1, details: 1 }
+        fields: { title: 1, cover: 1 }
 
     adou.getDatabase().find @collectionName, query, options, callback
 
@@ -53,6 +55,6 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields: { title: 1, mark: 1, theme: 1, details: 1, sections: 1 }
+        fields: { title: 1, mark: 1, description: 1, background: 1, cover: 1, theme: 1, sections: 1 }
 
     adou.getDatabase().findOne @collectionName, query, options, callback

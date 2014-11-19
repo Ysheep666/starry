@@ -16,7 +16,7 @@ router.route('/').get (req, res, done) ->
     preloaded.stories = stories
     res.render 'story/default', { preloaded: JSON.stringify preloaded }
 
-# 设计
+# 详情
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
   preloaded = {}
   Story.findOne { _id: new require('mongodb').ObjectID req.params[0] }, (err, story) ->
