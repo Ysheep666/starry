@@ -23,20 +23,21 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
     return done err if err
     res.status(200).json story
 
-# 更改部分信息
+# 更新信息
 router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
   {title, mark, description, background, cover, theme} = req.body
 
   details = {}
   details.background = background if background and validator.isURL background
   details.cover = cover if cover and validator.isURL cover
+  details.theme = theme if theme and validator.isAlpha theme
 
   if '{}' is JSON.stringify details
     return done()
 
   Story.update { _id: new require('mongodb').ObjectID req.params[0] }, $set: details, (err) ->
     return done err if err
-    res.status(200).json ok: true
+    res.status(200).json success: '更新信息成功'
 
 
 module.exports = router

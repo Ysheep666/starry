@@ -56,6 +56,7 @@ $ ->
     $profileImage = $('#profileImage')
     profileImageUpload = new Upload()
     profileImageUpload.assignBrowse $profileImage[0]
+    profileImageUpload.assignDrop $profileImage[0]
     profileImageUpload.on 'filesAdded', ->
       $profileImage.closest('.profile-image').addClass 'loading'
     profileImageUpload.on 'filesSubmitted', (err) ->
@@ -77,6 +78,25 @@ $ ->
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
+
+    # 主题
+    $('body').attr 'class', story.theme if story.theme
+
+    $('#themes').on 'click', 'a', (event) ->
+      event.preventDefault()
+      theme = $(this).data 'color'
+      $.ajax
+        url: "/api/stories/#{story._id}"
+        type: 'POST'
+        data: theme: theme
+        dataType: 'json'
+      .done (res) ->
+        $('body').attr 'class', theme
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+
 
     $wrap.addClass 'bige'
 
