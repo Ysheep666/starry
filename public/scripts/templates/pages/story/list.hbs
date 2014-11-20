@@ -6,9 +6,10 @@
     </div>
   </div>
   <div class="items">
+    <a class="item add" id="addStory"><i class="fa fa-plus"></i> 新建</a>
     {{#each stories}}
       <a class="item go" href="/stories/{{_id}}">
-        <img src="http://placehold.it/60x60">
+        <div class="cover pull-left"{{#if cover}} style="background-image:url({{cover}}!avatar.small)"{{/if}}></div>
         我们去三亚吧
         <div class="remove"><i class="fa fa-trash"></i></div>
       </a>

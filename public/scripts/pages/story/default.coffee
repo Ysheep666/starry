@@ -19,6 +19,20 @@ $ ->
 
   _list = (data) ->
     $list.html templates.list data
+
+    # 新建故事
+    $('#addStory').on 'click', (event) ->
+      event.preventDefault()
+      $.ajax
+        url: '/api/stories'
+        type: 'POST'
+        dataType: 'json'
+      .done (data) ->
+        router.setRoute "stories/#{data._id}"
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
     $wrap.removeClass 'bige'
 
   _detail = (data) ->

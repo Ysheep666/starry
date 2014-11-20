@@ -19,7 +19,8 @@
     "hbsfy/runtime": "global:Handlebars",
     "router": "global:Router",
     "flow": "global:Flow",
-    "jquery": "global:$"
+    "jquery": "global:$",
+    "toastr": "global:toastr"
   },
   "dependencies": {
     "async": "0.9.0",
@@ -32,6 +33,7 @@
     "express": "4.10.1",
     "express-session": "1.9.1",
     "express-validator": "2.6.0",
+    "gulp-replace": "^0.5.0",
     "js-yaml": "3.2.2",
     "lodash": "2.4.1",
     "method-override": "2.3.0",

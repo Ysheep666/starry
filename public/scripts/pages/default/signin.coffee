@@ -1,7 +1,6 @@
 $ = require 'jquery'
+toastr = require 'toastr'
 require '../../components/csrf'
-
-_alert = require '../../templates/components/alert.hbs'
 
 $ ->
   $form = $ '#formSignin'
@@ -23,6 +22,4 @@ $ ->
       $submit.button 'reset'
       error = res.responseJSON.error
       if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
-      $alert = $(_alert errors: errors).addClass 'alert-danger'
-      $_alert = $inputs.prev '.alert'
-      if $_alert.size() then $_alert.replaceWith $alert else $inputs.before $alert
+      toastr.error errors.join('<br>'), '登陆失败!'

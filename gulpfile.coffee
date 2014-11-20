@@ -199,9 +199,15 @@ gulp.task 'html', ['build-assets', 'build-styles', 'build-scripts', 'build-image
     .pipe plugins.if '*.html', gulp.dest 'dist/views'
     .pipe plugins.size()
 
+# Templates
+gulp.task 'templates', ['html'], ->
+  return gulp.src 'dist/views/**/*.html'
+    .pipe plugins.replace /((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{{ static_url }}$3'
+    .pipe gulp.dest 'dist/views/'
+
 # Build
 gulp.task 'build', ['production-env', 'clean', 'lint'], ->
-  gulp.start 'html'
+  gulp.start 'templates'
 
 # Default
 gulp.task 'default', ['develop']

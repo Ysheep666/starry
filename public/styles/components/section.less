@@ -35,7 +35,7 @@
     color: @light-color;
   }
 
-  .section-header .details {
+  .section-header .content {
     background: @light-color;
   }
 
@@ -157,7 +157,7 @@
   padding-bottom: 30px;
   backface-visibility: hidden;
 
-  .details {
+  .content {
     position: relative;
     z-index: 20;
     margin: 30px auto;
@@ -179,6 +179,20 @@
 
       a {
         text-decoration: underline;
+      }
+    }
+
+    .nav {
+      display: inline-block;
+      padding: 20px 0px 10px;
+      font-size: 16px;
+
+      a {
+        margin-right: 12px;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
       }
     }
   }

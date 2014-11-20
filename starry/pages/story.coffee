@@ -11,7 +11,7 @@ router.route('/*').get (req, res, done) ->
 # 列表
 router.route('/').get (req, res, done) ->
   preloaded = {}
-  Story.find { user_id: req.user._id }, (err, stories) ->
+  Story.find { user_id: req.user._id }, {sort: _id: -1}, (err, stories) ->
     return done err if err
     preloaded.stories = stories
     res.render 'story/default', { preloaded: JSON.stringify preloaded }

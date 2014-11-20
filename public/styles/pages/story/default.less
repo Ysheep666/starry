@@ -61,21 +61,32 @@
     display: block;
     margin: 8px auto;
     padding: 18px 20px;
-    height: 76px;
     width: 100%;
+    line-height: 40px;
     font-size: 24px;
     background: @starry-color-white;
     color: lighten(@starry-color-black, 10%);
     border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
 
     &:hover {
-      background: darken(@starry-color-white, 4%);
+      background: darken(@starry-color-white, 10%);
     }
 
-    img {
-      margin-right: 16px;
+    &.add {
+      text-align: center;
+      .opacity(0.95);
+    }
+
+    .cover {
+      display: block;
+      margin-right: 20px;
       width: 40px;
       height: 40px;
+      background-color: #ccc;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
 
     .remove {
@@ -112,7 +123,7 @@
     line-height: 36px;
 
     i {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
 

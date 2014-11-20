@@ -43,7 +43,6 @@ module.exports =
       hashed_password: hashed_password # 哈希密码
       active: false # 是否激活
       verify_code: verify_code # 验证 code
-      details: {} # 详情
     , callback
 
   # 更新用户
@@ -80,6 +79,6 @@ module.exports =
     if typeof options is 'function'
       callback = options
       options =
-        fields: { name: 1, email: 1, details: 1 }
+        fields: { name: 1, email: 1 }
 
     adou.getDatabase().findOne @collectionName, query, options, callback
