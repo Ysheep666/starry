@@ -87,7 +87,7 @@
     background: @starry-color-white;
     color: lighten(@starry-color-black, 10%);
     border-radius: 4px;
-    transition: background 0.3s, color 0.3s;
+    transition: opacity .3s, background .3s, color .3s;
 
     &:hover {
       background: darken(@starry-color-white, 10%);
@@ -96,6 +96,10 @@
     &.add {
       text-align: center;
       .opacity(0.95);
+    }
+
+    &.fadeOut {
+      .opacity(0.01);
     }
 
     .cover {
@@ -109,17 +113,34 @@
       background-repeat: no-repeat;
     }
 
-    .remove {
+    .actions {
       position: absolute;
       display: block;
       right: 30px;
       top: 18px;
       height: 40px;
-      line-height: 40px;
-      color: darken(@starry-color-white, 20%);
 
-      &:hover {
-        color: darken(@starry-color-white, 50%);
+      span {
+        line-height: 40px;
+        color: darken(@starry-color-white, 20%);
+
+        &:hover {
+          color: darken(@starry-color-white, 50%);
+        }
+      }
+
+      .remove, .cancel {
+        display: none;
+      }
+
+      &.confirm {
+        .trash {
+          display: none;
+        }
+
+        .remove, .cancel {
+          display: inline-block;
+        }
       }
     }
   }

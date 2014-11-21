@@ -22,6 +22,12 @@ module.exports =
       sections: [] # 片段
     , callback
 
+  # 删除故事
+  # query 条件
+  # callback 回调函数
+  remove: (query, callback) ->
+    adou.getDatabase().remove @collectionName, query, callback
+
   # 更新故事
   # query 条件
   # doc 更新文档

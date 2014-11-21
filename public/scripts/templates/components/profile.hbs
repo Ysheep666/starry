@@ -1,0 +1,24 @@
+<div class="profile">
+  <h1>{{#if story.title}}{{story.title}}{{^}}标题{{/if}}</h1>
+  <h3 class="link">
+    <a target="_blank" href="/@{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}">starry.in/@{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}</a>
+  </h3>
+  {{#if story.description}}<p>{{story.description}}</p>{{/if}}
+  <a class="btn btn-default edit">修改</a>
+</div>
+<form class="update-profile">
+  <div class="input-group">
+    <input type="text" class="form-control" name="title" placeholder="标题" value="{{#if story.title}}{{story.title}}{{^}}标题{{/if}}">
+  </div>
+  <div class="input-group">
+    <span class="input-group-addon">starry.in/@</span>
+    <input type="text" class="form-control" name="mark" placeholder="标识" value="{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}">
+  </div>
+ <div class="input-group">
+    <textarea class="form-control" name="description" rows="3" placeholder="描述">{{story.description}}</textarea>
+  </div>
+  <div class="form-group">
+    <a class="btn btn-default cancel">取消</a>
+    <button class="btn btn-primary" type="submit" data-loading-text="数据提交中...">保存</button>
+  </div>
+</form>

@@ -22,34 +22,11 @@
     <a class="pink" data-color="pink"></a>
     <a class="red" data-color="red"></a>
   </div>
-  <div class="content">
-    <div class="profile">
-      <h1>我们去三亚吧</h1>
-      <h3 class="link">
-        <a target="_blank" href="/@5468c9fa3faec100000e23a8">starry.in/@5468c9fa3faec100000e23a8</a>
-      </h3>
-      <p>3月3号，我们一起去三亚，愿意一起的还请尽早报名。</p>
-      <a class="btn btn-default" data-class="edit">修改</a>
-    </div>
-    <form class="update-profile">
-      <div class="input-group">
-        <input type="text" class="form-control" name="title" placeholder="标题">
-      </div>
-      <div class="input-group">
-        <span class="input-group-addon">starry.in/@</span>
-        <input type="text" class="form-control" name="mark" placeholder="网址">
-      </div>
-     <div class="input-group">
-        <textarea class="form-control" name="title" rows="3" placeholder="描述"></textarea>
-      </div>
-      <div class="form-group">
-        <a class="btn btn-default">取消</a>
-        <button class="btn btn-primary" type="submit" data-loading-text="数据提交中...">保存</button>
-      </div>
-    </form>
+  <div class="content" id="profile">
+    {{> profile}}
     <div class="nav">
-      <a href="#第一天">第一天</a>
-      <a href="#第二天">第二天</a>
+      <a href="#第一天" data-name="第一天">第一天</a>
+      <a href="#第二天" data-name="第二天">第二天</a>
     </div>
   </div>
   <div class="line"></div>

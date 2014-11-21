@@ -3,16 +3,16 @@ express = require 'express'
 
 module.exports = (app, setting) ->
   # 页面
-  app.use require('./pages/default')
-  app.use '/stories', require('./pages/story')
+  app.use require './pages/default'
+  app.use '/stories', require './pages/story'
 
   app.use '/api/*', (req, res, done) ->
     res.contentType "application/vnd.#{setting.api_vnd}+json"
     done()
 
   # 接口
-  app.use '/api/', require('./apis/default')
-  app.use '/api/stories', require('./apis/story')
+  app.use '/api/', require './apis/default'
+  app.use '/api/stories', require './apis/story'
 
   # 错误处理
   app.use (err, req, res, done) ->
@@ -22,7 +22,7 @@ module.exports = (app, setting) ->
     return res.status(400).json error: errs
 
   # 生产环境
-  if 'production' is app.get('env')
+  if 'production' is app.get 'env'
     # 500 页面
     app.use (err, req, res, done) ->
       console.error err

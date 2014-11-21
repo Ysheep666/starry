@@ -1,14 +1,21 @@
 $ = require 'jquery'
 Router = require 'router'
+Handlebars = require 'hbsfy/runtime'
+Upload = require '../../components/upload-image'
 require '../../components/csrf'
 
-Upload = require '../../components/upload-image'
+# 组件
+components =
+  logo: require '../../templates/components/logo.hbs'
+  profile: require '../../templates/components/profile.hbs'
 
-_logo = require '../../templates/components/logo.hbs'
-
-templates =
+# 页面
+pages =
   list: require '../../templates/pages/story/list.hbs'
   detail: require '../../templates/pages/story/detail.hbs'
+
+Handlebars.registerPartial 'logo', components.logo
+Handlebars.registerPartial 'profile', components.profile
 
 {upyun, preloaded} = adou
 
@@ -18,17 +25,43 @@ $ ->
   $detail = $ '#detail'
 
   _list = (data) ->
-    $list.html templates.list data
+    $list.html pages.list data
 
     # 新建故事
-    $('#addStory').on 'click', (event) ->
+    $('#add').on 'click', (event) ->
       event.preventDefault()
       $.ajax
         url: '/api/stories'
         type: 'POST'
         dataType: 'json'
-      .done (data) ->
-        router.setRoute "stories/#{data._id}"
+      .done (story) ->
+        router.setRoute "stories/#{story._id}"
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    $items = $ '#items'
+    $items.on 'click', 'a .trash', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $(this).closest('.actions').addClass('confirm').one 'mouseleave', -> $(this).removeClass 'confirm'
+
+
+    $items.on 'click', 'a .cancel', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $(this).closest('.actions').removeClass('confirm').unbind 'mouseleave'
+
+    $items.on 'click', 'a .remove', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $item = $(this).closest('a.item')
+      $.ajax
+        url: "/api/stories/#{$item.data('id')}"
+        type: 'DELETE'
+        dataType: 'json'
+      .done ->
+        $item.addClass('fadeOut').one $.support.transition.end, -> $item.remove()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -36,12 +69,12 @@ $ ->
     $wrap.removeClass 'bige'
 
   _detail = (data) ->
-    $detail.html templates.detail data
+    $detail.html pages.detail data
 
     {story} = data
 
     # 替换背景图
-    $replaceBackground = $('#replaceBackground')
+    $replaceBackground = $ '#replaceBackground'
     replaceBackgroundUpload = new Upload()
     replaceBackgroundUpload.assignBrowse $replaceBackground[0]
     replaceBackgroundUpload.on 'filesAdded', ->
@@ -54,10 +87,10 @@ $ ->
       image = upyun.buckets['starry-images'] + message.url
       $.ajax
         url: "/api/stories/#{story._id}"
-        type: 'POST'
+        type: 'PATCH'
         data: background: image
         dataType: 'json'
-      .done (res) ->
+      .done ->
         window.setTimeout ->
           $replaceBackground.removeClass 'loading'
           $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image})"
@@ -67,7 +100,7 @@ $ ->
         window.alert error
 
     # 上传头像
-    $profileImage = $('#profileImage')
+    $profileImage = $ '#profileImage'
     profileImageUpload = new Upload()
     profileImageUpload.assignBrowse $profileImage[0]
     profileImageUpload.assignDrop $profileImage[0]
@@ -81,10 +114,10 @@ $ ->
       image = upyun.buckets['starry-images'] + message.url
       $.ajax
         url: "/api/stories/#{story._id}"
-        type: 'POST'
+        type: 'PATCH'
         data: cover: image
         dataType: 'json'
-      .done (res) ->
+      .done ->
         window.setTimeout ->
           $profileImage.removeClass('loading').addClass 'done'
           $profileImage.css 'backgroundImage', "url(#{image}!avatar)"
@@ -101,25 +134,52 @@ $ ->
       theme = $(this).data 'color'
       $.ajax
         url: "/api/stories/#{story._id}"
-        type: 'POST'
+        type: 'PATCH'
         data: theme: theme
         dataType: 'json'
-      .done (res) ->
+      .done ->
         $('body').attr 'class', theme
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
 
+    # 简介
+    $profile = $ '#profile'
+    $profile.on 'click', '.profile .edit', (event) ->
+      event.preventDefault()
+      $profile.addClass 'edit'
 
+    $profile.on 'click', '.update-profile .cancel', (event) ->
+      event.preventDefault()
+      $profile.removeClass 'edit'
+
+    $profile.on 'submit', '.update-profile', (event) ->
+      event.preventDefault()
+      $form = $ this
+      $submit = $form.find 'button[type="submit"]'
+      $submit.button 'loading'
+      $.ajax
+        url: "/api/stories/#{story._id}"
+        type: 'POST'
+        data: $form.serialize()
+        dataType: 'json'
+      .done (story) ->
+        $submit.button 'reset'
+        $profile.html components.profile story: story
+        $profile.removeClass 'edit'
+      .fail (res) ->
+        $submit.button 'reset'
+        error = res.responseJSON.error
+        window.alert error
 
     $wrap.addClass 'bige'
 
   router = new Router()
 
   # 列表
-  router.on '/stories', ->
+  router.on '/stories\/?/?', ->
     if preloaded
-      _list { logo: _logo(), stories: preloaded.stories }
+      _list { stories: preloaded.stories }
       return preloaded = null
 
     $.ajax
@@ -127,7 +187,7 @@ $ ->
       type: 'GET'
       dataType: 'json'
     .done (res) ->
-      _list { logo: _logo(), stories: res }
+      _list { stories: res }
     .fail (res) ->
       error = res.responseJSON.error
       window.alert error

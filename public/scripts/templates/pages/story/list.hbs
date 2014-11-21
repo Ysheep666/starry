@@ -1,17 +1,21 @@
 <div class="container">
   <div class="header">
-    <a class="logo pull-left" href="/">{{{logo}}}</a>
+    <a class="logo pull-left" href="/">{{> logo}}</a>
     <div class="header-actions pull-right">
       <a class="signout">退出</a>
     </div>
   </div>
-  <div class="items">
-    <a class="item add" id="addStory"><i class="fa fa-plus"></i> 新建</a>
+  <div class="items" id="items">
+    <a class="item add" id="add"><i class="fa fa-plus"></i> 新建</a>
     {{#each stories}}
-      <a class="item go" href="/stories/{{_id}}">
+      <a class="item go" href="/stories/{{_id}}" data-id="{{_id}}">
         <div class="cover pull-left"{{#if cover}} style="background-image:url({{cover}}!avatar.small)"{{/if}}></div>
-        我们去三亚吧
-        <div class="remove"><i class="fa fa-trash"></i></div>
+        {{#if title}}{{title}}{{^}}标题{{/if}}
+        <div class="actions">
+          <span class="trash"><i class="fa fa-trash"></i></span>
+          <span class="remove"><i class="fa fa-check"></i></span>
+          <span class="cancel"><i class="fa fa-times"></i></span>
+        </div>
       </a>
     {{/each}}
   </div>

@@ -1,2 +1,2 @@
-{ "_id" : { "$oid" : "54509f4396fe3748940c586a" }, "name" : "测试", "email" : "test@test.com", "salt" : "152731070325", "hashed_password" : "a2b5061f9fb6460c9a4b61d4a2e4302b15ca3157", "active" : true, "verify_code" : "", "details" : {} }
-{ "_id" : { "$oid" : "54509f44ea2a7e4c94b7a1cb" }, "name" : "测试1", "email" : "test1@test.com", "salt" : "152731070325", "hashed_password" : "a2b5061f9fb6460c9a4b61d4a2e4302b15ca3157", "active" : true, "verify_code" : "", "details" : {} }
+{ "_id" : { "$oid" : "54509f4396fe3748940c586a" }, "name" : "测试", "email" : "test@test.com", "salt" : "152731070325", "hashed_password" : "a2b5061f9fb6460c9a4b61d4a2e4302b15ca3157", "active" : true, "verify_code" : "" }
+{ "_id" : { "$oid" : "54509f44ea2a7e4c94b7a1cb" }, "name" : "测试1", "email" : "test1@test.com", "salt" : "152731070325", "hashed_password" : "a2b5061f9fb6460c9a4b61d4a2e4302b15ca3157", "active" : true, "verify_code" : "" }

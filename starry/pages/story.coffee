@@ -4,7 +4,7 @@ router = require('express').Router()
 Story = require '../models/story'
 
 # 权限过滤
-router.route('/*').get (req, res, done) ->
+router.route('*').get (req, res, done) ->
   return res.redirect '/signin' if not req.user
   done()
 
