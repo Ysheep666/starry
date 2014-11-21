@@ -12,5 +12,4 @@ module.exports = (setting) ->
       key = file.substr 0, file.length - 7
       object[key] = require path.join eventPath, file
 
-  adou.getEmitter = (key) ->
-    return object[key]
+  adou.emitter = (key) -> return object[key]

@@ -35,7 +35,7 @@ $ ->
         type: 'POST'
         dataType: 'json'
       .done (story) ->
-        router.setRoute "stories/#{story._id}"
+        router.setRoute "stories/#{story.id}"
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -86,7 +86,7 @@ $ ->
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
       $.ajax
-        url: "/api/stories/#{story._id}"
+        url: "/api/stories/#{story.id}"
         type: 'PATCH'
         data: background: image
         dataType: 'json'
@@ -113,7 +113,7 @@ $ ->
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
       $.ajax
-        url: "/api/stories/#{story._id}"
+        url: "/api/stories/#{story.id}"
         type: 'PATCH'
         data: cover: image
         dataType: 'json'
@@ -133,7 +133,7 @@ $ ->
       event.preventDefault()
       theme = $(this).data 'color'
       $.ajax
-        url: "/api/stories/#{story._id}"
+        url: "/api/stories/#{story.id}"
         type: 'PATCH'
         data: theme: theme
         dataType: 'json'
@@ -159,7 +159,7 @@ $ ->
       $submit = $form.find 'button[type="submit"]'
       $submit.button 'loading'
       $.ajax
-        url: "/api/stories/#{story._id}"
+        url: "/api/stories/#{story.id}"
         type: 'POST'
         data: $form.serialize()
         dataType: 'json'

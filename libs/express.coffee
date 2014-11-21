@@ -60,13 +60,13 @@ module.exports = (app, passport, setting, db) ->
     saveUninitialized: true
 
   # 防 csrf 攻击
-  app.use require('csurf')() if 'test' isnt app.get('env')
+  app.use require('csurf')() if 'test' isnt app.get 'env'
 
   app.use passport.initialize()
   app.use passport.session()
 
   app.use (req, res, done) ->
-    res.cookie '_csrf', req.csrfToken() if 'test' isnt app.get('env')
+    res.cookie '_csrf', req.csrfToken() if 'test' isnt app.get 'env'
     res.locals.app = setting
     res.locals.user = req.user
     done()

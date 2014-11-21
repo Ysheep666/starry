@@ -32,5 +32,4 @@ module.exports = (setting, mailer) ->
             transporter.close()
             callback err, info if callback
 
-  adou.getMail = (subject, template, data) ->
-    return new Mail subject, template, data
+  adou.mail = (subject, template, data) -> return new Mail subject, template, data

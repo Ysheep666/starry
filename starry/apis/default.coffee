@@ -38,21 +38,21 @@ router.route('/signup').post (req, res, done) ->
 .post (req, res, done) ->
   req.sanitize('name').escape()
 
-  user =
+  user = new User
     name: req.body.name.trim()
     email: req.body.email.trim()
     password: req.body.password
 
-  User.create user, (err, user) ->
+  user.save (err, user) ->
     return done err if err
 
     # 发送邮箱地址验证邮件
-    adou.getEmitter('mailer').emit 'email_verify', user
+    adou.emitter('mailer').emit 'email_verify', user
 
     # 并且登录
-    req.logIn _id: user._id, (err) ->
+    req.logIn id: user.id, (err) ->
       return done err if err
-      res.status(201).json success: '注册成功'
+      res.status(201).json id: user.id
 
 # 找回密码
 router.route('/forgot').post (req, res, done) ->
@@ -64,7 +64,7 @@ router.route('/forgot').post (req, res, done) ->
 
   async.waterfall [
     (fn) ->
-      User.findOne { email: req.body.email.trim() }, fields: { login: 1, name: 1, email: 1, salt: 1 }, fn
+      User.findOne { email: req.body.email.trim() }, 'name email salt', fn
     (user, fn) ->
       if not user
         return fn
@@ -77,17 +77,13 @@ router.route('/forgot').post (req, res, done) ->
         , null
 
       user.password = crypto.randomBytes(Math.ceil(6)).toString('hex').slice 0, 12
-
-      User.update { _id: user._id}, $set: { hashed_password: User.encryptPassword user.password, user.salt }, (err) ->
-        return fn err if err
-
-        # 发送找回密码邮件
-        adou.getEmitter('mailer').emit 'back_password', user
-
-        fn null
-  ], (err) ->
+      user.save (err, user) -> fn err, user
+  ], (err, user) ->
     return done err if err
-    res.status(201).json success: '找回密码成功'
+
+    # 发送找回密码邮件
+    adou.emitter('mailer').emit 'back_password', user
+    res.status(202).json { id: user.id, name: user.name, email: user.name}
 
 # 登录和退出账号
 router.route('/signin').post (req, res, done) ->
@@ -100,7 +96,7 @@ router.route('/signin').post (req, res, done) ->
   passport.authenticate('local', _logIn) req, res, done
 .delete (req, res) ->
   req.logout()
-  res.status(202).json success: '退出账号成功'
+  res.status(202).json id: req.user.id
 
 # 获取个人信息
 router.route('/me').get (req, res) ->

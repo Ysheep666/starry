@@ -1,2 +1,2 @@
-{ "_id": { "$oid" : "5468c9fa3faec100000e23a8" }, "user_id": { "$oid" : "54509f4396fe3748940c586a" }, "title": "", "mark": "", "description": "", "background": "", "cover": "", "theme": "", "sections": [] }
-{ "_id": { "$oid" : "546d84668bcbbc00005bcd5d" }, "user_id": { "$oid" : "54509f4396fe3748940c586a" }, "title": "", "mark": "", "description": "", "background": "", "cover": "", "theme": "", "sections": [] }
+{ "_id": { "$oid" : "5468c9fa3faec100000e23a8" }, "author": { "$oid" : "54509f4396fe3748940c586a" }, "title": "", "mark": "", "description": "", "background": "", "cover": "", "theme": "black", "sections": [ { "$oid" : "546ed951f517a1589e49748d" } ] }
+{ "_id": { "$oid" : "546d84668bcbbc00005bcd5d" }, "author": { "$oid" : "54509f4396fe3748940c586a" }, "title": "", "mark": "", "description": "", "background": "", "cover": "", "theme": "black", "sections": [ { "$oid" : "546ed9aa3d94b6029fe9f918" } ] }

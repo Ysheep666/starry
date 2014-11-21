@@ -74,7 +74,7 @@
 
 .section {
   position: relative;
-  z-index: 0;
+  z-index: @default-index;
   margin-top: 0px;
   padding: 40px 0px;
   width: 100%;
@@ -98,13 +98,13 @@
       &:before {
         display: block;
         font: normal normal normal 24px/1 FontAwesome;
-        content: @fa-var-flag;
+        content: @fa-var-at;
         position: absolute;
         bottom: 0px;
-        z-index: 0;
-        margin-left: -30px;
-        width: 60px;
-        line-height: 60px;
+        z-index: @default-index;
+        margin-left: -25px;
+        width: 50px;
+        line-height: 50px;
         text-align: center;
         border-radius: 50%;
       }
@@ -116,6 +116,7 @@
     position: absolute;
     bottom: -2px;
     left: 50%;
+    z-index: @default-index;
     margin: -15px;
     width: 31px;
     height: 31px;

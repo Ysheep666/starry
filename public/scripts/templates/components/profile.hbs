@@ -1,7 +1,7 @@
 <div class="profile">
   <h1>{{#if story.title}}{{story.title}}{{^}}标题{{/if}}</h1>
   <h3 class="link">
-    <a target="_blank" href="/@{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}">starry.in/@{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}</a>
+    <a target="_blank" href="/@{{#if story.mark}}{{story.mark}}{{^}}{{story.id}}{{/if}}">starry.in/@{{#if story.mark}}{{story.mark}}{{^}}{{story.id}}{{/if}}</a>
   </h3>
   {{#if story.description}}<p>{{story.description}}</p>{{/if}}
   <a class="btn btn-default edit">修改</a>
@@ -12,7 +12,7 @@
   </div>
   <div class="input-group">
     <span class="input-group-addon">starry.in/@</span>
-    <input type="text" class="form-control" name="mark" placeholder="标识" value="{{#if story.mark}}{{story.mark}}{{^}}{{story._id}}{{/if}}">
+    <input type="text" class="form-control" name="mark" placeholder="标识" value="{{#if story.mark}}{{story.mark}}{{^}}{{story.id}}{{/if}}">
   </div>
  <div class="input-group">
     <textarea class="form-control" name="description" rows="3" placeholder="描述">{{story.description}}</textarea>
@@ -22,3 +22,7 @@
     <button class="btn btn-primary" type="submit" data-loading-text="数据提交中...">保存</button>
   </div>
 </form>
+<div class="nav">
+  <a href="#第一天" data-name="第一天">第一天</a>
+  <a href="#第二天" data-name="第二天">第二天</a>
+</div>

@@ -11,7 +11,7 @@ router.route('*').get (req, res, done) ->
 # 列表
 router.route('/').get (req, res, done) ->
   preloaded = {}
-  Story.find { user_id: req.user._id }, {sort: _id: -1}, (err, stories) ->
+  Story.find { author: req.user.id }, 'title cover', { sort: id: -1 }, (err, stories) ->
     return done err if err
     preloaded.stories = stories
     res.render 'story/default', { preloaded: JSON.stringify preloaded }
@@ -19,7 +19,9 @@ router.route('/').get (req, res, done) ->
 # 详情
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
   preloaded = {}
-  Story.findOne { _id: new require('mongodb').ObjectID req.params[0] }, (err, story) ->
+  Story.findById req.params[0], 'title description mark background cover theme sections'
+  .populate path: 'sections', select: 'name points'
+  .exec (err, story) ->
     return done err if err
     preloaded.story = story
     res.render 'story/default', { bige: true, preloaded: JSON.stringify preloaded }

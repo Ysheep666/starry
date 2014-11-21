@@ -4,6 +4,7 @@ validator = require 'validator'
 router = require('express').Router()
 
 Story = require '../models/story'
+Section = require '../models/section'
 
 # 权限过滤
 router.route('/*').get (req, res, done) ->
@@ -13,18 +14,31 @@ router.route('/*').get (req, res, done) ->
   done()
 
 # 新建
-router.route('/').post (req, res) ->
-  Story.create { user_id: new require('mongodb').ObjectID req.user._id }, (err, story) ->
-    return done err if err
+router.route('/').post (req, res, done) ->
+  async.waterfall [
+    (fn) ->
+      section = new Section name: ''
+      section.save (err, section) -> fn err, section
+    (section, fn) ->
+      story = new Story
+        author: req.user.id
+        sections: [ section.id ]
 
-    delete story.sections
-    res.status(200).json story
+      story.save (err, story) -> fn err, story
+  ], (err, story) ->
+    return done err if err
+    res.status(201).json id: story.id
 
 # 删除故事
 router.route(/^\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
-  Story.remove { _id: new require('mongodb').ObjectID req.params[0] }, (err) ->
+  async.waterfall [
+    (fn) ->
+      Story.findById req.params[0], 'title', fn
+    (story, fn) ->
+      story.remove (err) -> fn err, story
+  ], (err, story) ->
     return done err if err
-    res.status(200).json success: '删除故事成功'
+    res.status(202).json id: story.id
 
 # 更新故事
 router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
@@ -37,26 +51,17 @@ router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
   errs = req.validationErrors()
   return done isValidation: true, errors: errs if errs
 
-  details = {}
-  details.background = background if background
-  details.cover = cover if cover
-  details.theme = theme if theme
-
-  if '{}' is JSON.stringify details
-    return done()
-
-  _id = new require('mongodb').ObjectID req.params[0]
-
   async.waterfall [
     (fn) ->
-      Story.update { _id: _id }, $set: details, fn
-    (result, fn) ->
-      Story.findOne { _id: _id }, fn
+      Story.findById req.params[0], 'background cover theme', fn
+    (story, fn) ->
+      story.background = background if background
+      story.cover = cover if cover
+      story.theme = theme if theme
+      story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
-
-    delete story.sections
-    res.status(200).json story
+    res.status(202).json story
 
 # 更新故事简介
 router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
@@ -68,10 +73,8 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
   return done isValidation: true, errors: errs if errs
   done()
 .post (req, res, done) ->
-  _id = new require('mongodb').ObjectID req.params[0]
   mark = req.body.mark.trim()
-
-  Story.count { mark: mark, _id: $ne: _id  }, (err, count) ->
+  Story.count { mark: mark, _id: $ne: req.params[0] }, (err, count) ->
     if 0 < count
       return done isValidation: true, errors: [
         param: 'mark'
@@ -80,35 +83,29 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
       ]
     done()
 .post (req, res, done) ->
-  _id = new require('mongodb').ObjectID req.params[0]
-
-  {title, description, mark} = req.body
-
-  details = {}
-  details.title = req.sanitize('title').escape()
-  details.description = req.sanitize('description').escape()
-  details.mark = mark.trim()
-
   async.waterfall [
     (fn) ->
-      Story.update { _id: _id }, $set: details, fn
-    (result, fn) ->
-      Story.findOne { _id: _id }, fn
+      Story.findById req.params[0], 'title description mark', fn
+    (story, fn) ->
+      story.title = req.sanitize('title').escape()
+      story.description = req.sanitize('description').escape()
+      story.mark = req.body.mark.trim()
+      story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
-
-    delete story.sections
-    res.status(200).json story
+    res.status(202).json story
 
 # 列表
 router.route('/').get (req, res) ->
-  Story.find { user_id: req.user._id }, {sort: _id: -1}, (err, stories) ->
+  Story.find { author: req.user.id }, 'title cover', { sort: id: -1 }, (err, stories) ->
     return done err if err
     res.status(200).json stories
 
 # 详情
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
-  Story.findOne { _id: new require('mongodb').ObjectID req.params[0] }, (err, story) ->
+  Story.findById req.params[0], 'title description mark background cover theme sections'
+  .populate path: 'sections', select: 'name points'
+  .exec (err, story) ->
     return done err if err
     res.status(200).json story
 

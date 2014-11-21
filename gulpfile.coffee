@@ -129,7 +129,7 @@ gulp.task 'fixture', (callback) ->
 
   mongoFixture = new MongoFixture
     database: 'starry-test'
-    collections: ['users', 'stories']
+    collections: ['users', 'stories', 'sections']
     dir: 'test/fixtures'
     override: true
 

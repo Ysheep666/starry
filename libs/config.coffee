@@ -1,4 +1,4 @@
-# Config 配置
+# config 配置
 path = require 'path'
 fs = require 'fs'
 _ = require 'lodash'

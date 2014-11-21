@@ -26,7 +26,7 @@ describe 'Api --> story controller', ->
     req = agent.post '/api/stories'
     req.cookies = cookies
 
-    req.expect(200).end (err, res) ->
+    req.expect(201).end (err, res) ->
       return done err if err
       done()
 
@@ -34,7 +34,7 @@ describe 'Api --> story controller', ->
     req = agent.delete '/api/stories/546d84668bcbbc00005bcd5d'
     req.cookies = cookies
 
-    req.expect(200).end (err, res) ->
+    req.expect(202).end (err, res) ->
       return done err if err
       done()
 
@@ -43,7 +43,7 @@ describe 'Api --> story controller', ->
       background: 'http://starry-images.b0.upaiyun.com/201411/19/c1cc2b44e06ee12e783f60a81519bd86-41af1ae0f868005d.jpg'
     req.cookies = cookies
 
-    req.expect(200).end (err, res) ->
+    req.expect(202).end (err, res) ->
       return done err if err
       done()
 
@@ -53,7 +53,7 @@ describe 'Api --> story controller', ->
       mark: 'url'
     req.cookies = cookies
 
-    req.expect(200).end (err, res) ->
+    req.expect(202).end (err, res) ->
       return done err if err
       done()
 
