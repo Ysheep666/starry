@@ -2,11 +2,19 @@
   <div class="input-group">
     <input type="text" class="form-control" name="title" placeholder="标题" value="{{title}}">
   </div>
- <div class="input-group">
+  <div class="input-group">
     <textarea class="form-control" name="description" rows="3" placeholder="描述">{{description}}</textarea>
   </div>
-  <div class="form-group">
-    <a class="btn btn-default cancel">取消</a>
-    <button class="btn btn-primary" type="submit" data-loading-text="数据提交中...">保存</button>
+  <div class="input-group">
+    <label class="input-group-addon">气泡</label>
+    <input type="text" class="form-control" name="bubble" autocomplete="off" placeholder="2012，九月，20%，icon-" value="{{bubble}}">
+  </div>
+  <div class="input-group">
+    <label class="input-group-addon">链接</label>
+    <input type="text" class="form-control" name="link" autocomplete="off" placeholder="http://" value="{{link}}">
+  </div>
+  <div class="form-group clearfix">
+    <a class="btn"><i class="fa fa-picture-o"></i></a>
+    <button class="btn pull-right" type="submit">添加节点</button>
   </div>
 </form>

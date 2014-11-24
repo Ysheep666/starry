@@ -80,6 +80,25 @@ $ ->
   _detail = (data) ->
     $detail.html pages.detail data
 
+    $profile = $ '#profile'
+
+    # 刷新
+    refresh = ->
+      $detail.find('.point').each (index) ->
+        $el = $ this
+        if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
+
+      sections = []
+      $detail.find('.section').each (index) ->
+        $el = $ this
+        if 0 is index%2 then $el.addClass 'section-black' else $el.removeClass 'section-black'
+        if $el.data 'id'
+          sections.push
+            id: $el.data 'id'
+            name: $el.find('.section-title .name').text()
+
+      $profile.find('.nav').html components.sectionNavigation sections: sections
+
     {story} = data
 
     # 替换背景图
@@ -102,7 +121,7 @@ $ ->
       .done ->
         window.setTimeout ->
           $replaceBackground.removeClass 'loading'
-          $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image})"
+          $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image}!large)"
         , 800
       .fail (res) ->
         error = res.responseJSON.error
@@ -154,7 +173,6 @@ $ ->
         window.alert error
 
     # 简介
-    $profile = $ '#profile'
     $profile.on 'click', '.profile .edit', (event) ->
       event.preventDefault()
       $profile.addClass 'edit'
@@ -182,10 +200,7 @@ $ ->
         error = res.responseJSON.error
         window.alert error
 
-    initSections = ->
-      $detail.find('.section:even').addClass('section-black').next().removeClass 'section-black'
-
-    initSections()
+    refresh()
 
     # 新建片段
     $detail.on 'focus', '.section-add input', (event) ->
@@ -207,7 +222,7 @@ $ ->
       .done (section) ->
         $form.find('input[name="name"]').val('').blur()
         $form.closest('.section').after components.section section
-        initSections()
+        refresh()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -265,3 +280,10 @@ $ ->
       dataType: 'json'
     .always ->
       window.location.href = '/'
+
+  # 描点平滑滚动
+  $('body').on 'click', 'a[href*=#]', (event) ->
+    event.preventDefault()
+    $target = $ '#' + @hash.slice 1
+    $detail.animate { scrollTop: $target.position().top - $detail.find('.section:first').position().top }, 600 if $target.length
+

@@ -1,12 +1,10 @@
-<div class="section">
+<div class="section" id="section-{{id}}" data-id="{{id}}">
   <div class="section-title">
     <span class="name">{{#if name}}{{name}}{{^}}片段{{/if}}</span>
   </div>
-  <ul>
-    <li class="point point-add">
-      {{> point-edit}}
-    </li>
-  </ul>
+  <div class="point point-add">
+    {{> point-edit}}
+  </div>
   {{> section-add this}}
   <div class="line"></div>
 </div>

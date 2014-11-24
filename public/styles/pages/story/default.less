@@ -10,22 +10,19 @@
 }
 
 .input-group {
-  .form-control {
-    line-height: 20px;
+  textarea {
+    resize: none;
   }
 
-  .form-control, .input-group-addon {
+  .form-control {
+    line-height: 20px;
+    background-color: transparent;
     border-radius: 0;
+    box-shadow: none;
+  }
 
-    &:first-child {
-      border-bottom-left-radius: @input-border-radius;
-      border-top-left-radius: @input-border-radius;
-    }
-
-    &:last-child {
-      border-bottom-right-radius: @input-border-radius;
-      border-top-right-radius: @input-border-radius;
-    }
+  .input-group-addon {
+    border-radius: 0;
   }
 }
 
@@ -299,7 +296,7 @@
     }
   }
 
-  .section-header .content {
+  .section-header .content, .point-edit {
     .profile-edit {
       display: none;
       padding: 20px;
@@ -319,6 +316,10 @@
         display: block;
       }
     }
+  }
+
+  .point-right + .section-add {
+    text-align: left;
   }
 
   .section-add {
@@ -370,6 +371,13 @@
   .section-add .input-group {
     &:hover, &.open {
       width: 300px;
+    }
+  }
+
+  .point-edit {
+    .btn {
+      background-color: transparent;
+      border: 1px solid #fff;
     }
   }
 }

@@ -10,7 +10,6 @@ SectionSchema = new mongoose.Schema
     description: { type: String, default: '' } # 描述
     bubble: { type: String } # 气泡
     link: { type: String } # 链接
-    status: { type: String, enum: [ 'public', 'private' ], default: 'public' } # 状态: 公开|私有
     image: { type: String } # 图片
   }]
 

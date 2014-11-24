@@ -28,6 +28,28 @@
     color: @dark-color;
   }
 
+  .point-edit {
+    .form-control {
+      border-color: @dark-color;
+      color: @dark-color;
+    }
+
+    .form-control::placeholder {
+      color: lighten(@dark-color, 15%);
+    }
+
+    .btn {
+      border-color: @dark-color;
+      color: @dark-color;
+    }
+
+    .input-group-addon {
+      border-color: @dark-color;
+      background-color: @dark-color;
+      color: @light-color;
+    }
+  }
+
   .section-black {
     background-color: @dark-color;
 
@@ -56,8 +78,30 @@
       }
     }
 
-   .section-title {
+    .section-title {
       color: @light-color;
+    }
+
+    .point-edit {
+      .form-control {
+        border-color: @light-color;
+        color: @light-color;
+      }
+
+      .form-control::placeholder {
+        color: darken(@light-color, 15%);
+      }
+
+      .btn {
+        border-color: @light-color;
+        color: @light-color;
+      }
+
+      .input-group-addon {
+        border-color: @light-color;
+        background-color: @light-color;
+        color: @dark-color;
+      }
     }
   }
 
@@ -190,6 +234,18 @@
     span.name {
       font-size: 16px;
     }
+  }
+
+  .point {
+    position: relative;
+    width: 50%;
+    min-height: 60px;
+    padding: 0 20px;
+    backface-visibility: hidden;
+  }
+
+  .point-right {
+    margin-left: 50%;
   }
 }
 
