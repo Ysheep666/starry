@@ -20,9 +20,9 @@ mailer:
     secure: true
     port: 465
     auth:
-      user: 'xxxxx@xxx.com'
-      pass: 'xxxxxx'
-  from: 'xxxx <xxx@xxxxx.com>'
+      user: 'Xxxxx@xxx.com'
+      pass: 'Xxxxxx'
+  from: 'Xxxx <Xxxx@xx.com>'
 
 # 又拍云
 upyun:

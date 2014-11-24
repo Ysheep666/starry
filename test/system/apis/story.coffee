@@ -72,4 +72,3 @@ describe 'Api --> story controller', ->
     req.expect(200).end (err, res) ->
       return done err if err
       done()
-

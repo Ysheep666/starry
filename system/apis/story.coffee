@@ -95,6 +95,27 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
     return done err if err
     res.status(202).json story
 
+# 新建故事片段
+router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
+  req.assert('name', '名称不能为空').notEmpty()
+
+  errs = req.validationErrors()
+  return done isValidation: true, errors: errs if errs
+
+  async.waterfall [
+    (fn) ->
+      section = new Section name: req.sanitize('name').escape()
+      section.save (err, section) -> fn err, section
+    (section, fn) ->
+      Story.findById req.params[0], 'sections', (err, story) -> fn err, story, section
+    (story, section, fn) ->
+      beforeIndex = if req.body.before then 1 + story.sections.indexOf req.body.before else 0
+      story.sections.splice beforeIndex, 0, section.id
+      story.save (err) -> fn err, section
+  ], (err, section) ->
+    return done err if err
+    res.status(201).json section
+
 # 列表
 router.route('/').get (req, res) ->
   Story.find { author: req.user.id }, 'title cover', { sort: id: -1 }, (err, stories) ->

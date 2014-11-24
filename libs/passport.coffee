@@ -1,5 +1,5 @@
 # 登录认证
-User = require '../starry/models/user'
+User = require '../system/models/user'
 
 module.exports = (passport) ->
   passport.serializeUser (user, done) ->

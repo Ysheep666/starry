@@ -8,6 +8,11 @@ require '../../components/csrf'
 components =
   logo: require '../../templates/components/logo.hbs'
   profile: require '../../templates/components/profile.hbs'
+  section: require '../../templates/components/section.hbs'
+  sectionAdd: require '../../templates/components/section-add.hbs'
+  sectionNavigation: require '../../templates/components/section-navigation.hbs'
+  point: require '../../templates/components/point.hbs'
+  pointEdit: require '../../templates/components/point-edit.hbs'
 
 # 页面
 pages =
@@ -16,6 +21,11 @@ pages =
 
 Handlebars.registerPartial 'logo', components.logo
 Handlebars.registerPartial 'profile', components.profile
+Handlebars.registerPartial 'section', components.section
+Handlebars.registerPartial 'section-add', components.sectionAdd
+Handlebars.registerPartial 'section-navigation', components.sectionNavigation
+Handlebars.registerPartial 'point', components.point
+Handlebars.registerPartial 'point-edit', components.pointEdit
 
 {upyun, preloaded} = adou
 
@@ -45,7 +55,6 @@ $ ->
       event.preventDefault()
       event.stopPropagation()
       $(this).closest('.actions').addClass('confirm').one 'mouseleave', -> $(this).removeClass 'confirm'
-
 
     $items.on 'click', 'a .cancel', (event) ->
       event.preventDefault()
@@ -127,9 +136,10 @@ $ ->
         window.alert error
 
     # 主题
+    $themes = $ '#themes'
     $('body').attr 'class', story.theme if story.theme
 
-    $('#themes').on 'click', 'a', (event) ->
+    $themes.on 'click', 'a', (event) ->
       event.preventDefault()
       theme = $(this).data 'color'
       $.ajax
@@ -149,11 +159,11 @@ $ ->
       event.preventDefault()
       $profile.addClass 'edit'
 
-    $profile.on 'click', '.update-profile .cancel', (event) ->
+    $profile.on 'click', '.profile-edit .cancel', (event) ->
       event.preventDefault()
       $profile.removeClass 'edit'
 
-    $profile.on 'submit', '.update-profile', (event) ->
+    $profile.on 'submit', '.profile-edit', (event) ->
       event.preventDefault()
       $form = $ this
       $submit = $form.find 'button[type="submit"]'
@@ -165,10 +175,40 @@ $ ->
         dataType: 'json'
       .done (story) ->
         $submit.button 'reset'
-        $profile.html components.profile story: story
+        $profile.html components.profile story
         $profile.removeClass 'edit'
       .fail (res) ->
         $submit.button 'reset'
+        error = res.responseJSON.error
+        window.alert error
+
+    initSections = ->
+      $detail.find('.section:even').addClass('section-black').next().removeClass 'section-black'
+
+    initSections()
+
+    # 新建片段
+    $detail.on 'focus', '.section-add input', (event) ->
+      event.preventDefault()
+      $(this).closest('.input-group').addClass 'open'
+
+    $detail.on 'blur', '.section-add input', (event) ->
+      event.preventDefault()
+      $(this).closest('.input-group').removeClass 'open'
+
+    $detail.on 'submit', '.section-add', (event) ->
+      event.preventDefault()
+      $form = $ this
+      $.ajax
+        url: "/api/stories/#{story.id}/sections"
+        type: 'POST'
+        data: $form.serialize()
+        dataType: 'json'
+      .done (section) ->
+        $form.find('input[name="name"]').val('').blur()
+        $form.closest('.section').after components.section section
+        initSections()
+      .fail (res) ->
         error = res.responseJSON.error
         window.alert error
 

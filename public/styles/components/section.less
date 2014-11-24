@@ -11,6 +11,23 @@
     background: @dark-color;
   }
 
+  .section-add .input-group {
+    border-color: @dark-color;
+
+    label {
+      background: @dark-color;
+      color: @light-color;
+    }
+
+    input {
+      color: @dark-color;
+    }
+  }
+
+  .section-title {
+    color: @dark-color;
+  }
+
   .section-black {
     background-color: @dark-color;
 
@@ -24,6 +41,23 @@
 
     .line {
       background: @light-color;
+    }
+
+    .section-add .input-group {
+      border-color: @light-color;
+
+      label {
+        background: @light-color;
+        color: @dark-color;
+      }
+
+      input {
+        color: @light-color;
+      }
+    }
+
+   .section-title {
+      color: @light-color;
     }
   }
 
@@ -97,15 +131,13 @@
 
       &:before {
         display: block;
-        font: normal normal normal 24px/1 FontAwesome;
-        content: @fa-var-at;
+        content: '';
         position: absolute;
         bottom: 0px;
         z-index: @default-index;
         margin-left: -25px;
-        width: 50px;
-        line-height: 50px;
-        text-align: center;
+        width: 51px;
+        height: 51px;
         border-radius: 50%;
       }
     }
@@ -147,6 +179,17 @@
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 50%;
+  }
+
+  .section-title {
+    padding-right: 20px;
+    margin-top: -30px;
+    padding-bottom: 30px;
+    text-align: right;
+
+    span.name {
+      font-size: 16px;
+    }
   }
 }
 

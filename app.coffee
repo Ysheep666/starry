@@ -13,7 +13,6 @@ require('./libs/mongoose') db
 require('./libs/passport') passport
 require('./libs/express') app, passport, setting, db
 require('./libs/mailer') setting, db
-require('./libs/events') setting
-require('./starry/routes') app, setting
+require('./libs/routes') app, setting
 
 module.exports = app

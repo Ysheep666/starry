@@ -5,8 +5,8 @@
 /* SITE */
   Last update:2014/09/27
   Language: Chinese
-  Standards: HTML5, CSS3, JavaScript
-  Components: jQuery, Express, Socket.io
+  Standards: Html5, Css3, Javascript, Mongodb
+  Components: jQuery, Express, Mongoose
   Doctype: HTML5
   IDE: Sublime Text, Sketch
   Software: etc.

@@ -1,4 +1,4 @@
-<section class="section section-black section-background" style="height:200px{{#if story.background}};background-image:url({{story.background}}){{/if}}">
+<div class="section section-background" style="height:200px{{#if story.background}};background-image:url({{story.background}}){{/if}}">
   <a class="navbar-brand go" href="/stories"><i class="fa fa-arrow-up"></i> 返回</a>
   <div class="top-actions">
     <a>预览</a>
@@ -8,8 +8,8 @@
     <div class="loading"><i class="fa fa-refresh"></i></div>
     <div class="instructions"><i class="fa fa-picture-o"></i></div>
   </a>
-</section>
-<section class="section section-header">
+</div>
+<div class="section section-header">
   <a class="profile-image{{#if story.cover}} done{{/if}}" id="profileImage"{{#if story.cover}} style="background-image:url({{story.cover}}!avatar)"{{/if}}>
     <div class="loading"><i class="fa fa-refresh"></i></div>
     <div class="instructions"><i class="fa fa-picture-o"></i></div>
@@ -22,9 +22,10 @@
     <a class="pink" data-color="pink"></a>
     <a class="red" data-color="red"></a>
   </div>
-  <div class="content" id="profile">{{> profile}}</div>
+  <div class="content" id="profile">{{> profile story}}</div>
+  {{> section-add}}
   <div class="line"></div>
-</section>
-<section class="section section-black">
-  <div class="line"></div>
-</section>
+</div>
+{{#each story.sections}}
+  {{> section this}}
+{{/each}}

@@ -11,7 +11,7 @@ StorySchema = new mongoose.Schema
   background: { type: String } # 背景
   cover: { type: String } # 封面
   theme: { type: String, enum: [ 'black', 'gray', 'green', 'blue', 'pink', 'red' ], default: 'black' } # 主题
-  sections: [ { type: ObjectId, ref: 'Section' } ] # 片段
+  sections: [{ type: ObjectId, ref: 'Section' }] # 片段
 
 # 集合名称
 StorySchema.set 'collection', 'stories'

@@ -46,8 +46,7 @@ router.route('/signup').post (req, res, done) ->
   user.save (err, user) ->
     return done err if err
 
-    # 发送邮箱地址验证邮件
-    adou.emitter('mailer').emit 'email_verify', user
+    # TODO: 发送邮箱地址验证邮件
 
     # 并且登录
     req.logIn id: user.id, (err) ->
@@ -81,8 +80,7 @@ router.route('/forgot').post (req, res, done) ->
   ], (err, user) ->
     return done err if err
 
-    # 发送找回密码邮件
-    adou.emitter('mailer').emit 'back_password', user
+    # TODO: 发送找回密码邮件
     res.status(202).json { id: user.id, name: user.name, email: user.name}
 
 # 登录和退出账号
