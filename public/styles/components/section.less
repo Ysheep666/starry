@@ -28,8 +28,8 @@
     color: @dark-color;
   }
 
-  .point-edit {
-    .form-control {
+  .point-add, .point-edit {
+    .form-control, .bubble-icon {
       border-color: @dark-color;
       color: @dark-color;
     }
@@ -48,6 +48,20 @@
       background-color: @dark-color;
       color: @light-color;
     }
+  }
+
+  .circle {
+    background-color: @dark-color;
+  }
+
+  .circle-large {
+    color: @light-color;
+  }
+
+  .chart {
+    border-color: @dark-color;
+    background-color: @light-color;
+    color: @dark-color;
   }
 
   .section-black {
@@ -82,8 +96,8 @@
       color: @light-color;
     }
 
-    .point-edit {
-      .form-control {
+    .point-add, .point-edit {
+      .form-control, .bubble-icon {
         border-color: @light-color;
         color: @light-color;
       }
@@ -102,6 +116,20 @@
         background-color: @light-color;
         color: @dark-color;
       }
+    }
+
+    .circle {
+      background-color: @light-color;
+    }
+
+    .circle-large {
+      color: @dark-color;
+    }
+
+    .chart {
+      border-color: @light-color;
+      background-color: @dark-color;
+      color: @light-color;
     }
   }
 
@@ -241,11 +269,44 @@
     width: 50%;
     min-height: 60px;
     padding: 0 20px;
+    padding-right: 50px;
     backface-visibility: hidden;
   }
 
+  .circle {
+    position: absolute;
+    top: 0px;
+    right: -11px;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+  }
+
+  .circle-large {
+    right: -26px;
+    width: 51px;
+    height: 51px;
+
+    .visible {
+      width: 51px;
+      line-height: 51px;
+      text-align: center;
+    }
+  }
+
   .point-right {
+    padding-left: 50px;
     margin-left: 50%;
+
+    .circle {
+      right: auto;
+      left: -10px;
+    }
+
+    .circle-large {
+      right: auto;
+      left: -25px;
+    }
   }
 }
 

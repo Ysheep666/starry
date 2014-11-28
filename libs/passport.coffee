@@ -1,5 +1,5 @@
 # 登录认证
-User = require '../system/models/user'
+User = require '../app/models/user'
 
 module.exports = (passport) ->
   passport.serializeUser (user, done) ->

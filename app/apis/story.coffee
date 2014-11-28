@@ -5,6 +5,7 @@ router = require('express').Router()
 
 Story = require '../models/story'
 Section = require '../models/section'
+Point = require '../models/point'
 
 # 权限过滤
 router.route('/*').get (req, res, done) ->
@@ -124,9 +125,16 @@ router.route('/').get (req, res) ->
 
 # 详情
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res) ->
-  Story.findById req.params[0], 'title description mark background cover theme sections'
-  .populate path: 'sections', select: 'name points'
-  .exec (err, story) ->
+  async.waterfall [
+    (fn) ->
+      Story.findById req.params[0], 'title description mark background cover theme sections'
+      .populate 'sections'
+      .exec (err, story) -> fn err, story
+    (story, fn) ->
+      Point.populate story.sections, { path: 'points' }, (err, points) ->
+        story.sections.points = points
+        fn err, story
+  ], (err, story) ->
     return done err if err
     res.status(200).json story
 

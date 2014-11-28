@@ -1,31 +1,33 @@
-<div class="section section-background" style="height:200px{{#if story.background}};background-image:url({{story.background}}!large){{/if}}">
-  <a class="navbar-brand go" href="/stories"><i class="fa fa-arrow-up"></i> 返回</a>
-  <div class="top-actions">
-    <a>预览</a>
-    <a class="signout">退出</a>
+<div class="container">
+  <div class="section section-background" style="height:200px{{#if story.background}};background-image:url({{story.background}}!large){{/if}}">
+    <a class="navbar-brand go" href="/stories"><i class="fa fa-arrow-up"></i> 返回</a>
+    <div class="top-actions">
+      <a>预览</a>
+      <a class="signout">退出</a>
+    </div>
+    <a class="replace-background-button" id="replaceBackground">
+      <div class="loading"><i class="fa fa-refresh"></i></div>
+      <div class="instructions"><i class="fa fa-picture-o"></i></div>
+    </a>
   </div>
-  <a class="replace-background-button" id="replaceBackground">
-    <div class="loading"><i class="fa fa-refresh"></i></div>
-    <div class="instructions"><i class="fa fa-picture-o"></i></div>
-  </a>
-</div>
-<div class="section section-header">
-  <a class="profile-image{{#if story.cover}} done{{/if}}" id="profileImage"{{#if story.cover}} style="background-image:url({{story.cover}}!avatar)"{{/if}}>
-    <div class="loading"><i class="fa fa-refresh"></i></div>
-    <div class="instructions"><i class="fa fa-picture-o"></i></div>
-  </a>
-  <div class="theme-actions" id="themes">
-    <a class="black" data-color="black"></a>
-    <a class="gray" data-color="gray"></a>
-    <a class="green" data-color="green"></a>
-    <a class="blue" data-color="blue"></a>
-    <a class="pink" data-color="pink"></a>
-    <a class="red" data-color="red"></a>
+  <div class="section section-header">
+    <a class="profile-image{{#if story.cover}} done{{/if}}" id="profileImage"{{#if story.cover}} style="background-image:url({{story.cover}}!avatar)"{{/if}}>
+      <div class="loading"><i class="fa fa-refresh"></i></div>
+      <div class="instructions"><i class="fa fa-picture-o"></i></div>
+    </a>
+    <div class="theme-actions" id="themes">
+      <a class="black" data-color="black"></a>
+      <a class="gray" data-color="gray"></a>
+      <a class="green" data-color="green"></a>
+      <a class="blue" data-color="blue"></a>
+      <a class="pink" data-color="pink"></a>
+      <a class="red" data-color="red"></a>
+    </div>
+    <div class="content" id="profile">{{> profile story}}</div>
+    {{> section-add}}
+    <div class="line"></div>
   </div>
-  <div class="content" id="profile">{{> profile story}}</div>
-  {{> section-add}}
-  <div class="line"></div>
+  {{#each story.sections}}
+    {{> section this}}
+  {{/each}}
 </div>
-{{#each story.sections}}
-  {{> section this}}
-{{/each}}

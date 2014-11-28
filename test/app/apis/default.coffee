@@ -9,7 +9,7 @@ request = require 'supertest'
 # Post:/api/forgot -- 找回密码
 
 describe 'Api --> default controller', ->
-  agent = request.agent require '../../../app'
+  agent = request.agent require '../../../index'
   cookies = ''
 
   # 获取 Cookie

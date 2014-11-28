@@ -10,7 +10,7 @@ request = require 'supertest'
 # Get:/api/stories/:id -- 获取故事详情
 
 describe 'Api --> story controller', ->
-  agent = request.agent require '../../../app'
+  agent = request.agent require '../../../index'
   cookies = ''
 
   # 获取 Cookie

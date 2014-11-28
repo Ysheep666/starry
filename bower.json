@@ -10,6 +10,7 @@
     "jquery": "2.1.1",
     "toastr": "2.1.0",
     "jquery.cookie": "1.4.1",
-    "bootstrap": "3.3.0"
+    "jquery.easy-pie-chart": "2.1.4",
+    "bootstrap": "3.3.1"
   }
 }

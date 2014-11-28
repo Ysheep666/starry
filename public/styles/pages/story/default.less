@@ -15,7 +15,7 @@
   }
 
   .form-control {
-    line-height: 20px;
+    line-height: 1;
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
@@ -23,6 +23,59 @@
 
   .input-group-addon {
     border-radius: 0;
+  }
+}
+
+.iconpicker-popover {
+  max-width: 360px;
+  width: 360px;
+  background: #fff;
+  border-color: #eee;
+  border-radius: 0;
+  box-shadow: none;
+
+  .arrow {
+    border-bottom-color: #eee;
+  }
+
+  .popover-content {
+    padding: 5px;
+  }
+
+  .iconpicker {
+    padding: 4px 9px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    a {
+      display: block;
+      float: left;
+      padding: 6px;
+      margin: 4px;
+      width: 72px;
+      height: 60px;
+      text-align: center;
+
+
+      &:hover {
+        background-color: #e6e6e6;
+      }
+
+      i {
+        width: 60px;
+        color: #333;
+        font-size: 32px;
+      }
+
+      span {
+        display: block;
+        width: 60px;
+        height: 16px;
+        color: #666;
+        font-size: 12px;
+        overflow: hidden;
+      }
+    }
   }
 }
 
@@ -152,6 +205,10 @@
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
+
+  .container {
+    padding: 0;
+  }
 
   .navbar-brand {
     position: absolute;
@@ -296,7 +353,7 @@
     }
   }
 
-  .section-header .content, .point-edit {
+  .section-header .content, .point-add, .point-edit {
     .profile-edit {
       display: none;
       padding: 20px;
@@ -352,7 +409,7 @@
         margin-left: 120px;
         height: 40px;
         width: ~'calc(100% - 120px)';
-        line-height: 20px;
+        line-height: 1em;
         background: none;
         border: none;
         border-radius: 0;
@@ -374,10 +431,47 @@
     }
   }
 
-  .point-edit {
+  .point-add, .point-edit {
+    margin-left: auto;
+    margin-right: 0px;
+    max-width: 400px;
+
     .btn {
       background-color: transparent;
       border: 1px solid #fff;
+      border-radius: 0;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .bubble-icon {
+      position: absolute;
+      right: 0;
+      width: 34px;
+      line-height: 34px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .chart.open {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      width: 20px;
+      height: 20px;
+      line-height: 18px;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 50%;
+    }
+  }
+
+  .point-right {
+    .point-add, .point-edit {
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 }

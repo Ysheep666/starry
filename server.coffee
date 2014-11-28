@@ -1,4 +1,4 @@
-app = require './app'
+app = require './index'
 port = process.env.APP_PORT || 3000
 
 app.listen port, ->

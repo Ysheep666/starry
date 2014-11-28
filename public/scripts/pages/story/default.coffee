@@ -2,6 +2,8 @@ $ = require 'jquery'
 Router = require 'router'
 Handlebars = require 'hbsfy/runtime'
 Upload = require '../../components/upload-image'
+Chart = require '../../components/chart'
+Iconpicker = require '../../components/iconpicker'
 require '../../components/csrf'
 
 # 组件
@@ -12,7 +14,7 @@ components =
   sectionAdd: require '../../templates/components/section-add.hbs'
   sectionNavigation: require '../../templates/components/section-navigation.hbs'
   point: require '../../templates/components/point.hbs'
-  pointEdit: require '../../templates/components/point-edit.hbs'
+  pointAdd: require '../../templates/components/point-add.hbs'
 
 # 页面
 pages =
@@ -25,7 +27,7 @@ Handlebars.registerPartial 'section', components.section
 Handlebars.registerPartial 'section-add', components.sectionAdd
 Handlebars.registerPartial 'section-navigation', components.sectionNavigation
 Handlebars.registerPartial 'point', components.point
-Handlebars.registerPartial 'point-edit', components.pointEdit
+Handlebars.registerPartial 'point-add', components.pointAdd
 
 {upyun, preloaded} = adou
 
@@ -200,14 +202,12 @@ $ ->
         error = res.responseJSON.error
         window.alert error
 
-    refresh()
-
-    # 新建片段
-    $detail.on 'focus', '.section-add input', (event) ->
+    # 片段
+    $detail.on 'focusin', '.section-add input', (event) ->
       event.preventDefault()
       $(this).closest('.input-group').addClass 'open'
 
-    $detail.on 'blur', '.section-add input', (event) ->
+    $detail.on 'focusout', '.section-add input', (event) ->
       event.preventDefault()
       $(this).closest('.input-group').removeClass 'open'
 
@@ -227,6 +227,24 @@ $ ->
         error = res.responseJSON.error
         window.alert error
 
+    # 节点
+    $detail.on 'submit', '.point-add', (event) ->
+      event.preventDefault()
+      $form = $ this
+      section = $form.closest('.section').data 'id'
+      $.ajax
+        url: "/api/sections/#{section}/points"
+        type: 'POST'
+        data: $form.serialize()
+        dataType: 'json'
+      .done (section) ->
+        console.log '123'
+        refresh()
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    refresh()
     $wrap.addClass 'bige'
 
   router = new Router()
@@ -266,6 +284,15 @@ $ ->
   router.configure html5history: true
   router.init()
 
+  new Chart container: $detail
+  new Iconpicker container: $detail
+
+  # 描点平滑滚动
+  $detail.on 'click', 'a[href*=#]', (event) ->
+    event.preventDefault()
+    $target = $ '#' + @hash.slice 1
+    $detail.animate { scrollTop: $target.position().top - $detail.find('.section:first').position().top }, 600 if $target.length
+
   # 跳转
   $('body').on 'click', 'a.go', (event) ->
     event.preventDefault()
@@ -280,10 +307,3 @@ $ ->
       dataType: 'json'
     .always ->
       window.location.href = '/'
-
-  # 描点平滑滚动
-  $('body').on 'click', 'a[href*=#]', (event) ->
-    event.preventDefault()
-    $target = $ '#' + @hash.slice 1
-    $detail.animate { scrollTop: $target.position().top - $detail.find('.section:first').position().top }, 600 if $target.length
-

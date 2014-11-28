@@ -1,4 +1,4 @@
-# Web 应用
+# Application
 path = require 'path'
 express = require 'express'
 passport = require 'passport'

@@ -17,3 +17,7 @@
 - Post:/api/stories/:id/sections -- 新建故事片段
 - Get:/api/stories -- 获取故事列表
 - Get:/api/stories/:id -- 获取故事详情
+
+
+### 片段
+- Post:/api/sections/:id/points -- 新建故事节点
