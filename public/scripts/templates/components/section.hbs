@@ -2,10 +2,15 @@
   <div class="section-title">
     <span class="name">{{#if name}}{{name}}{{^}}片段{{/if}}</span>
   </div>
-  <div class="point">
-    <div class="circle circle-large"><div class="visible">添加</div></div>
-    {{> point-add}}
+  <div class="points">
+    {{#each points}}
+      {{> point this}}
+    {{/each}}
+    <div class="point">
+      <div class="circle circle-large"><div class="visible">添加</div></div>
+      {{> point-add}}
+    </div>
+    {{> section-add this}}
   </div>
-  {{> section-add this}}
   <div class="line"></div>
 </div>

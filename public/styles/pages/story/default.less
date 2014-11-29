@@ -353,33 +353,7 @@
     }
   }
 
-  .section-header .content, .point-add, .point-edit {
-    .profile-edit {
-      display: none;
-      padding: 20px;
-    }
-
-    .input-group {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    &.edit {
-      .profile {
-        display: none;
-      }
-
-      .profile-edit {
-        display: block;
-      }
-    }
-  }
-
-  .point-right + .section-add {
-    text-align: left;
-  }
-
-  .section-add {
+ .section-add {
     padding: 5px 20px;
     margin-bottom: -20px;
     text-align: right;
@@ -431,9 +405,47 @@
     }
   }
 
+  .section-header .content, .point-add, .point-edit {
+    .profile-edit {
+      display: none;
+      padding: 20px;
+    }
+
+    .input-group {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    &.edit {
+      .profile {
+        display: none;
+      }
+
+      .profile-edit {
+        display: block;
+      }
+    }
+  }
+
+  .point {
+    &.point-data .circle {
+      cursor: move;
+    }
+  }
+
+  .point-placeholder .point-container {
+    height: 100%;
+    border: 1px dashed #000;
+  }
+
+  .point-right + .section-add {
+    text-align: left;
+  }
+
   .point-add, .point-edit {
     margin-left: auto;
     margin-right: 0px;
+    padding-top: 10px;
     max-width: 400px;
 
     .btn {

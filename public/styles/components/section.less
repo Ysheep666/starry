@@ -24,7 +24,7 @@
     }
   }
 
-  .section-title {
+  .section-title, .point-container {
     color: @dark-color;
   }
 
@@ -51,17 +51,24 @@
   }
 
   .circle {
-    background-color: @dark-color;
-  }
-
-  .circle-large {
     color: @light-color;
+    background-color: @dark-color;
+
+    .chart {
+      border-color: @dark-color;
+      background-color: @light-color;
+      color: @dark-color;
+    }
   }
 
   .chart {
     border-color: @dark-color;
     background-color: @light-color;
     color: @dark-color;
+  }
+
+  .point-placeholder .point-container {
+    border-color: @dark-color;
   }
 
   .section-black {
@@ -92,7 +99,7 @@
       }
     }
 
-    .section-title {
+    .section-title, .point-container {
       color: @light-color;
     }
 
@@ -120,16 +127,23 @@
 
     .circle {
       background-color: @light-color;
-    }
-
-    .circle-large {
       color: @dark-color;
+
+      .chart {
+        border-color: @light-color;
+        background-color: @dark-color;
+        color: @light-color;
+      }
     }
 
     .chart {
       border-color: @light-color;
       background-color: @dark-color;
       color: @light-color;
+    }
+
+    .point-placeholder .point-container {
+      border-color: @light-color;
     }
   }
 
@@ -181,8 +195,8 @@
 .section {
   position: relative;
   z-index: @default-index;
-  margin-top: 0px;
-  padding: 40px 0px;
+  margin-top: 0;
+  padding: 40px 0;
   width: 100%;
 
   .line {
@@ -205,7 +219,7 @@
         display: block;
         content: '';
         position: absolute;
-        bottom: 0px;
+        bottom: 0;
         z-index: @default-index;
         margin-left: -25px;
         width: 51px;
@@ -273,13 +287,69 @@
     backface-visibility: hidden;
   }
 
+  .point-container {
+    margin-left: auto;
+    margin-right: 0;
+    padding-top: 5px;
+    max-width: 400px;
+    text-align: right;
+
+    &.progress, &.icon {
+      padding-top: 10px;
+    }
+
+    &.text {
+      padding-top: 15px;
+    }
+
+    h3 {
+      margin-top: 0;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .point-body {
+      font-size: 16px;
+    }
+  }
+
   .circle {
     position: absolute;
-    top: 0px;
+    top: 0;
+    z-index: @base-index;
     right: -11px;
     width: 21px;
     height: 21px;
     border-radius: 50%;
+
+    .chart {
+      position: relative;
+      width: 31px;
+      height: 31px;
+      border-width: 1px;
+      border-style: solid;
+      border-radius: 50%;
+
+      canvas {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+      }
+    }
+
+    .fa {
+      width: 31px;
+      line-height: 31px;
+      text-align: center;
+      font-size: 18px;
+      color: inherit;
+    }
+  }
+
+  .circle-general {
+    right: -16px;
+    width: 31px;
+    height: 31px;
   }
 
   .circle-large {
@@ -298,9 +368,20 @@
     padding-left: 50px;
     margin-left: 50%;
 
+    .point-container {
+      margin-left: 0;
+      margin-right: auto;
+      text-align: left;
+    }
+
     .circle {
       right: auto;
       left: -10px;
+    }
+
+    .circle-general {
+      right: auto;
+      left: -15px;
     }
 
     .circle-large {
@@ -333,13 +414,13 @@
     h1 {
       font-size: 32px;
       padding-top: 20px;
-      padding-bottom: 0px;
+      padding-bottom: 0;
     }
 
     .link {
       font-size: 15px;
       font-family: inherit;
-      margin-top: 0px;
+      margin-top: 0;
 
       a {
         text-decoration: underline;
@@ -348,7 +429,7 @@
 
     .nav {
       display: inline-block;
-      padding: 20px 0px 10px;
+      padding: 20px 0 10px;
       font-size: 16px;
 
       a {

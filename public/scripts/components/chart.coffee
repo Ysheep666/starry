@@ -16,9 +16,9 @@ class Chart
   # 分析
   _analyse: (val) ->
     percent = if /^([0-9]{1,3}\%)$/.test(val) then parseInt val.replace('%', ''), 10 else null
-    if null isnt percent && percent >= 0 && percent <= 100
+    if percent && percent >= 0 && percent <= 100
       $chart = @$el.siblings '.chart'
-      if not $chart.hasClass('open')
+      if not $chart.data('easyPieChart')
         $chart.addClass('open').easyPieChart
           scaleColor: false
           size: 18
@@ -27,7 +27,7 @@ class Chart
           lineCap: 'butt'
           trackColor: 'transparent'
 
-      $chart.data('easyPieChart').update(percent)
+      $chart.data('easyPieChart').update percent
     else
       @$el.siblings('.chart').data('easyPieChart', null).html('').removeClass 'open'
 

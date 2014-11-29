@@ -29,6 +29,20 @@ Handlebars.registerPartial 'section-navigation', components.sectionNavigation
 Handlebars.registerPartial 'point', components.point
 Handlebars.registerPartial 'point-add', components.pointAdd
 
+Handlebars.registerHelper 'circle', (bubble) ->
+  return '<div class="circle"></div>' if not bubble
+  progress = if /^([0-9]{1,3}\%)$/.test(bubble) then parseInt bubble.replace('%', ''), 10 else null
+  return "<div class='circle circle-general'><div class='chart' data-progress='#{progress}'></div></div>" if progress && progress >= 0 && progress <= 100
+  return "<div class='circle circle-general'><i class='fa fa-#{bubble.substr(5)}'></i></div>" if 0 is bubble.indexOf 'icon-'
+  return "<div class='circle circle-large'><div class='visible'>#{bubble}</div></div>"
+
+Handlebars.registerHelper 'circle-type', (bubble) ->
+  return '' if not bubble
+  progress = if /^([0-9]{1,3}\%)$/.test(bubble) then parseInt bubble.replace('%', ''), 10 else null
+  return 'progress' if progress && progress >= 0 && progress <= 100
+  return 'icon' if 0 is bubble.indexOf 'icon-'
+  return 'text'
+
 {upyun, preloaded} = adou
 
 $ ->
@@ -85,10 +99,13 @@ $ ->
     $profile = $ '#profile'
 
     # 刷新
-    refresh = ->
+    refreshPoint = ->
       $detail.find('.point').each (index) ->
         $el = $ this
         if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
+
+    refresh = ->
+      refreshPoint()
 
       sections = []
       $detail.find('.section').each (index) ->
@@ -100,6 +117,37 @@ $ ->
             name: $el.find('.section-title .name').text()
 
       $profile.find('.nav').html components.sectionNavigation sections: sections
+
+      $detail.find('.circle .chart').each ->
+        $el = $ this
+        if not $el.data('easyPieChart')
+          $el.easyPieChart
+            scaleColor: false
+            size: 31
+            lineWidth: 15.5
+            barColor: $el.css 'color'
+            lineCap: 'butt'
+            trackColor: 'transparent'
+
+          $el.on 'mouseenter', ->
+            pie = $el.data('easyPieChart')
+            pie.update 0
+            pie.update $el.data 'progress'
+
+        $el.data('easyPieChart').update $el.data 'progress'
+
+      $detail.find('.points').each ->
+        $el = $ this
+        $el.sortable 'destroy'
+        $el.sortable
+          forcePlaceholderSize: true
+          handle: '.circle'
+          items: '.point-data'
+          placeholder: '<div class="point point-placeholder"><div class="point-container"></div></div>'
+        .on 'dragenter.h5s', -> refreshPoint()
+        .on 'sortupdate', (e, ui) ->
+          refreshPoint()
+          # TODO: 更新到服务器
 
     {story} = data
 
@@ -203,15 +251,15 @@ $ ->
         window.alert error
 
     # 片段
-    $detail.on 'focusin', '.section-add input', (event) ->
+    $detail.find('.container').on 'focusin', '.section-add input', (event) ->
       event.preventDefault()
       $(this).closest('.input-group').addClass 'open'
 
-    $detail.on 'focusout', '.section-add input', (event) ->
+    $detail.find('.container').on 'focusout', '.section-add input', (event) ->
       event.preventDefault()
       $(this).closest('.input-group').removeClass 'open'
 
-    $detail.on 'submit', '.section-add', (event) ->
+    $detail.find('.container').on 'submit', '.section-add', (event) ->
       event.preventDefault()
       $form = $ this
       $.ajax
@@ -228,7 +276,7 @@ $ ->
         window.alert error
 
     # 节点
-    $detail.on 'submit', '.point-add', (event) ->
+    $detail.find('.container').on 'submit', '.point-add', (event) ->
       event.preventDefault()
       $form = $ this
       section = $form.closest('.section').data 'id'
@@ -237,8 +285,9 @@ $ ->
         type: 'POST'
         data: $form.serialize()
         dataType: 'json'
-      .done (section) ->
-        console.log '123'
+      .done (point) ->
+        $form.closest('.point').before components.point point
+        $form.replaceWith components.pointAdd()
         refresh()
       .fail (res) ->
         error = res.responseJSON.error

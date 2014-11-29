@@ -27,6 +27,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
       .populate 'sections'
       .exec (err, story) -> fn err, story
     (story, fn) ->
+      fn null, null if not story
       Point.populate story.sections, { path: 'points' }, (err, points) ->
         story.sections.points = points
         fn err, story
