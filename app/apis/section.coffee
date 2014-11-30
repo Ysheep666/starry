@@ -13,6 +13,23 @@ router.route('/*').get (req, res, done) ->
       error: '未登录，没有此权限'
   done()
 
+# 更新片段
+router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
+  req.assert('title', '标题不能为空').notEmpty()
+
+  errs = req.validationErrors()
+  return done isValidation: true, errors: errs if errs
+
+  async.waterfall [
+    (fn) ->
+      Section.findById req.params[0], 'title', fn
+    (section, fn) ->
+      section.title = req.sanitize('title').escape()
+      section.save (err) -> fn err, section
+  ], (err, section) ->
+    return done err if err
+    res.status(202).json section
+
 # 新建故事节点
 router.route(/^\/([0-9a-fA-F]{24})\/points$/).post (req, res, done) ->
   {bubble, link, image} = req.body

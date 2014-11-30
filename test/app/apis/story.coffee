@@ -60,7 +60,7 @@ describe 'Api --> story controller', ->
 
   it 'Post:/api/stories/:id/sections -- 新建故事片段', (done) ->
     req = agent.post('/api/stories/5468c9fa3faec100000e23a8/sections').send
-      name: '名称'
+      title: '名称'
     req.cookies = cookies
 
     req.expect(201).end (err, res) ->

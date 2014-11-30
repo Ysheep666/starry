@@ -90,7 +90,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
     (story, fn) ->
       story.title = req.sanitize('title').escape()
       story.description = req.sanitize('description').escape()
-      story.mark = req.body.mark.trim()
+      story.mark = req.body.mark.trim().toLowerCase()
       story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
@@ -98,14 +98,14 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
 
 # 新建故事片段
 router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
-  req.assert('name', '名称不能为空').notEmpty()
+  req.assert('title', '标题不能为空').notEmpty()
 
   errs = req.validationErrors()
   return done isValidation: true, errors: errs if errs
 
   async.waterfall [
     (fn) ->
-      section = new Section name: req.sanitize('name').escape()
+      section = new Section title: req.sanitize('title').escape()
       section.save (err, section) -> fn err, section
     (section, fn) ->
       Story.findById req.params[0], 'sections', (err, story) -> fn err, story, section
@@ -119,7 +119,7 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
 
 # 列表
 router.route('/').get (req, res) ->
-  Story.find { author: req.user.id }, 'title cover', { sort: id: -1 }, (err, stories) ->
+  Story.find { author: req.user.id }, 'title cover', { sort: _id: -1 }, (err, stories) ->
     return done err if err
     res.status(200).json stories
 

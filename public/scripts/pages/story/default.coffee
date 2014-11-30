@@ -12,6 +12,7 @@ components =
   profile: require '../../templates/components/profile.hbs'
   section: require '../../templates/components/section.hbs'
   sectionAdd: require '../../templates/components/section-add.hbs'
+  sectionTitle: require '../../templates/components/section-title.hbs'
   sectionNavigation: require '../../templates/components/section-navigation.hbs'
   point: require '../../templates/components/point.hbs'
   pointAdd: require '../../templates/components/point-add.hbs'
@@ -25,6 +26,7 @@ Handlebars.registerPartial 'logo', components.logo
 Handlebars.registerPartial 'profile', components.profile
 Handlebars.registerPartial 'section', components.section
 Handlebars.registerPartial 'section-add', components.sectionAdd
+Handlebars.registerPartial 'section-title', components.sectionTitle
 Handlebars.registerPartial 'section-navigation', components.sectionNavigation
 Handlebars.registerPartial 'point', components.point
 Handlebars.registerPartial 'point-add', components.pointAdd
@@ -99,14 +101,7 @@ $ ->
     $profile = $ '#profile'
 
     # 刷新
-    refreshPoint = ->
-      $detail.find('.point').each (index) ->
-        $el = $ this
-        if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
-
-    refresh = ->
-      refreshPoint()
-
+    refreshSection = ->
       sections = []
       $detail.find('.section').each (index) ->
         $el = $ this
@@ -118,8 +113,15 @@ $ ->
 
       $profile.find('.nav').html components.sectionNavigation sections: sections
 
+    refreshPoint = ->
+      $detail.find('.point').each (index) ->
+        $el = $ this
+        if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
+
+    refreshPieChart = (resett) ->
       $detail.find('.circle .chart').each ->
         $el = $ this
+        $el.html('').data 'easyPieChart', null if resett
         if not $el.data('easyPieChart')
           $el.easyPieChart
             scaleColor: false
@@ -136,6 +138,11 @@ $ ->
 
         $el.data('easyPieChart').update $el.data 'progress'
 
+    refresh = ->
+      refreshSection()
+      refreshPoint()
+      refreshPieChart()
+
       $detail.find('.points').each ->
         $el = $ this
         $el.sortable 'destroy'
@@ -144,7 +151,10 @@ $ ->
           handle: '.circle'
           items: '.point-data'
           placeholder: '<div class="point point-placeholder"><div class="point-container"></div></div>'
-        .on 'dragenter.h5s', -> refreshPoint()
+        .on 'dragenter.h5s', ->
+          $detail.find('.point:not(.sortable-dragging)').each (index) ->
+            $el = $ this
+            if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
         .on 'sortupdate', (e, ui) ->
           refreshPoint()
           # TODO: 更新到服务器
@@ -218,6 +228,7 @@ $ ->
         dataType: 'json'
       .done ->
         $('body').attr 'class', theme
+        refreshPieChart true
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -225,7 +236,7 @@ $ ->
     # 简介
     $profile.on 'click', '.profile .edit', (event) ->
       event.preventDefault()
-      $profile.addClass 'edit'
+      $profile.addClass('edit').find('[name="title"]').focus()
 
     $profile.on 'click', '.profile-edit .cancel', (event) ->
       event.preventDefault()
@@ -245,6 +256,7 @@ $ ->
         $submit.button 'reset'
         $profile.html components.profile story
         $profile.removeClass 'edit'
+        refreshSection()
       .fail (res) ->
         $submit.button 'reset'
         error = res.responseJSON.error
@@ -275,13 +287,33 @@ $ ->
         error = res.responseJSON.error
         window.alert error
 
+    $detail.find('.container').on 'click', '.section-title .rename', (event) ->
+      event.preventDefault()
+      $(this).closest('.section-title').addClass('edit').find('[name="title"]').focus()
+
+    $detail.find('.container').on 'submit', '.section-rename', (event) ->
+      event.preventDefault()
+      $form = $ this
+      sectionId = $form.closest('.section').data 'id'
+      $.ajax
+        url: "/api/sections/#{sectionId}"
+        type: 'POST'
+        data: $form.serialize()
+        dataType: 'json'
+      .done (section) ->
+        $form.closest('.section-title').removeClass('edit').html components.sectionTitle section
+        refreshSection()
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
     # 节点
     $detail.find('.container').on 'submit', '.point-add', (event) ->
       event.preventDefault()
       $form = $ this
-      section = $form.closest('.section').data 'id'
+      sectionId = $form.closest('.section').data 'id'
       $.ajax
-        url: "/api/sections/#{section}/points"
+        url: "/api/sections/#{sectionId}/points"
         type: 'POST'
         data: $form.serialize()
         dataType: 'json'

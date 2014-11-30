@@ -10,18 +10,24 @@
 }
 
 .input-group {
+  input {
+    height: 40px;
+  }
+
   textarea {
+    padding: 10px;
+    height: 100px;
     resize: none;
   }
 
   .form-control {
-    line-height: 1;
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
   }
 
   .input-group-addon {
+    padding: 6px 20px;
     border-radius: 0;
   }
 }
@@ -118,8 +124,8 @@
 
   .logo svg path {
     stroke-width: 1;
-    stroke: darken(@starry-color-white, 10%);
-    fill: darken(@starry-color-white, 10%);
+    stroke: @starry-color-white;
+    fill: @starry-color-white;
   }
 
   .items {
@@ -353,7 +359,74 @@
     }
   }
 
- .section-add {
+  .profile, .profile-edit {
+    .btn {
+      outline: none;
+      background-color: transparent;
+      border-radius: 0;
+    }
+  }
+
+  .section-title {
+    .actions {
+      display: inline;
+      visibility: hidden;
+
+      a {
+        position: relative;
+        margin-right: 10px;
+        font-size: 18px;
+        color: inherit;
+
+        span {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translate(-50%, 10px);
+          font-size: 15px;
+          white-space:nowrap;
+        }
+
+        &:hover span {
+          display: block;
+        }
+      }
+    }
+
+    .section-rename {
+      display: none;
+      width: 240px;
+
+      .input-group {
+        border: 1px solid #fff;
+
+        label, input {
+          border: none;
+        }
+      }
+
+      button {
+        display: none;
+      }
+    }
+
+    &.edit {
+      .actions, .name {
+        display: none;
+      }
+
+      .section-rename {
+        display: inline-block;
+      }
+    }
+  }
+
+  .section:hover .section-title .actions {
+    visibility: visible;
+  }
+
+  .section-add {
     padding: 5px 20px;
     margin-bottom: -20px;
     text-align: right;
@@ -370,7 +443,7 @@
         left: 0;
         padding: 0;
         margin: 0;
-        width: 120px;
+        width: 118px;
         line-height: 40px;
         background: none;
         border: none;
@@ -449,6 +522,7 @@
     max-width: 400px;
 
     .btn {
+      outline: none;
       background-color: transparent;
       border: 1px solid #fff;
       border-radius: 0;

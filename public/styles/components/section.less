@@ -11,24 +11,26 @@
     background: @dark-color;
   }
 
-  .section-add .input-group {
-    border-color: @dark-color;
+  .section-add, .section-title .section-rename {
+    .input-group {
+      border-color: @dark-color;
 
-    label {
-      background: @dark-color;
-      color: @light-color;
-    }
+      label {
+        background: @dark-color;
+        color: @light-color;
+      }
 
-    input {
-      color: @dark-color;
+      input {
+        color: @dark-color;
+      }
     }
   }
 
-  .section-title, .point-container {
+  .profile, .section-title, .point-container {
     color: @dark-color;
   }
 
-  .point-add, .point-edit {
+  .profile, .section-rename, .profile-edit, .point-add, .point-edit {
     .form-control, .bubble-icon {
       border-color: @dark-color;
       color: @dark-color;
@@ -41,6 +43,10 @@
     .btn {
       border-color: @dark-color;
       color: @dark-color;
+    }
+
+    .btn-link {
+      border-color: transparent;
     }
 
     .input-group-addon {
@@ -86,16 +92,18 @@
       background: @light-color;
     }
 
-    .section-add .input-group {
-      border-color: @light-color;
+    .section-add, .section-title .section-rename {
+      .input-group {
+        border-color: @light-color;
 
-      label {
-        background: @light-color;
-        color: @dark-color;
-      }
+        label {
+          background: @light-color;
+          color: @dark-color;
+        }
 
-      input {
-        color: @light-color;
+        input {
+          color: @light-color;
+        }
       }
     }
 
@@ -103,7 +111,7 @@
       color: @light-color;
     }
 
-    .point-add, .point-edit {
+    .section-rename, .point-add, .point-edit {
       .form-control, .bubble-icon {
         border-color: @light-color;
         color: @light-color;
@@ -309,6 +317,8 @@
     }
 
     .point-body {
+      margin-bottom: 0;
+      padding-bottom: 10px;
       font-size: 16px;
     }
   }

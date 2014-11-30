@@ -4,7 +4,7 @@ ObjectId = mongoose.Schema.ObjectId
 
 # 结构
 SectionSchema = new mongoose.Schema
-  name: { type: String, default: '' } # 名称
+  title: { type: String, default: '' } # 标题
   points: [{ type: ObjectId, ref: 'Point' }] # 节点
 
 # 集合名称

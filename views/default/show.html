@@ -1,0 +1,16 @@
+{% extends '../layout.html' %}
+
+{# 标题 #}
+{% block title %}{{app.title}} - {{app.description}}{% endblock %}
+
+{# 脚本 #}
+{% block sub_scripts %}
+<!-- build:js /scripts/default/default.js -->
+<script src="/scripts/default/default.js"></script>
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+展示页面
+{% endblock %}

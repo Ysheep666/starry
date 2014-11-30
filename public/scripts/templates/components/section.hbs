@@ -1,7 +1,5 @@
 <div class="section" id="section-{{id}}" data-id="{{id}}">
-  <div class="section-title">
-    <span class="name">{{#if name}}{{name}}{{^}}片段{{/if}}</span>
-  </div>
+  <div class="section-title">{{> section-title this}}</div>
   <div class="points">
     {{#each points}}
       {{> point this}}

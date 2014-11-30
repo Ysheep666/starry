@@ -4,8 +4,10 @@ express = require 'express'
 module.exports = (app, setting) ->
   # 页面
   app.use require '../app/pages/default'
+  app.use require '../app/pages/account'
   app.use '/stories', require '../app/pages/story'
 
+  # 给接口加上头信息
   app.use '/api/*', (req, res, done) ->
     res.contentType "application/vnd.#{setting.api_vnd}+json"
     done()

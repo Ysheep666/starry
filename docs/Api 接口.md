@@ -20,4 +20,5 @@
 
 
 ### 片段
+- Post:/api/sections/:id -- 更新片段
 - Post:/api/sections/:id/points -- 新建故事节点

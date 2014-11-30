@@ -2,40 +2,31 @@
 async = require 'async'
 router = require('express').Router()
 
-User = require '../models/user'
+Story = require '../models/story'
+Point = require '../models/point'
 
 # 首页
 router.route('/').get (req, res) ->
   return res.redirect '/stories' if req.user
-  res.render 'default/welcome'
+  res.render 'default/default'
 
-# 登录
-router.route('/signin').get (req, res) ->
-  return res.redirect '/' if req.user
-  res.render 'default/signin'
-
-# 注册
-router.route('/signup').get (req, res) ->
-  return res.redirect '/' if req.user
-  res.render 'default/signup'
-
-# 忘记密码
-router.route('/forgot').get (req, res) ->
-  return res.redirect '/' if req.user
-  res.render 'default/forgot'
-
-# 邮箱验证
-router.route(/^\/verify\/([0-9a-zA-z]+\.[0-9a-fA-F]+)$/).get (req, res, done) ->
+# 展示
+router.route(/^\/\@(.+)$/).get (req, res, done) ->
+  param = req.params[0]
+  query = if /^[0-9a-fA-F]{24}$/.test param then {'$or': [{ _id: param}, {mark: param}]} else mark: param
   async.waterfall [
     (fn) ->
-      User.findOne { verify_code: req.params[0] }, 'email', fn
-    (user, fn) ->
-      return fn null, null if not user
-      user.active = true
-      user.verify_code = ''
-      user.save (err) -> fn err, user
-  ], (err, user) ->
+      Story.findOne query, 'title description mark background cover theme sections'
+      .populate 'sections'
+      .exec (err, story) -> fn err, story
+    (story, fn) ->
+      fn null, null if not story
+      Point.populate story.sections, { path: 'points' }, (err, points) ->
+        story.sections.points = points
+        fn err, story
+  ], (err, story) ->
     return done err if err
-    res.render 'default/verify', user: user
+    return done() if not story
+    res.render 'default/show', { story: story }
 
 module.exports = router
