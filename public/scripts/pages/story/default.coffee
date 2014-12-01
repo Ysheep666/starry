@@ -138,10 +138,10 @@ $ ->
 
         $el.data('easyPieChart').update $el.data 'progress'
 
-    refresh = ->
+    refresh = (resett) ->
       refreshSection()
       refreshPoint()
-      refreshPieChart()
+      refreshPieChart(resett)
 
       $detail.find('.points').each ->
         $el = $ this
@@ -263,6 +263,8 @@ $ ->
         window.alert error
 
     # 片段
+    sections = (section.id for section in story.sections)
+
     $detail.find('.container').on 'focusin', '.section-add input', (event) ->
       event.preventDefault()
       $(this).closest('.input-group').addClass 'open'
@@ -303,6 +305,26 @@ $ ->
       .done (section) ->
         $form.closest('.section-title').removeClass('edit').html components.sectionTitle section
         refreshSection()
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    $detail.find('.container').on 'click', '.section-title .down', (event) ->
+      event.preventDefault()
+      $el =  $(this).closest '.section'
+      id = $el.data 'id'
+      index = sections.indexOf id
+      sections.splice index, 1
+      sections.splice index + 1, 0, id
+      $.ajax
+        url: "/api/stories/#{story.id}"
+        type: 'PATCH'
+        data: sections: sections
+        dataType: 'json'
+      .done ->
+        $el.next().after $el
+        refresh true
+        $detail.animate { scrollTop: $el.position().top - $detail.find('.section:first').position().top }, 600
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error

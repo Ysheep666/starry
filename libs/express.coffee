@@ -47,7 +47,7 @@ module.exports = (app, passport, setting, db) ->
   app.use require('cookie-parser') setting.secret
   session = require 'express-session'
   app.use session
-    name: 'session.id'
+    name: 'starry.id'
     secret: setting.secret
     cookie:
       path: '/'

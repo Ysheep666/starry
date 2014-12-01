@@ -43,7 +43,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
 
 # 更新故事
 router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
-  {background, cover, theme} = req.body
+  {background, cover, theme, sections} = req.body
 
   req.assert('background', '背景地址格式不正确').isURL() if background
   req.assert('cover', '封面地址格式不正确').isURL() if cover
@@ -54,11 +54,12 @@ router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
 
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'background cover theme', fn
+      Story.findById req.params[0], 'background cover theme sections', fn
     (story, fn) ->
       story.background = background if background
       story.cover = cover if cover
       story.theme = theme if theme
+      story.sections = sections if sections
       story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
