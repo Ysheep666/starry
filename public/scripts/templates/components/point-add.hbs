@@ -1,3 +1,4 @@
+<div class="point-container text"><p class="point-body"></p></div>
 <form class="point-add">
   <div class="input-group">
     <input type="text" class="form-control" name="title" autocomplete="off" placeholder="标题">
@@ -16,7 +17,11 @@
     <input type="text" class="form-control" name="link" autocomplete="off" placeholder="http://">
   </div>
   <div class="form-group clearfix">
-    <a class="btn"><i class="fa fa-picture-o"></i></a>
+    <a class="btn btn-picture">
+      <div class="loading"><i class="fa fa-refresh"></i></div>
+      <div class="instructions"><i class="fa fa-picture-o"></i></div>
+    </a>
+    <input type="hidden" name="image">
     <button class="btn pull-right" type="submit">添加节点</button>
   </div>
 </form>

@@ -82,7 +82,7 @@ $ ->
     $items.on 'click', 'a .remove', (event) ->
       event.preventDefault()
       event.stopPropagation()
-      $item = $(this).closest('a.item')
+      $item = $(this).closest 'a.item'
       $.ajax
         url: "/api/stories/#{$item.data('id')}"
         type: 'DELETE'
@@ -118,7 +118,7 @@ $ ->
         $el = $ this
         if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
 
-    refreshPieChart = () ->
+    refreshPieChart = ->
       $detail.find('.circle .chart').each ->
         $el = $ this
         $el.html('').data 'easyPieChart', null
@@ -138,10 +138,36 @@ $ ->
 
         $el.data('easyPieChart').update $el.data 'progress'
 
+    refreshBtnPicture = ->
+      $detail.find('.point .btn-picture').each ->
+        $el = $ this
+        if 0 is $el.find('[type="file"]').length
+          pictureUpload = new Upload()
+          pictureUpload.assignBrowse $el[0]
+          pictureUpload.on 'filesAdded', ->
+            $el.addClass 'loading'
+          pictureUpload.on 'filesSubmitted', (err) ->
+            return window.alert err if err
+            pictureUpload.upload()
+          pictureUpload.on 'fileSuccess', (file, message) ->
+            message = JSON.parse message
+            image = upyun.buckets['starry-images'] + message.url
+            window.setTimeout ->
+              $el.removeClass 'loading'
+              $pointPicture = $el.closest('.point').find '.point-picture img'
+              if $pointPicture.length
+                $pointPicture.attr 'src', image
+              else
+                $el.closest('.point').find('.point-body').after "<div class='point-picture'><img class='picture-point-image' src='#{image}'></div>"
+
+              $el.next('[name="image"]').val image
+            , 800
+
     refresh = ->
       refreshSection()
       refreshPoint()
       refreshPieChart()
+      refreshBtnPicture()
 
       $detail.find('.points').each ->
         $el = $ this

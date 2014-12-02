@@ -77,6 +77,10 @@
     border-color: @dark-color;
   }
 
+  .point-picture .picture-point-image {
+    border-color: @dark-color;
+  }
+
   .section-black {
     background-color: @dark-color;
 
@@ -151,6 +155,10 @@
     }
 
     .point-placeholder .point-container {
+      border-color: @light-color;
+    }
+
+    .point-picture .picture-point-image {
       border-color: @light-color;
     }
   }
@@ -293,6 +301,12 @@
     padding: 0 20px;
     padding-right: 50px;
     backface-visibility: hidden;
+
+    &.show-picture {
+      min-height: 300px;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
   }
 
   .point-container {
@@ -304,10 +318,18 @@
 
     &.progress, &.icon {
       padding-top: 10px;
+
+      .point-picture {
+        top: 10px;
+      }
     }
 
     &.text {
       padding-top: 15px;
+
+      .point-picture {
+        top: 15px;
+      }
     }
 
     h3 {
@@ -374,6 +396,27 @@
     }
   }
 
+  .point-picture {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 90%;
+    height: 300px;
+    padding: 10px 50px;
+    max-width: 400px;
+
+    .picture-point-image {
+      height: 100%;
+      margin: 0 auto;
+      width: auto;
+      background-position: center;
+      background-size: contain;
+      border: 5px solid white;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
   .point-right {
     padding-left: 50px;
     margin-left: 50%;
@@ -397,6 +440,11 @@
     .circle-large {
       right: auto;
       left: -25px;
+    }
+
+    .point-picture {
+      left: auto;
+      right: 100%;
     }
   }
 }

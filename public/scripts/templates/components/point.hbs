@@ -1,7 +1,8 @@
-<div class="point point-data" data-id="{{id}}">
+<div class="point point-data{{#if image}} show-picture{{/if}}" data-id="{{id}}">
   {{{circle bubble}}}
   <div class="point-container {{{circle-type bubble}}}">
     <h3>{{title}}</h3>
     <p class="point-body">{{description}}</p>
+    {{#if image}}<div class="point-picture"><img class="picture-point-image" src="{{image}}"></div>{{/if}}
   </div>
 </div>

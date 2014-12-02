@@ -529,6 +529,29 @@
     &.point-data .circle {
       cursor: move;
     }
+
+    .btn-picture {
+      .loading {
+        width: 15px;
+        display: none;
+        transform-origin: 50% 50%;
+        animation: loading 1s infinite linear;
+      }
+
+      .instructions {
+        display: block;
+      }
+
+      &.loading {
+        .loading {
+          display: block;
+        }
+
+        .instructions {
+          display: none;
+        }
+      }
+    }
   }
 
   .point-placeholder .point-container {
@@ -542,8 +565,8 @@
 
   .point-add, .point-edit {
     margin-left: auto;
-    margin-right: 0px;
-    padding-top: 10px;
+    margin-right: 0;
+    padding-top: 0;
     max-width: 400px;
 
     .btn {
