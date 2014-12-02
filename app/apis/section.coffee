@@ -32,7 +32,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
 
 # 新建故事节点
 router.route(/^\/([0-9a-fA-F]{24})\/points$/).post (req, res, done) ->
-  {bubble, link, image} = req.body
+  { bubble, link, image } = req.body
 
   req.assert('title', '标题不能为空').notEmpty()
   req.assert('link', '链接格式不正确').isURL() if link

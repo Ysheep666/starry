@@ -72,12 +72,12 @@ $ ->
     $items.on 'click', 'a .trash', (event) ->
       event.preventDefault()
       event.stopPropagation()
-      $(this).closest('.actions').addClass('confirm').one 'mouseleave', -> $(this).removeClass 'confirm'
+      $(this).closest('.actions').addClass('open').one 'mouseleave', -> $(this).removeClass 'open'
 
     $items.on 'click', 'a .cancel', (event) ->
       event.preventDefault()
       event.stopPropagation()
-      $(this).closest('.actions').removeClass('confirm').unbind 'mouseleave'
+      $(this).closest('.actions').removeClass('open').unbind 'mouseleave'
 
     $items.on 'click', 'a .remove', (event) ->
       event.preventDefault()
@@ -118,11 +118,11 @@ $ ->
         $el = $ this
         if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
 
-    refreshPieChart = (resett) ->
+    refreshPieChart = () ->
       $detail.find('.circle .chart').each ->
         $el = $ this
-        $el.html('').data 'easyPieChart', null if resett
-        if not $el.data('easyPieChart')
+        $el.html('').data 'easyPieChart', null
+        if not $el.data 'easyPieChart'
           $el.easyPieChart
             scaleColor: false
             size: 31
@@ -132,16 +132,16 @@ $ ->
             trackColor: 'transparent'
 
           $el.on 'mouseenter', ->
-            pie = $el.data('easyPieChart')
+            pie = $el.data 'easyPieChart'
             pie.update 0
             pie.update $el.data 'progress'
 
         $el.data('easyPieChart').update $el.data 'progress'
 
-    refresh = (resett) ->
+    refresh = ->
       refreshSection()
       refreshPoint()
-      refreshPieChart(resett)
+      refreshPieChart()
 
       $detail.find('.points').each ->
         $el = $ this
@@ -228,7 +228,7 @@ $ ->
         dataType: 'json'
       .done ->
         $('body').attr 'class', theme
-        refreshPieChart true
+        refresh()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -256,7 +256,7 @@ $ ->
         $submit.button 'reset'
         $profile.html components.profile story
         $profile.removeClass 'edit'
-        refreshSection()
+        refresh()
       .fail (res) ->
         $submit.button 'reset'
         error = res.responseJSON.error
@@ -282,7 +282,7 @@ $ ->
         data: $form.serialize()
         dataType: 'json'
       .done (section) ->
-        $form.find('input[name="name"]').val('').blur()
+        $form.find('input[name="title"]').val('').blur()
         $form.closest('.section').after components.section section
         refresh()
       .fail (res) ->
@@ -304,15 +304,15 @@ $ ->
         dataType: 'json'
       .done (section) ->
         $form.closest('.section-title').removeClass('edit').html components.sectionTitle section
-        refreshSection()
+        refresh()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
 
     $detail.find('.container').on 'click', '.section-title .down', (event) ->
       event.preventDefault()
-      $el =  $(this).closest '.section'
-      id = $el.data 'id'
+      $section =  $(this).closest '.section'
+      id = $section.data 'id'
       index = sections.indexOf id
       sections.splice index, 1
       sections.splice index + 1, 0, id
@@ -322,9 +322,34 @@ $ ->
         data: sections: sections
         dataType: 'json'
       .done ->
-        $el.next().after $el
-        refresh true
-        $detail.animate { scrollTop: $el.position().top - $detail.find('.section:first').position().top }, 600
+        $section.next().after $section
+        refresh()
+        $detail.animate { scrollTop: $section.position().top - $detail.find('.section:first').position().top }, 600
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    $detail.find('.container').on 'click', '.section-title .trash', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $(this).closest('.confirm').addClass('open').one 'mouseleave', -> $(this).removeClass 'open'
+
+    $detail.find('.container').on 'click', '.section-title .cancel', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $(this).closest('.confirm').removeClass('open').unbind 'mouseleave'
+
+    $detail.find('.container').on 'click', '.section-title .remove', (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      $section = $(this).closest '.section'
+      $.ajax
+        url: "/api/stories/#{story.id}/sections/#{$section.data('id')}"
+        type: 'DELETE'
+        dataType: 'json'
+      .done ->
+        $section.remove()
+        refresh()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error

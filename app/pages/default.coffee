@@ -13,7 +13,7 @@ router.route('/').get (req, res) ->
 # 展示
 router.route(/^\/\@(.+)$/).get (req, res, done) ->
   param = req.params[0]
-  query = if /^[0-9a-fA-F]{24}$/.test param then {'$or': [{ _id: param}, {mark: param}]} else mark: param
+  query = if /^[0-9a-fA-F]{24}$/.test param then { '$or': [{ _id: param }, { mark: param }]} else mark: param
   async.waterfall [
     (fn) ->
       Story.findOne query, 'title description mark background cover theme sections'

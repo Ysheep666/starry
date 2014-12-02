@@ -6,6 +6,7 @@ request = require 'supertest'
 # Patch:/api/stories/:id -- 更新故事
 # Post:/api/stories/:id -- 更新故事简介
 # Post:/api/stories/:id/sections -- 新建故事片段
+# Delete:/api/stories/:id/sections/:id -- 删除故事片段
 # Get:/api/stories -- 获取故事列表
 # Get:/api/stories/:id -- 获取故事详情
 
@@ -64,6 +65,14 @@ describe 'Api --> story controller', ->
     req.cookies = cookies
 
     req.expect(201).end (err, res) ->
+      return done err if err
+      done()
+
+  it 'Delete:/api/stories/:id/sections/:id -- 删除故事片段', (done) ->
+    req = agent.delete '/api/stories/5468c9fa3faec100000e23a8/sections/546ed951f517a1589e49748d'
+    req.cookies = cookies
+
+    req.expect(202).end (err, res) ->
       return done err if err
       done()
 

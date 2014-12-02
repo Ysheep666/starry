@@ -189,7 +189,7 @@
         display: none;
       }
 
-      &.confirm {
+      &.open {
         .trash {
           display: none;
         }
@@ -369,10 +369,11 @@
 
   .section-title {
     .actions {
-      display: inline;
+      display: inline-block;
       visibility: hidden;
 
       a {
+        display: inline-block;
         position: relative;
         margin-right: 10px;
         font-size: 18px;
@@ -408,6 +409,30 @@
 
       button {
         display: none;
+      }
+    }
+
+    .confirm {
+      display: inline-block;
+      position: relative;
+
+      .remove, .cancel {
+        display: none;
+      }
+
+      &.open {
+        .trash {
+          display: none;
+        }
+
+        .remove {
+          position: absolute;
+          top: 100%;
+        }
+
+        .remove, .cancel {
+          display: block;
+        }
       }
     }
 

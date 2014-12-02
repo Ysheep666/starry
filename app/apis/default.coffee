@@ -81,7 +81,7 @@ router.route('/forgot').post (req, res, done) ->
     return done err if err
 
     # TODO: 发送找回密码邮件
-    res.status(202).json { id: user.id, name: user.name, email: user.name}
+    res.status(202).json { id: user.id, name: user.name, email: user.name }
 
 # 登录和退出账号
 router.route('/signin').post (req, res, done) ->

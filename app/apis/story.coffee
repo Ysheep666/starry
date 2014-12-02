@@ -43,7 +43,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
 
 # 更新故事
 router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
-  {background, cover, theme, sections} = req.body
+  { background, cover, theme, sections } = req.body
 
   req.assert('background', '背景地址格式不正确').isURL() if background
   req.assert('cover', '封面地址格式不正确').isURL() if cover
@@ -117,6 +117,20 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
   ], (err, section) ->
     return done err if err
     res.status(201).json section
+
+# 删除故事片段
+router.route(/^\/([0-9a-fA-F]{24})\/sections\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
+  async.waterfall [
+    (fn) ->
+      Story.findById req.params[0], 'sections', fn
+    (story, fn) ->
+      id = req.params[1]
+      index = story.sections.indexOf id
+      story.sections.splice index, 1
+      story.save (err) -> fn err, id: id
+  ], (err, section) ->
+    return done err if err
+    res.status(202).json id: section.id
 
 # 列表
 router.route('/').get (req, res) ->
