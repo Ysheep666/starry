@@ -21,7 +21,7 @@
 
 
 ### 片段
-- Post:/api/sections/:id -- 更新片段
+- Patch:/api/sections/:id -- 更新片段
 - Post:/api/sections/:id/points -- 新建故事节点
 - Delete:/api/sections/:id/points/:id -- 删除故事节点
 

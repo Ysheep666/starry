@@ -14,8 +14,10 @@ router.route('/*').get (req, res, done) ->
   done()
 
 # 更新片段
-router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
-  req.assert('title', '标题不能为空').notEmpty()
+router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
+  { title, points } = req.body
+
+  req.assert('title', '标题不能为空').notEmpty() if title
 
   errs = req.validationErrors()
   return done isValidation: true, errors: errs if errs
@@ -24,7 +26,8 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
     (fn) ->
       Section.findById req.params[0], 'title', fn
     (section, fn) ->
-      section.title = req.sanitize('title').escape()
+      section.title = req.sanitize('title').escape() if title
+      section.points = points if points
       section.save (err) -> fn err, section
   ], (err, section) ->
     return done err if err

@@ -187,9 +187,19 @@ $ ->
           $detail.find('.point:not(.sortable-dragging)').each (index) ->
             $el = $ this
             if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
-        .on 'sortupdate', (e, ui) ->
+        .on 'sortupdate', (event) ->
           refreshPoint()
-          # TODO: 更新到服务器
+          $el = $ event.target
+          points = []
+          $el.find('.point-data').each -> points.push $(this).data 'id'
+          $.ajax
+            url: "/api/sections/#{$el.closest('.section').data('id')}"
+            type: 'PATCH'
+            data: points: points
+            dataType: 'json'
+          .fail (res) ->
+            error = res.responseJSON.error
+            window.alert error
 
     story = data.story
     points = []
@@ -336,7 +346,7 @@ $ ->
       sectionId = $form.closest('.section').data 'id'
       $.ajax
         url: "/api/sections/#{sectionId}"
-        type: 'POST'
+        type: 'PATCH'
         data: $form.serialize()
         dataType: 'json'
       .done (section) ->
