@@ -118,10 +118,37 @@ $ ->
 
       $profile.find('.nav').html components.sectionNavigation sections: sections
 
-    refreshPoint = ->
+    refreshPoint = (noSortable) ->
       $detail.find('.point').each (index) ->
         $el = $ this
         if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
+
+      if not noSortable
+        $detail.find('.points').each ->
+          $el = $ this
+          $el.sortable 'destroy'
+          $el.sortable
+            forcePlaceholderSize: true
+            handle: '.circle'
+            items: '.point-data'
+            placeholder: '<div class="point point-placeholder"><div class="point-container"></div></div>'
+          .on 'dragenter.h5s', ->
+            $detail.find('.point:not(.sortable-dragging)').each (index) ->
+              $el = $ this
+              if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
+          .on 'sortupdate', (event) ->
+            refreshPoint true
+            $el = $ event.target
+            points = []
+            $el.find('.point-data').each -> points.push $(this).data 'id'
+            $.ajax
+              url: "/api/sections/#{$el.closest('.section').data('id')}"
+              type: 'PATCH'
+              data: points: points
+              dataType: 'json'
+            .fail (res) ->
+              error = res.responseJSON.error
+              window.alert error
 
     refreshOnePieChart = ($el) ->
       $el.html('').data 'easyPieChart', null
@@ -174,32 +201,6 @@ $ ->
       refreshPoint()
       refreshPieChart()
       refreshBtnPicture()
-
-      $detail.find('.points').each ->
-        $el = $ this
-        $el.sortable 'destroy'
-        $el.sortable
-          forcePlaceholderSize: true
-          handle: '.circle'
-          items: '.point-data'
-          placeholder: '<div class="point point-placeholder"><div class="point-container"></div></div>'
-        .on 'dragenter.h5s', ->
-          $detail.find('.point:not(.sortable-dragging)').each (index) ->
-            $el = $ this
-            if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
-        .on 'sortupdate', (event) ->
-          refreshPoint()
-          $el = $ event.target
-          points = []
-          $el.find('.point-data').each -> points.push $(this).data 'id'
-          $.ajax
-            url: "/api/sections/#{$el.closest('.section').data('id')}"
-            type: 'PATCH'
-            data: points: points
-            dataType: 'json'
-          .fail (res) ->
-            error = res.responseJSON.error
-            window.alert error
 
     story = data.story
     points = []
@@ -303,7 +304,7 @@ $ ->
         $submit.button 'reset'
         $profile.html components.profile story
         $profile.removeClass 'edit'
-        refresh()
+        refreshSection()
       .fail (res) ->
         $submit.button 'reset'
         error = res.responseJSON.error
@@ -351,7 +352,7 @@ $ ->
         dataType: 'json'
       .done (section) ->
         $form.closest('.section-title').removeClass('edit').html components.sectionTitle section
-        refresh()
+        refreshSection()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -410,9 +411,13 @@ $ ->
         dataType: 'json'
       .done (point) ->
         points[point.id] = point
-        $form.closest('.point').before components.point point
+        $point = $ components.point point
+        $form.closest('.point').before $point
         $form.replaceWith components.pointAdd()
-        refresh()
+        refreshPoint()
+        refreshBtnPicture()
+        $chart = $point.find '.chart'
+        refreshOnePieChart $chart if $chart.length
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -436,7 +441,7 @@ $ ->
       .done (point) ->
         delete points[point.id]
         $point.remove()
-        refresh()
+        refreshPoint()
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -448,6 +453,7 @@ $ ->
       $point.replaceWith $pointEdit
       oChart.as $pointEdit.find '[rel-chart="yes"]'
       oIconpicker.as $pointEdit.find '[rel-iconpicker="yes"]'
+      refreshPoint()
       refreshBtnPicture()
 
     $detail.find('.container').on 'click', '.point .point-edit .cancel', (event) ->
@@ -472,6 +478,7 @@ $ ->
         $pointEdit = $form.closest '.point'
         $point = $ components.point points[$pointEdit.data('id')]
         $pointEdit.replaceWith $point
+        refreshPoint()
         $chart = $point.find '.chart'
         refreshOnePieChart $chart if $chart.length
       .fail (res) ->
