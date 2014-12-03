@@ -76,6 +76,14 @@ class Iconpicker
       @$el.on 'input', => @_analyse @$el.val()
       @$el.one 'focusout', => @$el.unbind 'input'
 
+  as: ($el) ->
+    val = $el.val()
+    icons = @_filter val
+    if 1 is icons.length && val is "icon-#{icons[0]}"
+      $el.siblings('.bubble-icon').html "<i class='fa fa-#{icons[0]}'></i>"
+    else
+      $el.siblings('.bubble-icon').html ''
+
   # 分析
   _analyse: (val) ->
     icons = @_filter val

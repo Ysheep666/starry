@@ -13,6 +13,10 @@ class Chart
       @$el.on 'input', => @_analyse @$el.val()
       @$el.one 'focusout', => @$el.unbind 'input'
 
+  as: ($el) ->
+    @$el = $el
+    @_analyse @$el.val()
+
   # 分析
   _analyse: (val) ->
     percent = if /^([0-9]{1,3}\%)$/.test(val) then parseInt val.replace('%', ''), 10 else null

@@ -16,6 +16,7 @@ module.exports = (app, setting) ->
   app.use '/api/', require '../app/apis/default'
   app.use '/api/stories', require '../app/apis/story'
   app.use '/api/sections', require '../app/apis/section'
+  app.use '/api/points', require '../app/apis/point'
 
   # 错误处理
   app.use (err, req, res, done) ->

@@ -16,6 +16,7 @@ components =
   sectionNavigation: require '../../templates/components/section-navigation.hbs'
   point: require '../../templates/components/point.hbs'
   pointAdd: require '../../templates/components/point-add.hbs'
+  pointEdit: require '../../templates/components/point-edit.hbs'
 
 # 页面
 pages =
@@ -30,6 +31,7 @@ Handlebars.registerPartial 'section-title', components.sectionTitle
 Handlebars.registerPartial 'section-navigation', components.sectionNavigation
 Handlebars.registerPartial 'point', components.point
 Handlebars.registerPartial 'point-add', components.pointAdd
+Handlebars.registerPartial 'point-edit', components.pointEdit
 
 Handlebars.registerHelper 'circle', (bubble) ->
   return '<div class="circle"></div>' if not bubble
@@ -51,6 +53,9 @@ $ ->
   $wrap = $ '#wrap'
   $list = $ '#list'
   $detail = $ '#detail'
+
+  oChart = new Chart container: $detail
+  oIconpicker = new Iconpicker container: $detail
 
   _list = (data) ->
     $list.html pages.list data
@@ -118,25 +123,26 @@ $ ->
         $el = $ this
         if 0 is index%2 then $el.removeClass 'point-right' else $el.addClass 'point-right'
 
+    refreshOnePieChart = ($el) ->
+      $el.html('').data 'easyPieChart', null
+      if not $el.data 'easyPieChart'
+        $el.easyPieChart
+          scaleColor: false
+          size: 31
+          lineWidth: 15.5
+          barColor: $el.css 'color'
+          lineCap: 'butt'
+          trackColor: 'transparent'
+
+        $el.on 'mouseenter', ->
+          pie = $el.data 'easyPieChart'
+          pie.update 0
+          pie.update $el.data 'progress'
+
+      $el.data('easyPieChart').update $el.data 'progress'
+
     refreshPieChart = ->
-      $detail.find('.circle .chart').each ->
-        $el = $ this
-        $el.html('').data 'easyPieChart', null
-        if not $el.data 'easyPieChart'
-          $el.easyPieChart
-            scaleColor: false
-            size: 31
-            lineWidth: 15.5
-            barColor: $el.css 'color'
-            lineCap: 'butt'
-            trackColor: 'transparent'
-
-          $el.on 'mouseenter', ->
-            pie = $el.data 'easyPieChart'
-            pie.update 0
-            pie.update $el.data 'progress'
-
-        $el.data('easyPieChart').update $el.data 'progress'
+      $detail.find('.circle .chart').each -> refreshOnePieChart $ this
 
     refreshBtnPicture = ->
       $detail.find('.point .btn-picture').each ->
@@ -185,7 +191,12 @@ $ ->
           refreshPoint()
           # TODO: 更新到服务器
 
-    {story} = data
+    story = data.story
+    points = []
+
+    for section in story.sections
+      for point in section.points
+        points[point.id] = point
 
     # 替换背景图
     $replaceBackground = $ '#replaceBackground'
@@ -357,17 +368,14 @@ $ ->
 
     $detail.find('.container').on 'click', '.section-title .trash', (event) ->
       event.preventDefault()
-      event.stopPropagation()
       $(this).closest('.confirm').addClass('open').one 'mouseleave', -> $(this).removeClass 'open'
 
     $detail.find('.container').on 'click', '.section-title .cancel', (event) ->
       event.preventDefault()
-      event.stopPropagation()
       $(this).closest('.confirm').removeClass('open').unbind 'mouseleave'
 
     $detail.find('.container').on 'click', '.section-title .remove', (event) ->
       event.preventDefault()
-      event.stopPropagation()
       $section = $(this).closest '.section'
       $.ajax
         url: "/api/stories/#{story.id}/sections/#{$section.data('id')}"
@@ -391,9 +399,71 @@ $ ->
         data: $form.serialize()
         dataType: 'json'
       .done (point) ->
+        points[point.id] = point
         $form.closest('.point').before components.point point
         $form.replaceWith components.pointAdd()
         refresh()
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    $detail.find('.container').on 'click', '.point .actions .trash', (event) ->
+      event.preventDefault()
+      $(this).closest('.confirm').addClass('open').one 'mouseleave', -> $(this).removeClass 'open'
+
+    $detail.find('.container').on 'click', '.point .actions .cancel', (event) ->
+      event.preventDefault()
+      $(this).closest('.confirm').removeClass('open').unbind 'mouseleave'
+
+    $detail.find('.container').on 'click', '.point .actions .remove', (event) ->
+      event.preventDefault()
+      $section = $(this).closest '.section'
+      $point = $(this).closest '.point'
+      $.ajax
+        url: "/api/sections/#{$section.data('id')}/points/#{$point.data('id')}"
+        type: 'DELETE'
+        dataType: 'json'
+      .done (point) ->
+        delete points[point.id]
+        $point.remove()
+        refresh()
+      .fail (res) ->
+        error = res.responseJSON.error
+        window.alert error
+
+    $detail.find('.container').on 'click', '.point .actions .edit', (event) ->
+      event.preventDefault()
+      $point = $(this).closest '.point'
+      $pointEdit = $ components.pointEdit points[$point.data('id')]
+      $point.replaceWith $pointEdit
+      oChart.as $pointEdit.find '[rel-chart="yes"]'
+      oIconpicker.as $pointEdit.find '[rel-iconpicker="yes"]'
+      refreshBtnPicture()
+
+    $detail.find('.container').on 'click', '.point .point-edit .cancel', (event) ->
+      event.preventDefault()
+      $pointEdit = $(this).closest '.point'
+      $point = $ components.point points[$pointEdit.data('id')]
+      $pointEdit.replaceWith $point
+      $chart = $point.find '.chart'
+      refreshOnePieChart $chart if $chart.length
+
+    $detail.find('.container').on 'submit', '.point-edit', (event) ->
+      event.preventDefault()
+      $form = $ this
+      pointId = $form.closest('.point').data 'id'
+      $.ajax
+        url: "/api/points/#{pointId}"
+        type: 'POST'
+        data: $form.serialize()
+        dataType: 'json'
+      .done (point) ->
+        points[point.id] = point
+        $pointEdit = $form.closest '.point'
+        $point = $ components.point points[$pointEdit.data('id')]
+        $pointEdit.replaceWith $point
+        $chart = $point.find '.chart'
+        refreshOnePieChart $chart if $chart.length
       .fail (res) ->
         error = res.responseJSON.error
         window.alert error
@@ -437,9 +507,6 @@ $ ->
 
   router.configure html5history: true
   router.init()
-
-  new Chart container: $detail
-  new Iconpicker container: $detail
 
   # 描点平滑滚动
   $detail.on 'click', 'a[href*=#]', (event) ->

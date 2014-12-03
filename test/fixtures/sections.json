@@ -1,2 +1,2 @@
-{ "_id": { "$oid" : "546ed951f517a1589e49748d" }, "title": "", "points": [] }
+{ "_id": { "$oid" : "546ed951f517a1589e49748d" }, "title": "", "points": [ { "$oid" : "547dda656f9f160000c53feb" }, { "$oid" : "547ece8914a36a28576aa237" } ] }
 { "_id": { "$oid" : "546ed9aa3d94b6029fe9f918" }, "title": "", "points": [] }

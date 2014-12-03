@@ -1,0 +1,31 @@
+<div class="point" data-id="{{id}}">
+  <div class="circle circle-large"><div class="visible">编辑</div></div>
+  <div class="point-container text"><p class="point-body"></p>{{#if image}}<div class="point-picture"><img class="picture-point-image" src="{{image}}"></div>{{/if}}</div>
+  <form class="point-edit">
+    <div class="input-group">
+      <input type="text" class="form-control" name="title" autocomplete="off" placeholder="标题" value="{{title}}">
+    </div>
+    <div class="input-group">
+      <textarea class="form-control" name="description" rows="4" placeholder="描述">{{description}}</textarea>
+    </div>
+    <div class="input-group">
+      <label class="input-group-addon">气泡</label>
+      <input type="text" class="form-control" name="bubble" autocomplete="off" placeholder="2012，九月，20%，icon-" rel-chart="yes" rel-iconpicker="yes" value="{{bubble}}">
+      <div class="chart"></div>
+      <div class="bubble-icon"></div>
+    </div>
+    <div class="input-group">
+      <label class="input-group-addon">链接</label>
+      <input type="text" class="form-control" name="link" autocomplete="off" placeholder="http://" value="{{link}}">
+    </div>
+    <div class="form-group clearfix">
+      <a class="btn btn-picture">
+        <div class="loading"><i class="fa fa-refresh"></i></div>
+        <div class="instructions"><i class="fa fa-picture-o"></i></div>
+      </a>
+      <input type="hidden" name="image" value="{{image}}">
+      <button class="btn pull-right" type="submit">保存</button>
+      <a class="btn btn-link cancel pull-right">取消</a>
+    </div>
+  </form>
+</div>

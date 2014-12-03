@@ -60,4 +60,19 @@ router.route(/^\/([0-9a-fA-F]{24})\/points$/).post (req, res, done) ->
     return done err if err
     res.status(201).json point
 
+# 删除故事节点
+router.route(/^\/([0-9a-fA-F]{24})\/points\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
+  async.waterfall [
+    (fn) ->
+      Section.findById req.params[0], 'points', fn
+    (section, fn) ->
+      id = req.params[1]
+      index = section.points.indexOf id
+      section.points.splice index, 1
+      section.save (err) -> fn err, id: id
+  ], (err, point) ->
+    return done err if err
+    res.status(202).json id: point.id
+
+
 module.exports = router

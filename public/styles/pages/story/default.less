@@ -528,18 +528,27 @@
       cursor: move;
     }
 
+    &:hover {
+      .actions {
+        display: block;
+      }
+    }
+
     .top {
       position: relative;
+      margin-top: -10px;
       width: 100%;
+      height: 10px;
     }
 
     .actions {
       position: absolute;
       display: none;
-      bottom: 10px;
+      bottom: 100%;
       right: 0;
       border-width: 1px;
       border-style: solid;
+      font-size: 0;
 
       a {
         display: inline-block;
@@ -552,6 +561,20 @@
 
       .confirm {
         display: inline-block;
+      }
+
+      .remove, .cancel {
+        display: none;
+      }
+
+      .confirm.open {
+        .trash {
+          display: none;
+        }
+
+        .remove, .cancel {
+          display: inline-block;
+        }
       }
     }
 
@@ -625,10 +648,6 @@
       border-style: solid;
       border-radius: 50%;
     }
-  }
-
-  .point-edit {
-    display: none;
   }
 
   .point-right {
