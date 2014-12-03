@@ -4,51 +4,48 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee;
 }
 
-.form-account {
+.account {
   max-width: 320px;
   padding: 15px;
   margin: 0 auto;
 
-  .form-account-heading {
+  .account-header {
     margin-bottom: 20px;
     text-align: center;
+
+    svg path {
+      fill: darken(@starry-color-default, 5%);
+    }
   }
 
-  .form-account-footing {
+  .account-footer {
     margin-top: 30px;
     font-size: 14px;
     text-align: center;
   }
 
+  a {
+    color: darken(@starry-color-default, 5%);
+  }
+
   .form-control {
-    position: relative;
-    height: auto;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 16px;
-  }
-
-  .form-control:focus {
-    z-index: 2;
-  }
-
-  .inputs input {
-    margin-bottom: -1px;
+    border-width: 2px;
     border-radius: 0;
+    outline: none;
+    box-shadow: none;
+
+    &:focus {
+      border-color: darken(@starry-color-default, 5%);
+    }
   }
 
-  .inputs input:first-child {
-    margin-bottom: -1px;
-    border-top-right-radius: @input-border-radius;
-    border-top-left-radius: @input-border-radius;
-  }
-
-  .inputs input:last-child {
-    margin-bottom: 10px;
-    border-bottom-left-radius: @input-border-radius;
-    border-bottom-right-radius: @input-border-radius;
+  .btn {
+    width: 100%;
+    background-color: @starry-color-default;
+    border: 2px solid darken(@starry-color-default, 5%);
+    border-radius: 0;
+    color: #fff;
   }
 }

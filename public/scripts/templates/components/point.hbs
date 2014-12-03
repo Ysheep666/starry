@@ -1,8 +1,44 @@
 <div class="point point-data{{#if image}} show-picture{{/if}}" data-id="{{id}}">
   {{{circle bubble}}}
   <div class="point-container {{{circle-type bubble}}}">
+    <div class="top">
+      <div class="actions">
+        <a class="rename"><i class="fa fa-pencil"></i></a>
+        <div class="confirm">
+          <a class="remove"><i class="fa fa-check"></i></a>
+          <a class="cancel"><i class="fa fa-times"></i></a>
+          <a class="trash"><i class="fa fa-trash"></i></a>
+        </div>
+      </div>
+    </div>
     <h3>{{title}}</h3>
     <p class="point-body">{{description}}</p>
     {{#if image}}<div class="point-picture"><img class="picture-point-image" src="{{image}}"></div>{{/if}}
   </div>
+  <form class="point-edit">
+    <div class="input-group">
+      <input type="text" class="form-control" name="title" autocomplete="off" placeholder="标题" value="{{title}}">
+    </div>
+    <div class="input-group">
+      <textarea class="form-control" name="description" rows="4" placeholder="描述">{{description}}</textarea>
+    </div>
+    <div class="input-group">
+      <label class="input-group-addon">气泡</label>
+      <input type="text" class="form-control" name="bubble" autocomplete="off" placeholder="2012，九月，20%，icon-" rel-chart="yes" rel-iconpicker="yes" value="{{bubble}}">
+      <div class="chart"></div>
+      <div class="bubble-icon"></div>
+    </div>
+    <div class="input-group">
+      <label class="input-group-addon">链接</label>
+      <input type="text" class="form-control" name="link" autocomplete="off" placeholder="http://" value="{{link}}">
+    </div>
+    <div class="form-group clearfix">
+      <a class="btn btn-picture">
+        <div class="loading"><i class="fa fa-refresh"></i></div>
+        <div class="instructions"><i class="fa fa-picture-o"></i></div>
+      </a>
+      <input type="hidden" name="image" value="{{image}}">
+      <button class="btn pull-right" type="submit">编辑节点</button>
+    </div>
+  </form>
 </div>

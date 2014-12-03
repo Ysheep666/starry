@@ -123,8 +123,6 @@
   }
 
   .logo svg path {
-    stroke-width: 1;
-    stroke: @starry-color-white;
     fill: @starry-color-white;
   }
 
@@ -530,6 +528,33 @@
       cursor: move;
     }
 
+    .top {
+      position: relative;
+      width: 100%;
+    }
+
+    .actions {
+      position: absolute;
+      display: none;
+      bottom: 10px;
+      right: 0;
+      border-width: 1px;
+      border-style: solid;
+
+      a {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .confirm {
+        display: inline-block;
+      }
+    }
+
     .btn-picture {
       .loading {
         width: 15px;
@@ -602,10 +627,19 @@
     }
   }
 
+  .point-edit {
+    display: none;
+  }
+
   .point-right {
     .point-add, .point-edit {
       margin-left: 0;
       margin-right: auto;
+    }
+
+    .actions {
+      left: 0;
+      right: auto;
     }
   }
 }
