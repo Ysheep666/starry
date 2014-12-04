@@ -1,4 +1,5 @@
 $ = require 'jquery'
+toastr = require 'toastr'
 require '../../components/csrf'
 
 $ ->

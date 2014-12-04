@@ -25,5 +25,6 @@
 - Post:/api/sections/:id/points -- 新建故事节点
 - Delete:/api/sections/:id/points/:id -- 删除故事节点
 
+
 ### 节点
 - Post:/api/points/:id -- 更新节点

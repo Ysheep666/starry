@@ -13,10 +13,10 @@ router.route('*').get (req, res, done) ->
 # 列表
 router.route('/').get (req, res, done) ->
   preloaded = {}
-  Story.find { author: req.user.id }, 'title cover', { sort: _id: -1 }, (err, stories) ->
+  Story.find {author: req.user.id}, 'title cover', {sort: _id: -1}, (err, stories) ->
     return done err if err
     preloaded.stories = stories
-    res.render 'story/default', { preloaded: JSON.stringify preloaded }
+    res.render 'story/default', {preloaded: JSON.stringify preloaded}
 
 # 详情
 router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
@@ -28,13 +28,13 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
       .exec (err, story) -> fn err, story
     (story, fn) ->
       fn null, null if not story
-      Point.populate story.sections, { path: 'points' }, (err, points) ->
+      Point.populate story.sections, {path: 'points'}, (err, points) ->
         story.sections.points = points
         fn err, story
   ], (err, story) ->
     return done err if err
     return done() if not story
     preloaded.story = story
-    res.render 'story/default', { bige: true, preloaded: JSON.stringify preloaded }
+    res.render 'story/default', {bige: true, preloaded: JSON.stringify preloaded}
 
 module.exports = router

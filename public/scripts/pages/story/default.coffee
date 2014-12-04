@@ -98,6 +98,7 @@ $ ->
         error = res.responseJSON.error
         window.alert error
 
+    $list.unbind($.support.transition.end).one $.support.transition.end, -> $detail.html ''
     $wrap.removeClass 'bige'
 
   _detail = (data) ->
@@ -486,6 +487,11 @@ $ ->
         window.alert error
 
     refresh()
+    $list.unbind($.support.transition.end).one $.support.transition.end, ->
+      $list.html ''
+      $('html, body').scrollTop 0
+      $detail.removeClass 'change'
+
     $wrap.addClass 'bige'
 
   router = new Router()
@@ -517,6 +523,7 @@ $ ->
       type: 'GET'
       dataType: 'json'
     .done (res) ->
+      $detail.addClass 'change'
       _detail { story: res }
     .fail (res) ->
       error = res.responseJSON.error
@@ -529,7 +536,14 @@ $ ->
   $detail.on 'click', 'a[href*=#]', (event) ->
     event.preventDefault()
     $target = $ '#' + @hash.slice 1
-    $detail.animate { scrollTop: $target.position().top - $detail.find('.section:first').position().top }, 600 if $target.length
+    $('html, body').animate { scrollTop: $target.position().top }, 600 if $target.length
+
+  resize = ->
+    $wrap.height $(window).height()
+
+  resize()
+
+  $(window).on 'resize', resize
 
   # 跳转
   $('body').on 'click', 'a.go', (event) ->

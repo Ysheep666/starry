@@ -412,14 +412,12 @@
     bottom: 0;
     left: 100%;
     width: 90%;
-    height: 300px;
     padding: 10px 50px;
     max-width: 400px;
 
     .picture-point-image {
-      height: 100%;
       margin: 0 auto;
-      width: auto;
+      width: 100%;
       background-position: center;
       background-size: contain;
       border: 5px solid white;
@@ -470,6 +468,7 @@
   padding-top: 100px;
   padding-bottom: 30px;
   backface-visibility: hidden;
+  text-align: center;
 
   .content {
     position: relative;
@@ -511,6 +510,65 @@
     }
   }
 }
+
+// 响应式
+@media (max-width: 600px) {
+  .section-header div.line {
+    display: none;
+  }
+
+  .section:before, .section .line {
+    left: 40px;
+  }
+
+  .section .point {
+    width: 85%;
+    margin-top: 0px;
+    margin-left: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+    .point-container {
+      margin-left: 0;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    .circle {
+      right: auto;
+      left: -10px;
+    }
+
+    .circle-general {
+      right: auto;
+      left: -15px;
+    }
+
+    .circle-large {
+      right: auto;
+      left: -25px;
+    }
+
+    .point-picture {
+      left: auto;
+      right: 100%;
+      text-align: left;
+    }
+  }
+
+  .section .point-picture {
+    position: relative;
+    display: block;
+    min-height: 200px;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto;
+    padding-left: 0;
+    padding-right: 10px;
+  }
+}
+
 
 body, body.black {
   .section-base(@starry-color-black, @starry-color-white);

@@ -85,19 +85,22 @@
   }
 }
 
+.wrap {
+  position: relative;
+}
+
 // 列表
 .list {
-  position: fixed;
+  position: absolute;
   left: 0;
-  bottom: 100%;
+  top: 0;
   z-index: @bige-index;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   overflow: hidden;
-  overflow-y: auto;
   background: @starry-color-default;
   transition: transform 0.5s cubic-bezier(.6,0,.4,1);
-  transform: translate3d(0,100%,0);
+  transform: translate3d(0,0,0);
 
   .container {
     @media (min-width: @screen-sm-min) {
@@ -202,13 +205,16 @@
 
 // 详情
 .detail {
-  position: fixed;
+  position: absolute;
+  top: 0;
   right: 0;
-  bottom: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   overflow: hidden;
-  overflow-y: auto;
+
+  &.change {
+    position: fixed;
+  }
 
   .container {
     padding: 0;
@@ -664,5 +670,53 @@
 }
 
 .bige .list {
-  transform: translate3d(0,0,0);
+  transform: translate3d(0,-100%,0);
 }
+
+// 响应式
+@media (max-width: 600px) {
+  .detail {
+    .theme-actions {
+      position: relative;
+      display: inline-block;
+      padding: 0;
+      text-align: center;
+    }
+
+    .section .point {
+
+      .point-add, .point-edit {
+        margin-left: 0;
+        margin-right: auto;
+      }
+
+      .actions {
+        left: 0;
+        right: auto;
+      }
+    }
+  }
+}
+
+.touch .detail {
+  .section-add .input-group {
+    width: 300px !important;
+    margin-top: 20px;
+  }
+
+  .section-title .actions {
+    visibility: visible
+  }
+
+  .section .point {
+    margin-top: 50px;
+
+    .actions {
+      display: block;
+    }
+  }
+}
+
+
+
+
