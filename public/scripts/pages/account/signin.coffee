@@ -1,8 +1,13 @@
 $ = require 'jquery'
 toastr = require 'toastr'
+FastClick = require 'fast-click'
 require '../../components/csrf'
 
+toastr.options.positionClass = 'toast-bottom-right'
+
 $ ->
+  FastClick.attach document.body
+
   $form = $ '#formSignin'
   $inputs = $form.find '.inputs'
   $submit = $form.find 'button[type="submit"]'

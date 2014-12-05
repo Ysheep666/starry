@@ -218,6 +218,10 @@
 	}
 }
 
+.form-control {
+  -webkit-appearance: none;
+}
+
 .section {
   position: relative;
   z-index: @default-index;
@@ -513,6 +517,10 @@
 
 // 响应式
 @media (max-width: 600px) {
+  .section-background:before {
+    display: none;
+  }
+
   .section-header div.line {
     display: none;
   }

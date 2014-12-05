@@ -25,7 +25,9 @@ class Upload
 
   on: (event, callback) ->
     if event is 'filesSubmitted'
-      @flow.on event, =>
+      @flow.on event, (files) =>
+        return callback '图片大小不能超过 2M' if 2 * 1024 * 1024 < files[0].size
+        return callback '图片格式错误' if not /^.*(\.jpg|\.jpeg|\.bmp|\.gif|\.png)$/.test files[0].name.toLowerCase()
         $.ajax
           url: '/api/upyun_token'
           type: 'POST'
@@ -34,11 +36,14 @@ class Upload
             expiration: parseInt (new Date().getTime() + 600000)/1000, 10
             'save-key': '/{year}{mon}/{day}/{filemd5}-{random}{.suffix}'
           dataType: 'json'
-        .done (res) =>
-          @flow.opts.query = res
+        .done (data) =>
+          data['content-length-range'] = '0,2048000'
+          @flow.opts.query = data
           callback()
         .fail (res) ->
-          callback res.responseJSON.error
+          error = res.responseJSON.error
+          if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+          callback errors.join('<br>')
     else
       @flow.on event, callback
 

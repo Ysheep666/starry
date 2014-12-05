@@ -17,6 +17,7 @@
   "browserify-shim": {
     "adou": "global:adou",
     "hbsfy/runtime": "global:Handlebars",
+    "fast-click": "global:FastClick",
     "router": "global:Router",
     "flow": "global:Flow",
     "jquery": "global:$",

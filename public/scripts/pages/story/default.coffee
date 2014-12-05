@@ -1,10 +1,15 @@
 $ = require 'jquery'
+toastr = require 'toastr'
 Router = require 'router'
 Handlebars = require 'hbsfy/runtime'
+FastClick = require 'fast-click'
 Upload = require '../../components/upload-image'
 Chart = require '../../components/chart'
 Iconpicker = require '../../components/iconpicker'
 require '../../components/csrf'
+
+adou.backgroundSuffix = 'background1600'
+toastr.options.positionClass = 'toast-bottom-right'
 
 # 组件
 components =
@@ -50,12 +55,30 @@ Handlebars.registerHelper 'circle-type', (bubble) ->
 {upyun, preloaded} = adou
 
 $ ->
+  FastClick.attach document.body
+
   $wrap = $ '#wrap'
   $list = $ '#list'
   $detail = $ '#detail'
 
   oChart = new Chart container: $detail
   oIconpicker = new Iconpicker container: $detail
+
+  resize = ->
+    $window = $ window
+    width = $window.width()
+    if width < 800
+      adou.backgroundSuffix = 'background800'
+    else if width > 600 and width < 1200
+      adou.backgroundSuffix = 'background1024'
+    else
+      adou.backgroundSuffix = 'background1600'
+
+    $wrap.height $window.height()
+
+  resize()
+
+  $(window).on 'resize', resize
 
   _list = (data) ->
     $list.html pages.list data
@@ -71,7 +94,8 @@ $ ->
         router.setRoute "stories/#{story.id}"
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '新建故事出错!'
 
     $items = $ '#items'
     $items.on 'click', 'a .trash', (event) ->
@@ -96,12 +120,14 @@ $ ->
         $item.addClass('fadeOut').one $.support.transition.end, -> $item.remove()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '删除故事出错!'
 
     $list.unbind($.support.transition.end).one $.support.transition.end, -> $detail.html ''
     $wrap.removeClass 'bige'
 
   _detail = (data) ->
+    data.backgroundSuffix = adou.backgroundSuffix
     $detail.html pages.detail data
 
     $profile = $ '#profile'
@@ -149,7 +175,9 @@ $ ->
               dataType: 'json'
             .fail (res) ->
               error = res.responseJSON.error
-              window.alert error
+              if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+              toastr.error errors.join('<br>'), '节点排序出错!'
+              window.location.reload()
 
     refreshOnePieChart = ($el) ->
       $el.html('').data 'easyPieChart', null
@@ -181,8 +209,14 @@ $ ->
           pictureUpload.on 'filesAdded', ->
             $el.addClass 'loading'
           pictureUpload.on 'filesSubmitted', (err) ->
-            return window.alert err if err
+            if err
+              toastr.error err, '上传图片出错!'
+              return $el.removeClass 'loading'
             pictureUpload.upload()
+          pictureUpload.on 'fileError', (file, message) ->
+            data = JSON.parse message
+            toastr.error data.message, '上传图片出错!'
+            $el.removeClass 'loading'
           pictureUpload.on 'fileSuccess', (file, message) ->
             message = JSON.parse message
             image = upyun.buckets['starry-images'] + message.url
@@ -192,7 +226,7 @@ $ ->
               if $pointPicture.length
                 $pointPicture.attr 'src', image
               else
-                $el.closest('.point').find('.point-body').after "<div class='point-picture'><img class='picture-point-image' src='#{image}'></div>"
+                $el.closest('.point').find('.point-body').after "<div class='point-picture'><img class='picture-point-image' src='#{image}!picture'></div>"
 
               $el.next('[name="image"]').val image
             , 800
@@ -217,8 +251,14 @@ $ ->
     replaceBackgroundUpload.on 'filesAdded', ->
       $replaceBackground.addClass 'loading'
     replaceBackgroundUpload.on 'filesSubmitted', (err) ->
-      return window.alert err if err
+      if err
+        toastr.error err, '上传图片出错!'
+        return $replaceBackground.removeClass 'loading'
       replaceBackgroundUpload.upload()
+    replaceBackgroundUpload.on 'fileError', (file, message) ->
+      data = JSON.parse message
+      toastr.error data.message, '上传图片出错!'
+      $replaceBackground.removeClass 'loading'
     replaceBackgroundUpload.on 'fileSuccess', (file, message) ->
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
@@ -230,11 +270,13 @@ $ ->
       .done ->
         window.setTimeout ->
           $replaceBackground.removeClass 'loading'
-          $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image}!large)"
+          $replaceBackground.closest('.section-background').css 'backgroundImage', "url(#{image}!#{adou.backgroundSuffix})"
         , 800
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '上传图片出错!'
+        $replaceBackground.removeClass 'loading'
 
     # 上传头像
     $profileImage = $ '#profileImage'
@@ -244,8 +286,14 @@ $ ->
     profileImageUpload.on 'filesAdded', ->
       $profileImage.closest('.profile-image').addClass 'loading'
     profileImageUpload.on 'filesSubmitted', (err) ->
-      return window.alert err if err
+      if err
+        toastr.error err, '上传图片出错!'
+        return $profileImage.removeClass('loading').addClass 'done'
       profileImageUpload.upload()
+    profileImageUpload.on 'fileError', (file, message) ->
+      data = JSON.parse message
+      toastr.error data.message, '上传图片出错!'
+      $profileImage.removeClass('loading').addClass 'done'
     profileImageUpload.on 'fileSuccess', (file, message) ->
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
@@ -261,7 +309,9 @@ $ ->
         , 800
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '上传图片出错!'
+        $profileImage.removeClass('loading').addClass 'done'
 
     # 主题
     $themes = $ '#themes'
@@ -280,7 +330,8 @@ $ ->
         refresh()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '切换主题出错!'
 
     # 简介
     $profile.on 'click', '.profile .edit', (event) ->
@@ -309,7 +360,8 @@ $ ->
       .fail (res) ->
         $submit.button 'reset'
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '更新简介出错!'
 
     # 片段
     sections = (section.id for section in story.sections)
@@ -336,7 +388,8 @@ $ ->
         refresh()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '添加片段出错!'
 
     $detail.find('.container').on 'click', '.section-title .rename', (event) ->
       event.preventDefault()
@@ -356,7 +409,8 @@ $ ->
         refreshSection()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '重命名出错!'
 
     $detail.find('.container').on 'click', '.section-title .down', (event) ->
       event.preventDefault()
@@ -373,10 +427,11 @@ $ ->
       .done ->
         $section.next().after $section
         refresh()
-        $detail.animate { scrollTop: $section.position().top - $detail.find('.section:first').position().top }, 600
+        $('html, body').animate { scrollTop: $section.position().top }, 600
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '移动片段出错!'
 
     $detail.find('.container').on 'click', '.section-title .trash', (event) ->
       event.preventDefault()
@@ -398,7 +453,8 @@ $ ->
         refresh()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '删除片段出错!'
 
     # 节点
     $detail.find('.container').on 'submit', '.point-add', (event) ->
@@ -421,7 +477,8 @@ $ ->
         refreshOnePieChart $chart if $chart.length
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '添加节点出错!'
 
     $detail.find('.container').on 'click', '.point .actions .trash', (event) ->
       event.preventDefault()
@@ -445,7 +502,8 @@ $ ->
         refreshPoint()
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '删除节点出错!'
 
     $detail.find('.container').on 'click', '.point .actions .edit', (event) ->
       event.preventDefault()
@@ -484,7 +542,8 @@ $ ->
         refreshOnePieChart $chart if $chart.length
       .fail (res) ->
         error = res.responseJSON.error
-        window.alert error
+        if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+        toastr.error errors.join('<br>'), '更新节点出错!'
 
     refresh()
     $list.unbind($.support.transition.end).one $.support.transition.end, ->
@@ -510,7 +569,8 @@ $ ->
       _list { stories: res }
     .fail (res) ->
       error = res.responseJSON.error
-      window.alert error
+      if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+      toastr.error errors.join('<br>'), '获取列表数据出错!'
 
   # 详情
   router.on '/stories/:id', (id) ->
@@ -527,7 +587,8 @@ $ ->
       _detail { story: res }
     .fail (res) ->
       error = res.responseJSON.error
-      window.alert error
+      if typeof error is 'string' then errors = [error] else errors = (err.msg for err in error)
+      toastr.error errors.join('<br>'), '获取详情数据出错!'
 
   router.configure html5history: true
   router.init()
@@ -537,13 +598,6 @@ $ ->
     event.preventDefault()
     $target = $ '#' + @hash.slice 1
     $('html, body').animate { scrollTop: $target.position().top }, 600 if $target.length
-
-  resize = ->
-    $wrap.height $(window).height()
-
-  resize()
-
-  $(window).on 'resize', resize
 
   # 跳转
   $('body').on 'click', 'a.go', (event) ->
