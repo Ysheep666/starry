@@ -2,7 +2,7 @@
   <div class="section section-background" style="height:200px{{#if story.background}};background-image:url({{story.background}}!{{backgroundSuffix}}){{/if}}">
     <a class="navbar-brand go" href="/stories"><i class="fa fa-arrow-up"></i> 返回</a>
     <div class="top-actions">
-      <a>预览</a>
+      <a target="_blank" href="/@{{#if story.mark}}{{story.mark}}{{^}}{{story.id}}{{/if}}">预览</a>
       <a class="signout">退出</a>
     </div>
     <a class="replace-background-button" id="replaceBackground">

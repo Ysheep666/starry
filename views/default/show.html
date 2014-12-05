@@ -1,16 +1,76 @@
-{% extends '../layout.html' %}
-
-{# 标题 #}
-{% block title %}{{app.title}} - {{app.description}}{% endblock %}
-
-{# 脚本 #}
-{% block sub_scripts %}
-<!-- build:js /scripts/default/default.js -->
-<script src="/scripts/default/default.js"></script>
-<!-- endbuild -->
-{% endblock %}
-
-{# 内容 #}
-{% block content %}
-展示页面
-{% endblock %}
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
+  <title>{{story.title}} - {{app.title}}</title>
+  <!-- build:css /styles/base.css -->
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/components/toastr/toastr.css">
+  <!-- endbuild -->
+  <!-- build:js /scripts/modernizr.js -->
+  <script src="/components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+</head>
+<body class="{{story.theme}}">
+  <div class="container">
+    <div class="section section-background" style="height:200px"{% if story.background %} data-background="{{story.background}}"{% endif %}></div>
+    <div class="section section-header">
+      <div class="profile-image{% if story.cover %} done{% endif %}"{% if story.cover %} style="background-image:url({{story.cover}}!avatar)"{% endif %}>
+      </div>
+      <div class="content">
+        <div class="profile">
+          <h1>{% if story.title %}{{story.title}}{% else %}标题{% endif %}</h1>
+          <h3 class="link">
+            <a target="_blank" href="/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}">starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}</a>
+          </h3>
+          {% if story.description %}<p>{{story.description}}</p>{% endif %}
+          <div class="nav">
+            {% for section in story.sections %}
+              <a href="#section-{{section.id}}">{% if section.title %}{{section.title}}{% else %}片段{% endif %}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="line"></div>
+    </div>
+    {% for section in story.sections %}
+      <div class="section" id="section-{{section.id}}">
+        <div class="section-title"><span class="name">{% if section.title %}{{section.title}}{% else %}片段{% endif %}</span></div>
+        <div class="points">
+          {% for point in section.points %}
+            <div class="point{% if point.image %} show-picture{% endif %}">
+              {{point.bubble|circle|safe}}
+              <div class="point-container {{point.bubble|circle_type|safe}}">
+                {% if point.link %}
+                  <h3><a target="_blank" href="{{point.link}}">{{point.title}}</a></h3>
+                {% else %}
+                  <h3>{{point.title}}</h3>
+                {% endif %}
+                <p class="point-body">{{point.description}}</p>
+                {% if image %}<div class="point-picture"><img class="picture-point-image" src="{{point.image}}!picture"></div>{% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="line"></div>
+      </div>
+    {% endfor %}
+  </div>
+  <!-- build:js /scripts/vendor.js -->
+  <script src='/components/fastclick/lib/fastclick.js'></script>
+  <script src="/components/jquery/dist/jquery.js"></script>
+  <script src="/components/toastr/toastr.js"></script>
+  <script src="/components/jquery.cookie/jquery.cookie.js"></script>
+  <script src="/components/jquery.easy-pie-chart/dist/jquery.easypiechart.js"></script>
+  <script src="/components/bootstrap/js/transition.js"></script>
+  <script src="/components/bootstrap/js/button.js"></script>
+  <script src="/components/bootstrap/js/tooltip.js"></script>
+  <script src="/components/bootstrap/js/popover.js"></script>
+  <script src="/scripts/setting.js"></script>
+  <!-- endbuild -->
+  <!-- build:js /scripts/default/show.js -->
+  <script src="/scripts/default/show.js"></script>
+  <!-- endbuild -->
+</body>
+</html>

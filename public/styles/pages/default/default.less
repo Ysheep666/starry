@@ -1,0 +1,82 @@
+// Variables
+@import '../../components/customized-variables.less';
+
+
+html, body {
+  height: 100%;
+}
+
+.welcome {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-image: url(../../images/cover-1600.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+
+  .container {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translate3d(0,-50%,0);
+    padding: 40px 0 160px;
+  }
+
+  .welcome-title {
+    svg path {
+      fill: @starry-color-white;
+    }
+  }
+
+  .welcome-subtitle {
+    margin: 30px 0;
+    font-size: 36px;
+    letter-spacing: 3px;
+    font-family: freight-text-pro,Georgia,Cambria,Times New Roman,Times,serif;
+    color: @starry-color-white;
+  }
+
+  .btn {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid @starry-color-white;
+    border-radius: 0;
+    letter-spacing: 1px;
+    color: @starry-color-white;
+
+    &:hover {
+      background-color: @starry-color-white;
+      color: @starry-color-black;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .welcome {
+    .welcome-subtitle {
+      font-size: 24px;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .welcome {
+    background-image: url(../../images/cover-800.jpg);
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1200px) {
+  .welcome {
+    background-image: url(../../images/cover-1024.jpg);
+  }
+}
+
+@media (min-width: 1200px) {
+  .welcome {
+    background-image: url(../../images/cover-1600.jpg);
+  }
+}

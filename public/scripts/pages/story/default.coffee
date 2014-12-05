@@ -141,7 +141,7 @@ $ ->
         if $el.data 'id'
           sections.push
             id: $el.data 'id'
-            name: $el.find('.section-title .name').text()
+            title: $el.find('.section-title .name').text()
 
       $profile.find('.nav').html components.sectionNavigation sections: sections
 
@@ -210,14 +210,17 @@ $ ->
             $el.addClass 'loading'
           pictureUpload.on 'filesSubmitted', (err) ->
             if err
+              pictureUpload.flow.cancel()
               toastr.error err, '上传图片出错!'
               return $el.removeClass 'loading'
             pictureUpload.upload()
           pictureUpload.on 'fileError', (file, message) ->
             data = JSON.parse message
+            pictureUpload.flow.cancel()
             toastr.error data.message, '上传图片出错!'
             $el.removeClass 'loading'
           pictureUpload.on 'fileSuccess', (file, message) ->
+            pictureUpload.flow.cancel()
             message = JSON.parse message
             image = upyun.buckets['starry-images'] + message.url
             window.setTimeout ->
@@ -252,14 +255,17 @@ $ ->
       $replaceBackground.addClass 'loading'
     replaceBackgroundUpload.on 'filesSubmitted', (err) ->
       if err
+        replaceBackgroundUpload.flow.cancel()
         toastr.error err, '上传图片出错!'
         return $replaceBackground.removeClass 'loading'
       replaceBackgroundUpload.upload()
     replaceBackgroundUpload.on 'fileError', (file, message) ->
       data = JSON.parse message
+      replaceBackgroundUpload.flow.cancel()
       toastr.error data.message, '上传图片出错!'
       $replaceBackground.removeClass 'loading'
     replaceBackgroundUpload.on 'fileSuccess', (file, message) ->
+      replaceBackgroundUpload.flow.cancel()
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
       $.ajax
@@ -287,14 +293,17 @@ $ ->
       $profileImage.closest('.profile-image').addClass 'loading'
     profileImageUpload.on 'filesSubmitted', (err) ->
       if err
+        profileImageUpload.flow.cancel()
         toastr.error err, '上传图片出错!'
         return $profileImage.removeClass('loading').addClass 'done'
       profileImageUpload.upload()
     profileImageUpload.on 'fileError', (file, message) ->
       data = JSON.parse message
+      profileImageUpload.flow.cancel()
       toastr.error data.message, '上传图片出错!'
       $profileImage.removeClass('loading').addClass 'done'
     profileImageUpload.on 'fileSuccess', (file, message) ->
+      profileImageUpload.flow.cancel()
       message = JSON.parse message
       image = upyun.buckets['starry-images'] + message.url
       $.ajax

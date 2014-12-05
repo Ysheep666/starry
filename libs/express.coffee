@@ -8,6 +8,7 @@ module.exports = (app, passport, setting, db) ->
 
   # 模板
   swig = require 'swig'
+  require('./swig') swig
   app.engine 'html', swig.renderFile
   app.set 'view engine', 'html'
 
