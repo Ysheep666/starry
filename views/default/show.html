@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
   <title>{{story.title|default('标题')}} - {{app.title}}</title>
-  <meta name="Description" content="@{% if story.description %}{{story.description}}{% else %}{{story.title|default('标题')}}的故事{% endif %}"/>
+  <meta name="Description" content="{% if story.description %}{{story.description}}{% else %}{{story.title|default('标题')}}{% endif %}"/>
   <!-- build:css /styles/base.css -->
   <link rel="stylesheet" href="/styles/base.css">
   <link rel="stylesheet" href="/components/toastr/toastr.css">
