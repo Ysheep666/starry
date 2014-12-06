@@ -202,7 +202,7 @@ gulp.task 'html', ['build-assets', 'build-styles', 'build-scripts', 'build-image
 # Templates
 gulp.task 'templates', ['html'], ->
   return gulp.src 'dist/views/**/*.html'
-    .pipe plugins.replace /((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{{ static_url }}$3'
+    .pipe plugins.replace /((href|src){1}=["']?)(\/(images|styles|scripts){1}[^'">]*["']?)/ig, '$1{{ app.static_url }}$3'
     .pipe gulp.dest 'dist/views/'
 
 # Build
