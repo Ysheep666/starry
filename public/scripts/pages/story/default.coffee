@@ -477,8 +477,10 @@ $ ->
         dataType: 'json'
       .done (point) ->
         points[point.id] = point
-        $point = $ components.point point
-        $form.closest('.point').before $point
+        $beforePoint = $ components.point point
+        $point = $form.closest '.point'
+        $point.before $beforePoint
+        $point.find('.point-picture').remove()
         $form.replaceWith components.pointAdd()
         refreshPoint()
         refreshBtnPicture()

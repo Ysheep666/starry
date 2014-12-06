@@ -57,7 +57,7 @@
                   <h3>{{point.title}}</h3>
                 {% endif %}
                 <p class="point-body">{{point.description}}</p>
-                {% if image %}<div class="point-picture"><img class="picture-point-image" src="{{point.image}}!picture"></div>{% endif %}
+                {% if point.image %}<div class="point-picture"><img class="picture-point-image" src="{{point.image}}!picture"></div>{% endif %}
               </div>
             </div>
           {% endfor %}
