@@ -1,0 +1,50 @@
+@charset 'utf-8';
+@import '../components/customized-variables.less';
+
+body {
+  background-color: @starry-color-gray;
+}
+
+.container {
+  margin: 70px auto 0;
+  padding: 40px;
+  max-width: 620px;
+
+  .circle {
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+    line-height: 250px;
+    font-weight: 600;
+    font-size: 40px;
+    background: @starry-color-white;
+    text-align: center;
+    color: inherit;
+    border-radius: 300px;
+  }
+
+  h2 {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    line-height: 1.5em;
+    font-size: 18px;
+    text-align: center;
+    color: @starry-color-white;
+  }
+
+  p {
+    text-align: center;
+    color: @starry-color-white;
+  }
+
+  a {
+    color: @starry-color-white;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin-top: 0;
+    padding: 40px 20px;
+  }
+}

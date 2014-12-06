@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
-  <title>{{story.title}} - {{app.title}}</title>
+  <title>{{story.title|default('标题')}} - {{app.title}}</title>
+  <meta name="Description" content="@{% if story.description %}{{story.description}}{% else %}{{story.title|default('标题')}}的故事{% endif %}"/>
   <!-- build:css /styles/base.css -->
   <link rel="stylesheet" href="/styles/base.css">
   <link rel="stylesheet" href="/components/toastr/toastr.css">
@@ -14,20 +15,28 @@
 </head>
 <body class="{{story.theme}}">
   <div class="container">
-    <div class="section section-background" style="height:200px"{% if story.background %} data-background="{{story.background}}"{% endif %}></div>
+    {% if story.background %}
+      <div class="section section-background" style="height:200px" data-background="{{story.background}}"></div>
+    {% else %}
+      <div class="section section-background" style="height:200px"></div>
+    {% endif %}
     <div class="section section-header">
-      <div class="profile-image{% if story.cover %} done{% endif %}"{% if story.cover %} style="background-image:url({{story.cover}}!avatar)"{% endif %}>
+      {% if story.cover %}
+        <div class="profile-image" style="background-image:url({{story.cover}}!avatar)">
+      {% else %}
+        <div class="profile-image">
+      {% endif %}
       </div>
       <div class="content">
         <div class="profile">
-          <h1>{% if story.title %}{{story.title}}{% else %}标题{% endif %}</h1>
+          <h1>{{story.title|default('标题')}}</h1>
           <h3 class="link">
             <a target="_blank" href="/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}">starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}</a>
           </h3>
           {% if story.description %}<p>{{story.description}}</p>{% endif %}
           <div class="nav">
             {% for section in story.sections %}
-              <a href="#section-{{section.id}}">{% if section.title %}{{section.title}}{% else %}片段{% endif %}</a>
+              <a href="#section-{{section.id}}">{{section.title|default('片段')}}</a>
             {% endfor %}
           </div>
         </div>
@@ -36,7 +45,7 @@
     </div>
     {% for section in story.sections %}
       <div class="section" id="section-{{section.id}}">
-        <div class="section-title"><span class="name">{% if section.title %}{{section.title}}{% else %}片段{% endif %}</span></div>
+        <div class="section-title"><span class="name">{{section.title|default('片段')}}</span></div>
         <div class="points">
           {% for point in section.points %}
             <div class="point{% if point.image %} show-picture{% endif %}">

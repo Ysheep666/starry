@@ -3,6 +3,12 @@
 {# 标题 #}
 {% block title %}{{app.title}} - {{app.description}}{% endblock %}
 
+{# 头 #}
+{% block heads %}
+<meta name="Keywords" content="故事,时间线,简历,生活"/>
+<meta name="Description" content="完成一个故事。比如一个简历，一段历程，一次旅游，一场活动。"/>
+{% endblock %}
+
 {# 样式 #}
 {% block sub_styles %}
 <!-- build:css /styles/default/default.css -->

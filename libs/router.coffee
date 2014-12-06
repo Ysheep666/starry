@@ -26,21 +26,21 @@ module.exports = (app, setting) ->
     return res.status(400).json error: errs
 
   # 生产环境
-  if 'production' is app.get 'env'
-    # 500 页面
-    app.use (err, req, res, done) ->
-      console.error err
-      if req.xhr
-        res.status(500).json error: '系统出错！'
-      else
-        res.status(500).render '500',
-          title: 500
+  # if 'production' is app.get 'env'
+  # 500 页面
+  app.use (err, req, res, done) ->
+    console.error err
+    if req.xhr
+      res.status(500).json error: '系统出错！'
+    else
+      res.status(500).render '500',
+        title: 500
 
-    # 404 页面
-    app.use (req, res) ->
-      console.warn "#{req.originalUrl} does not exist."
-      if (req.xhr)
-        res.status(404).json error: '请求地址不存在！'
-      else
-        res.status(404).render '404',
-          title: 404
+  # 404 页面
+  app.use (req, res) ->
+    console.warn "#{req.originalUrl} does not exist."
+    if (req.xhr)
+      res.status(404).json error: '请求地址不存在！'
+    else
+      res.status(404).render '404',
+        title: 404

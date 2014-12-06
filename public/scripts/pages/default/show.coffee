@@ -10,7 +10,7 @@ $ ->
     adou.backgroundSuffix = 'background1600'
 
   $background = $ '.section-background'
-  $background.css 'backgroundImage', "url(#{$background.data('background')}!#{adou.backgroundSuffix})"
+  $background.css 'backgroundImage', "url(#{$background.data('background')}!#{adou.backgroundSuffix})" if $background.data 'background'
 
   $('.section').each (index) ->
     $el = $ this

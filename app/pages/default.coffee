@@ -20,7 +20,7 @@ router.route(/^\/\@(.+)$/).get (req, res, done) ->
       .populate 'sections'
       .exec (err, story) -> fn err, story
     (story, fn) ->
-      fn null, null if not story
+      return fn null, null if not story
       Point.populate story.sections, {path: 'points'}, (err, points) ->
         story.sections.points = points
         fn err, story
