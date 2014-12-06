@@ -38,7 +38,7 @@ router.route(/^\/([0-9a-fA-F]{24})\/points$/).post (req, res, done) ->
   { bubble, link, image } = req.body
 
   req.assert('title', '标题不能为空').notEmpty()
-  req.assert('link', '链接格式不正确').isURL() if link
+  req.assert('link', '链接格式不正确').isURL() if link && 0 isnt link.indexOf 'mailto:'
   req.assert('image', '图片地址格式不正确').isURL() if image
 
   errs = req.validationErrors()
