@@ -60,11 +60,11 @@ module.exports = (app, passport, setting, db) ->
     resave: true
     saveUninitialized: true
 
-  # 防 csrf 攻击
-  app.use require('csurf')() if 'test' isnt app.get 'env'
-
   app.use passport.initialize()
   app.use passport.session()
+
+  # 防 csrf 攻击
+  app.use require('csurf')() if 'test' isnt app.get 'env'
 
   app.use (req, res, done) ->
     res.cookie '_csrf', req.csrfToken() if 'test' isnt app.get 'env'
