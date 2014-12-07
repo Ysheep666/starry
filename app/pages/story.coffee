@@ -37,4 +37,10 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
     preloaded.story = story
     res.render 'story/default', {bige: true, preloaded: JSON.stringify preloaded}
 
+# 详情
+router.route(/^\/([0-9a-fA-F]{24})\/share$/).get (req, res, done) ->
+  Story.findById req.params[0], 'mark', (err, story) ->
+    return done err if err
+    res.render 'story/share', {story: story}
+
 module.exports = router

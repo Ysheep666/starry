@@ -1,0 +1,43 @@
+{% extends '../layout.html' %}
+
+{# 标题 #}
+{% block sub_title %}分享故事{% endblock %}
+
+{# 样式 #}
+{% block sub_styles %}
+<!-- build:css /styles/story/share.css -->
+<link rel="stylesheet" href="/styles/story/share.css">
+<!-- endbuild -->
+{% endblock %}
+
+{# 脚本 #}
+{% block sub_scripts %}
+<!-- build:js /scripts/story/share.js -->
+<script src="/components/jquery-qrcode/jquery.qrcode.min.js"></script>
+<script src="/components/zeroclipboard/dist/ZeroClipboard.js"></script>
+<script src="/scripts/story/share.js"></script>
+<!-- endbuild -->
+{% endblock %}
+
+{# 内容 #}
+{% block content %}
+<div class="share">
+  <div class="container">
+    <div class="box clearfix">
+      <div class="demo">
+        <iframe src="/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}"></iframe>
+      </div>
+      <div class="info">
+        <div id="qrcode" data-url="starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}"></div>
+        <p>扫描二维码或拷贝链接分享</p>
+        <div class="input-group">
+          <input type="text" class="form-control" id="content" value="starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}" readonly="readonly">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" id="copy" data-clipboard-target="content">拷贝</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

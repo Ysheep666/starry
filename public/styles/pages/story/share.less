@@ -1,0 +1,72 @@
+@charset 'utf-8';
+@import '../../components/customized-variables.less';
+
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  min-width: 800px;
+  height: 100%;
+  min-height: 600px;
+  background: @starry-color-default;
+}
+
+.share {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+
+.container {
+  display: inline-block;
+  margin: 20px 0 60px;
+  vertical-align: middle;
+
+  .box {
+    width: 700px;
+    height: 600px;
+    margin: 0 auto;
+  }
+
+  .demo {
+    float: left;
+    width: 320px;
+    height: 600px;
+    padding: 72px 20px;
+    background-image: url(../../images/iphone.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    iframe {
+      height: 100%;
+      width: 100%;
+      border: 1px solid #eee;
+    }
+  }
+
+  .info {
+    float: left;
+    margin-left: 30px;
+    padding-top: 100px;
+    width: 250px;
+
+    p {
+      margin: 20px 0;
+      font-size: 16px;
+      color: @starry-color-white;
+    }
+  }
+}

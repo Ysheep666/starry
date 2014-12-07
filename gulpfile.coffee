@@ -65,6 +65,13 @@ gulp.task 'fonts', ->
     .pipe plugins.size()
   return
 
+# Flash
+gulp.task 'flashs', ->
+  gulp.src 'public/components/zeroclipboard/dist/ZeroClipboard.swf'
+    .pipe gulp.dest '.tmp/public'
+    .pipe plugins.size()
+  return
+
 # Style
 gulp.task 'styles', ->
   gulp.src 'public/styles/pages/**/*.less'
@@ -120,7 +127,7 @@ gulp.task 'serve', ->
 
 # Develop
 gulp.task 'develop', ['development-env', 'clean', 'lint'], ->
-  gulp.start 'fonts', 'styles', 'scripts', 'watch', 'serve'
+  gulp.start 'fonts', 'flashs', 'styles', 'scripts', 'watch', 'serve'
 
 # Fixture
 gulp.task 'fixture', (callback) ->
@@ -149,7 +156,7 @@ gulp.task 'test', ['test-env', 'fixture'], ->
 
 # Build assets
 gulp.task 'build-assets', ->
-  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}']
+  return gulp.src ['public/*.{ico,png,txt,xml}', 'public/components/font-awesome/**/*.{eot,svg,ttf,woff}', 'public/components/zeroclipboard/dist/ZeroClipboard.swf']
     .pipe gulp.dest 'dist/public'
     .pipe plugins.size()
 

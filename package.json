@@ -21,7 +21,8 @@
     "router": "global:Router",
     "flow": "global:Flow",
     "jquery": "global:$",
-    "toastr": "global:toastr"
+    "toastr": "global:toastr",
+    "zero-clipboard": "global:ZeroClipboard"
   },
   "dependencies": {
     "async": "0.9.0",
