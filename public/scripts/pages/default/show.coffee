@@ -1,6 +1,9 @@
 $ = require 'jquery'
+FastClick = require 'fast-click'
 
 $ ->
+  FastClick.attach document.body
+
   $window = $ window
   width = $window.width()
   if width < 800
@@ -56,4 +59,5 @@ $ ->
           $el.addClass 'swing-in'
         , 200
 
-  $window.on 'scroll touchmove', -> swingIn()
+  swingIn()
+  $window.on 'scroll', -> swingIn()
