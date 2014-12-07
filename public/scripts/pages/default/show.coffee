@@ -1,7 +1,8 @@
 $ = require 'jquery'
 
 $ ->
-  width = $(window).width()
+  $window = $ window
+  width = $window.width()
   if width < 800
     adou.backgroundSuffix = 'background800'
   else if width > 600 and width < 1200
@@ -41,4 +42,17 @@ $ ->
     event.preventDefault()
     $target = $ '#' + @hash.slice 1
     $('html, body').animate { scrollTop: $target.position().top }, 600 if $target.length
+
+  $window.on 'scroll', ->
+    $('.point').each (index) ->
+      $el = $ this
+      if (0 < $window.scrollTop() + $window.height() - $el.offset().top - 50) && !$el.hasClass 'swing-in'
+        $chart = $el.find '.circle .chart'
+        window.setTimeout ->
+          if $chart.length
+            pie = $chart.data 'easyPieChart'
+            pie.update 0
+            pie.update $chart.data 'progress'
+          $el.addClass 'swing-in'
+        , 200
 

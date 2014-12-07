@@ -48,7 +48,7 @@
         <div class="section-title"><span class="name">{{section.title|default('片段')}}</span></div>
         <div class="points">
           {% for point in section.points %}
-            <div class="point{% if point.image %} show-picture{% endif %}">
+            <div class="point{% if point.image %} show-picture{% endif %} swing-out">
               {{point.bubble|circle|safe}}
               <div class="point-container {{point.bubble|circle_type|safe}}">
                 {% if point.link %}
