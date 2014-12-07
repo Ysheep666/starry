@@ -46,7 +46,7 @@ $ ->
   $window.on 'scroll', ->
     $('.point').each (index) ->
       $el = $ this
-      if (0 < $window.scrollTop() + $window.height() - $el.offset().top - 50) && !$el.hasClass 'swing-in'
+      if (0 < $window.scrollTop() + $window.height() - $el.offset().top) && !$el.hasClass 'swing-in'
         $chart = $el.find '.circle .chart'
         window.setTimeout ->
           if $chart.length
