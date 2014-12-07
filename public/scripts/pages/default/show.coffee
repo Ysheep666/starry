@@ -43,7 +43,7 @@ $ ->
     $target = $ '#' + @hash.slice 1
     $('html, body').animate { scrollTop: $target.position().top }, 600 if $target.length
 
-  $window.on 'scroll', ->
+  swingIn = ->
     $('.point').each (index) ->
       $el = $ this
       if (0 < $window.scrollTop() + $window.height() - $el.offset().top) && !$el.hasClass 'swing-in'
@@ -56,3 +56,4 @@ $ ->
           $el.addClass 'swing-in'
         , 200
 
+  $window.on 'scroll touchmove', -> swingIn()
