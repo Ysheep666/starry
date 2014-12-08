@@ -89,6 +89,25 @@
   position: relative;
 }
 
+.feedback {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  line-height: 36px;
+  font-size: 20px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.2);
+  border-radius: 50%;
+  color: @starry-color-white !important;
+
+  i {
+    transform: scale(-1,1);
+  }
+}
+
 // 列表
 .list {
   position: absolute;
@@ -732,6 +751,10 @@
       }
     }
   }
+}
+
+.touch .feedback {
+  display: none;
 }
 
 .touch .detail {

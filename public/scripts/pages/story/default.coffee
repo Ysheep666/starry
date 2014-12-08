@@ -80,6 +80,8 @@ $ ->
 
   $(window).on 'resize', resize
 
+  $('.feedback').tooltip()
+
   _list = (data) ->
     $list.html pages.list data
 
