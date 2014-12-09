@@ -42,13 +42,14 @@ body {
 
   .demo {
     float: left;
-    width: 320px;
-    height: 600px;
-    padding: 72px 20px;
+    width: 396px;
+    height: 782px;
+    padding: 90px 24px 95px;
     background-image: url(../../images/iphone.png);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    transform: scale(0.8);
 
     iframe {
       height: 100%;
@@ -63,10 +64,22 @@ body {
     padding-top: 100px;
     width: 250px;
 
+    .qrcode {
+      canvas {
+        padding: 10px;
+        background-color: @starry-color-white;
+        border-radius: 2px;
+      }
+    }
+
     p {
       margin: 20px 0;
       font-size: 16px;
       color: @starry-color-white;
+    }
+
+    .btn {
+      outline: none;
     }
   }
 }

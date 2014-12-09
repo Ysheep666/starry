@@ -28,7 +28,7 @@
         <iframe src="/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}"></iframe>
       </div>
       <div class="info">
-        <div id="qrcode" data-url="starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}"></div>
+        <div class="qrcode" id="qrcode" data-url="starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}"></div>
         <p>扫描二维码或拷贝链接分享</p>
         <div class="input-group">
           <input type="text" class="form-control" id="content" value="starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}" readonly="readonly">
