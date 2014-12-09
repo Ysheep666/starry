@@ -1,7 +1,7 @@
 # swig 模板
 module.exports = (swig) ->
-  swig.setFilter 'breaklines', (text) ->
-    return text.replace /(\r\n|\n|\r)/gm, '<br>'
+  swig.setFilter 'markdown', (text) ->
+    return require('markdown').markdown.toHTML text
 
   swig.setFilter 'circle', (bubble) ->
     return '<div class="circle"></div>' if not bubble

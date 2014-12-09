@@ -1,4 +1,5 @@
 $ = require 'jquery'
+markdown = require 'markdown'
 toastr = require 'toastr'
 Router = require 'router'
 Handlebars = require 'hbsfy/runtime'
@@ -38,8 +39,8 @@ Handlebars.registerPartial 'point', components.point
 Handlebars.registerPartial 'point-add', components.pointAdd
 Handlebars.registerPartial 'point-edit', components.pointEdit
 
-Handlebars.registerHelper 'breaklines', (text) ->
-  return new Handlebars.SafeString text.replace /(\r\n|\n|\r)/gm, '<br>'
+Handlebars.registerHelper 'markdown', (text) ->
+  return markdown.toHTML text
 
 Handlebars.registerHelper 'circle', (bubble) ->
   return '<div class="circle"></div>' if not bubble

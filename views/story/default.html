@@ -14,8 +14,9 @@
 {% block sub_scripts %}
 <script>adou.preloaded = {{preloaded|safe}};</script>
 <!-- build:js /scripts/story/default.js -->
-<script src="/components/html.sortable/src/html.sortable.js"></script>
 <script src="/components/handlebars/handlebars.runtime.js"></script>
+<script src="/components/markdown/lib/markdown.js"></script>
+<script src="/components/html.sortable/src/html.sortable.js"></script>
 <script src="/components/director/build/director.js"></script>
 <script src="/components/flow.js/dist/flow.js"></script>
 <script src="/scripts/story/default.js"></script>
@@ -27,6 +28,6 @@
 <div id="wrap" class="wrap{% if bige %} bige{% endif %}">
   <div class="list" id="list"></div>
   <div class="detail" id="detail"></div>
-  <a class="feedback" href="https://trello.com/b/tNl5ZPOG/starry" target="_blank" data-toggle="tooltip" data-placement="left" title="反馈问题"><i class="fa fa-comment"></i></a>
+  <a class="feedback" href="https://trello.com/b/tNl5ZPOG/starry" target="_blank" data-toggle="tooltip" data-placement="right" title="反馈问题"><i class="fa fa-comment"></i></a>
 </div>
 {% endblock %}

@@ -17,6 +17,7 @@
   "browserify-shim": {
     "adou": "global:adou",
     "hbsfy/runtime": "global:Handlebars",
+    "markdown": "global:markdown",
     "fast-click": "global:FastClick",
     "router": "global:Router",
     "flow": "global:Flow",
@@ -37,6 +38,7 @@
     "express-validator": "2.7.0",
     "js-yaml": "3.2.2",
     "lodash": "2.4.1",
+    "markdown": "0.5.0",
     "method-override": "2.3.0",
     "mongoose": "3.8.19",
     "morgan": "1.5.0",

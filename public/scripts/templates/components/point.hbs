@@ -12,11 +12,11 @@
       </div>
     </div>
     {{#if link}}
-      <h3><a target="_blank" href="{{link}}">{{title}}</a></h3>
+      <h3 class="title"><a target="_blank" href="{{link}}">{{title}}</a></h3>
     {{^}}
-      <h3>{{title}}</h3>
+      <h3 class="title">{{title}}</h3>
     {{/if}}
-    <p class="point-body">{{breaklines description}}</p>
+    <div class="point-body">{{{markdown description}}}</div>
     {{#if image}}<div class="point-picture"><img class="picture-point-image" src="{{image}}!picture"></div>{{/if}}
   </div>
 </div>
