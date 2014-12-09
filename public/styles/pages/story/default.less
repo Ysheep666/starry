@@ -91,7 +91,7 @@
 
 .feedback {
   position: fixed;
-  right: 20px;
+  left: 20px;
   bottom: 20px;
   width: 36px;
   height: 36px;
@@ -724,6 +724,10 @@
 }
 
 @media (max-width: 600px) {
+  .feedback {
+    display: none;
+  }
+
   .detail {
     .theme-actions {
       position: relative;

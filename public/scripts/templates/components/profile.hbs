@@ -3,19 +3,19 @@
   <h3 class="link">
     <a target="_blank" href="/@{{#if mark}}{{mark}}{{^}}{{id}}{{/if}}">starry.so/@{{#if mark}}{{mark}}{{^}}{{id}}{{/if}}</a>
   </h3>
-  {{#if description}}<p>{{description}}</p>{{/if}}
+  {{#if description}}<p>{{{breaklines description}}}</p>{{/if}}
   <a class="btn edit">修改</a>
 </div>
 <form class="profile-edit">
   <div class="input-group">
-    <input type="text" class="form-control" name="title" placeholder="标题" autocomplete="off" value="{{#if title}}{{title}}{{^}}标题{{/if}}">
+    <input type="text" class="form-control" name="title" placeholder="标题" autocomplete="off" value="{{#if title}}{{title}}{{/if}}">
   </div>
   <div class="input-group">
     <label class="input-group-addon">starry.so/@</label>
     <input type="text" class="form-control" name="mark" autocomplete="off" placeholder="标识" value="{{#if mark}}{{mark}}{{^}}{{id}}{{/if}}">
   </div>
   <div class="input-group">
-    <textarea class="form-control" name="description" rows="4" placeholder="描述">{{description}}</textarea>
+    <textarea class="form-control" name="description" rows="4" placeholder="描述">{{{description}}}</textarea>
   </div>
   <div class="form-group">
     <a class="btn btn-link cancel">取消</a>

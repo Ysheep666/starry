@@ -1,5 +1,8 @@
 # swig 模板
 module.exports = (swig) ->
+  swig.setFilter 'breaklines', (text) ->
+    return text.replace /(\r\n|\n|\r)/gm, '<br>'
+
   swig.setFilter 'circle', (bubble) ->
     return '<div class="circle"></div>' if not bubble
     progress = if /^([0-9]{1,3}\%)$/.test(bubble) then parseInt bubble.replace('%', ''), 10 else null

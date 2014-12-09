@@ -33,7 +33,7 @@
           <h3 class="link">
             <a target="_blank" href="/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}">starry.so/@{% if story.mark %}{{story.mark}}{% else %}{{story.id}}{% endif %}</a>
           </h3>
-          {% if story.description %}<p>{{story.description}}</p>{% endif %}
+          {% if story.description %}<p>{{story.description|breaklines|safe}}</p>{% endif %}
           <div class="nav">
             {% for section in story.sections %}
               <a href="#section-{{section.id}}">{{section.title|default('片段')}}</a>
@@ -56,7 +56,7 @@
                 {% else %}
                   <h3>{{point.title}}</h3>
                 {% endif %}
-                <p class="point-body">{{point.description}}</p>
+                <p class="point-body">{{point.description|breaklines|safe}}</p>
                 {% if point.image %}<div class="point-picture"><img class="picture-point-image" src="{{point.image}}!picture"></div>{% endif %}
               </div>
             </div>

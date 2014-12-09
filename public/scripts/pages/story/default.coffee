@@ -38,6 +38,9 @@ Handlebars.registerPartial 'point', components.point
 Handlebars.registerPartial 'point-add', components.pointAdd
 Handlebars.registerPartial 'point-edit', components.pointEdit
 
+Handlebars.registerHelper 'breaklines', (text) ->
+  return new Handlebars.SafeString text.replace /(\r\n|\n|\r)/gm, '<br>'
+
 Handlebars.registerHelper 'circle', (bubble) ->
   return '<div class="circle"></div>' if not bubble
   progress = if /^([0-9]{1,3}\%)$/.test(bubble) then parseInt bubble.replace('%', ''), 10 else null
