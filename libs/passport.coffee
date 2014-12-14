@@ -9,7 +9,7 @@ module.exports = (passport) ->
     User.findById id, 'name email', done
 
   # Local
-  passport.use new (require('passport-local').Strategy)(
+  passport.use new (require('passport-local').Strategy)
     usernameField: 'email'
     passwordField: 'password'
   , (email, password, done) ->
@@ -18,4 +18,11 @@ module.exports = (passport) ->
       return done null, false, message: '该用户不存在。' if not user
       return done null, false, message: '密码错误。' if not user.authenticate password
       return done null, user
-  )
+
+  passport.use new (require('passport-qq').Strategy)
+    clientID: 'appKey'
+    clientSecret: 'appSecret'
+    callbackURL: "http://127.0.0.1:3000/auth/qq/callback"
+  , (accessToken, refreshToken, profile, done) ->
+    console.log profile
+    return done null, profile
