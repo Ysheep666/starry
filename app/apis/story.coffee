@@ -34,9 +34,9 @@ router.route('/').post (req, res, done) ->
 router.route(/^\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'title', fn
+      Story.findById req.params[0], 'author title', fn
     (story, fn) ->
-      fn null, null if story.author isnt req.user.id
+      fn null, null if not story.author.equals req.user.id
       story.remove (err) -> fn err, story
   ], (err, story) ->
     return done err if err
@@ -56,9 +56,9 @@ router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
 
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'background cover theme sections', fn
+      Story.findById req.params[0], 'author background cover theme sections', fn
     (story, fn) ->
-      fn null, null if story.author isnt req.user.id
+      fn null, null if not story.author.equals req.user.id
       story.background = background if background
       story.cover = cover if cover
       story.theme = theme if theme
@@ -91,9 +91,9 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
 .post (req, res, done) ->
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'title description mark', fn
+      Story.findById req.params[0], 'author title description mark', fn
     (story, fn) ->
-      fn null, null if story.author isnt req.user.id
+      fn null, null if not story.author.equals req.user.id
       story.title = req.sanitize('title').escape()
       story.description = req.sanitize('description').escape()
       story.mark = req.body.mark.trim().toLowerCase()
@@ -115,9 +115,9 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
       section = new Section title: req.sanitize('title').escape()
       section.save (err, section) -> fn err, section
     (section, fn) ->
-      Story.findById req.params[0], 'sections', (err, story) -> fn err, story, section
+      Story.findById req.params[0], 'author sections', (err, story) -> fn err, story, section
     (story, section, fn) ->
-      fn null, null if story.author isnt req.user.id
+      fn null, null if not story.author.equals req.user.id
       beforeIndex = if req.body.before then 1 + story.sections.indexOf req.body.before else 0
       story.sections.splice beforeIndex, 0, section.id
       story.save (err) -> fn err, section
@@ -130,9 +130,9 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
 router.route(/^\/([0-9a-fA-F]{24})\/sections\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'sections', fn
+      Story.findById req.params[0], 'author sections', fn
     (story, fn) ->
-      fn null, null if story.author isnt req.user.id
+      fn null, null if not story.author.equals req.user.id
       id = req.params[1]
       index = story.sections.indexOf id
       story.sections.splice index, 1

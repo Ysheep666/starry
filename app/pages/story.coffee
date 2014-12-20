@@ -23,7 +23,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
   preloaded = {}
   async.waterfall [
     (fn) ->
-      Story.findById req.params[0], 'title description mark background cover theme sections'
+      Story.findById req.params[0], 'author title description mark background cover theme sections'
       .populate 'sections'
       .exec (err, story) -> fn err, story
     (story, fn) ->
@@ -33,7 +33,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
         fn err, story
   ], (err, story) ->
     return done err if err
-    return done() if not story || story.author isnt req.user.id
+    return done() if not story || not story.author.equals req.user.id
     preloaded.story = story
     res.render 'story/default', {bige: true, preloaded: JSON.stringify preloaded}
 
