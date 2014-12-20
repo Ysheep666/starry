@@ -36,9 +36,11 @@ router.route(/^\/([0-9a-fA-F]{24})$/).delete (req, res, done) ->
     (fn) ->
       Story.findById req.params[0], 'title', fn
     (story, fn) ->
+      fn null, null if story.author isnt req.user.id
       story.remove (err) -> fn err, story
   ], (err, story) ->
     return done err if err
+    return done() if not story
     res.status(202).json id: story.id
 
 # 更新故事
@@ -56,6 +58,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
     (fn) ->
       Story.findById req.params[0], 'background cover theme sections', fn
     (story, fn) ->
+      fn null, null if story.author isnt req.user.id
       story.background = background if background
       story.cover = cover if cover
       story.theme = theme if theme
@@ -63,6 +66,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).patch (req, res, done) ->
       story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
+    return done() if not story
     res.status(202).json story
 
 # 更新故事简介
@@ -89,12 +93,14 @@ router.route(/^\/([0-9a-fA-F]{24})$/).post (req, res, done) ->
     (fn) ->
       Story.findById req.params[0], 'title description mark', fn
     (story, fn) ->
+      fn null, null if story.author isnt req.user.id
       story.title = req.sanitize('title').escape()
       story.description = req.sanitize('description').escape()
       story.mark = req.body.mark.trim().toLowerCase()
       story.save (err) -> fn err, story
   ], (err, story) ->
     return done err if err
+    return done() if not story
     res.status(202).json story
 
 # 新建故事片段
@@ -111,11 +117,13 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
     (section, fn) ->
       Story.findById req.params[0], 'sections', (err, story) -> fn err, story, section
     (story, section, fn) ->
+      fn null, null if story.author isnt req.user.id
       beforeIndex = if req.body.before then 1 + story.sections.indexOf req.body.before else 0
       story.sections.splice beforeIndex, 0, section.id
       story.save (err) -> fn err, section
   ], (err, section) ->
     return done err if err
+    return done() if not story
     res.status(201).json section
 
 # 删除故事片段
@@ -124,12 +132,14 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections\/([0-9a-fA-F]{24})$/).delete (req, 
     (fn) ->
       Story.findById req.params[0], 'sections', fn
     (story, fn) ->
+      fn null, null if story.author isnt req.user.id
       id = req.params[1]
       index = story.sections.indexOf id
       story.sections.splice index, 1
       story.save (err) -> fn err, id: id
   ], (err, section) ->
     return done err if err
+    return done() if not story
     res.status(202).json id: section.id
 
 # 列表

@@ -33,7 +33,7 @@ router.route(/^\/([0-9a-fA-F]{24})$/).get (req, res, done) ->
         fn err, story
   ], (err, story) ->
     return done err if err
-    return done() if not story
+    return done() if not story || story.author isnt req.user.id
     preloaded.story = story
     res.render 'story/default', {bige: true, preloaded: JSON.stringify preloaded}
 
