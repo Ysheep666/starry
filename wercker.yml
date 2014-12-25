@@ -1,0 +1,8 @@
+box: wercker/nodejs@1.4.0
+services:
+  - wercker/redis@1.0.1
+  - wercker/mongodb@1.0.1
+build:
+  steps:
+    - npm-install
+    - npm-test
