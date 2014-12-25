@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "author": "不会飞的羊",
+  "scripts": {
+    "test": "gulp test"
+  },
   "engines": {
     "node": ">= 0.10"
   },
