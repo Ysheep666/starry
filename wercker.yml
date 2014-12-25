@@ -1,4 +1,4 @@
-box: wercker/nodejs@1.4.0
+box: koding/base@0.0.14
 services:
   - wercker/redis@1.0.1
   - wercker/mongodb@1.0.1
