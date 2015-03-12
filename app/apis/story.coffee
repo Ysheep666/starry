@@ -123,7 +123,7 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections$/).post (req, res, done) ->
       story.save (err) -> fn err, section
   ], (err, section) ->
     return done err if err
-    return done() if not story
+    return done() if not section
     res.status(201).json section
 
 # 删除故事片段
