@@ -29,5 +29,5 @@ upyun:
   api: 'http://v0.api.upyun.com'
   buckets:
     - name: 'starry-images'
-      secret: 'n4gepzICjkRNEHrEGWfkbBds4vY='
+      secret: 'Xxxxxxxxx'
       url: 'http://starry-images.b0.upaiyun.com'

@@ -40,5 +40,6 @@ dist
 
 # Base
 coverage
+config/default.yaml
 config/development.yaml
 config/production.yaml
