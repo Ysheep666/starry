@@ -139,7 +139,7 @@ router.route(/^\/([0-9a-fA-F]{24})\/sections\/([0-9a-fA-F]{24})$/).delete (req, 
       story.save (err) -> fn err, id: id
   ], (err, section) ->
     return done err if err
-    return done() if not story
+    return done() if not section
     res.status(202).json id: section.id
 
 # 列表
